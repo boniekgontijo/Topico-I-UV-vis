@@ -1,0 +1,1390 @@
+{
+ "modulo": "iv",
+ "questoes": [
+  {
+   "id": "iv-c-027",
+   "bloco": 7,
+   "tipo": "mc",
+   "subtipo": "espectro",
+   "nivel": "facil",
+   "espectro": "acido_benzoico",
+   "enunciado": "Qual molécula corresponde a este espectro?",
+   "alternativas": [
+    "@est:acido_benzoico",
+    "@est:ciclohexano"
+   ],
+   "correta": 0,
+   "explicacao": "O–H larga de ácido (3300–2500), C=O em 1690 (conjugada) e anel aromático: ácido aromático. As outras: ciclo-hexano mostraria só C–H sp³, sem outras bandas fortes."
+  },
+  {
+   "id": "iv-c-028",
+   "bloco": 7,
+   "tipo": "mc",
+   "subtipo": "espectro",
+   "nivel": "medio",
+   "espectro": "acido_pentanoico",
+   "enunciado": "Qual molécula corresponde a este espectro?",
+   "alternativas": [
+    "@est:acetato_etila",
+    "@est:2-pentanona",
+    "@est:butirolactona",
+    "@est:acido_pentanoico"
+   ],
+   "correta": 3,
+   "explicacao": "O–H larguíssima de ácido (3300–2500) com C=O em 1710: ácido carboxílico. As outras: acetato de etila mostraria C=O perto de 1740 e C–O forte em 1300–1150; 2-pentanona mostraria C=O forte perto de 1715, sem O–H; γ-butirolactona mostraria C=O alta, perto de 1770."
+  },
+  {
+   "id": "iv-c-029",
+   "bloco": 7,
+   "tipo": "mc",
+   "subtipo": "espectro",
+   "nivel": "dificil",
+   "espectro": "cloreto_benzoila",
+   "enunciado": "Qual molécula corresponde a este espectro?",
+   "alternativas": [
+    "@est:anidrido_propanoico",
+    "@est:nitrobenzeno",
+    "@est:cloreto_benzoila",
+    "@est:fenol",
+    "@est:acetato_butila"
+   ],
+   "correta": 2,
+   "explicacao": "C=O em 1775 (alta mesmo conjugada) com anel aromático: cloreto de acila aromático. As outras: acetato de butila mostraria C=O perto de 1740 e C–O forte em 1300–1150; anidrido propanoico mostraria duas C=O (perto de 1820 e 1760); fenol mostraria O–H larga junto com bandas de anel aromático; nitrobenzeno mostraria duas bandas fortes perto de 1550 e 1380."
+  },
+  {
+   "id": "iv-c-030",
+   "bloco": 7,
+   "tipo": "mc",
+   "subtipo": "espectro",
+   "nivel": "facil",
+   "espectro": "acido_propanoico",
+   "enunciado": "Qual molécula corresponde a este espectro?",
+   "alternativas": [
+    "@est:2-butanol",
+    "@est:acido_propanoico"
+   ],
+   "correta": 1,
+   "explicacao": "O–H muito larga de 3300 a 2500 (cobre o C–H) junto com C=O em 1710: ácido carboxílico. As outras: 2-butanol mostraria O–H larga perto de 3300 e C–O em 1050–1150."
+  },
+  {
+   "id": "iv-c-031",
+   "bloco": 8,
+   "tipo": "mc",
+   "subtipo": "espectro",
+   "nivel": "medio",
+   "espectro": "anilina",
+   "enunciado": "Qual molécula corresponde a este espectro?",
+   "alternativas": [
+    "@est:anilina",
+    "@est:n-etilpiperidina",
+    "@est:dipropilamina"
+   ],
+   "correta": 0,
+   "explicacao": "Duas N–H (3430, 3355), anel aromático e C–N em 1280: amina primária aromática. As outras: N-etilpiperidina mostraria nenhuma N–H nem C=O, com C–N em 1200–1000; dipropilamina mostraria uma só N–H fraca perto de 3300."
+  },
+  {
+   "id": "iv-c-032",
+   "bloco": 7,
+   "tipo": "mc",
+   "subtipo": "espectro",
+   "nivel": "dificil",
+   "espectro": "3-pentanona",
+   "enunciado": "Qual molécula corresponde a este espectro?",
+   "alternativas": [
+    "@est:3-pentanona",
+    "@est:butanal",
+    "@est:ciclohexenona",
+    "@est:propanoato_metila",
+    "@est:acido_butanoico"
+   ],
+   "correta": 0,
+   "explicacao": "C=O forte em 1715, sem O–H e sem 2820/2720: cetona. As outras: ácido butanoico mostraria O–H larguíssima de 3300 a 2500 e C=O perto de 1710; butanal mostraria C=O perto de 1730 e o par de C–H em 2820/2720; propanoato de metila mostraria C=O perto de 1740 e C–O forte em 1300–1150; ciclo-hex-2-enona mostraria C=O perto de 1680 (conjugada)."
+  },
+  {
+   "id": "iv-c-033",
+   "bloco": 7,
+   "tipo": "mc",
+   "subtipo": "espectro",
+   "nivel": "facil",
+   "espectro": "acido_butanoico",
+   "enunciado": "Qual molécula corresponde a este espectro?",
+   "alternativas": [
+    "@est:acido_butanoico",
+    "@est:dipropilamina"
+   ],
+   "correta": 0,
+   "explicacao": "O–H muito larga (3300–2500) e C=O em 1710: ácido carboxílico. As outras: dipropilamina mostraria uma só N–H fraca perto de 3300."
+  },
+  {
+   "id": "iv-c-034",
+   "bloco": 7,
+   "tipo": "mc",
+   "subtipo": "espectro",
+   "nivel": "medio",
+   "espectro": "benzaldeido",
+   "enunciado": "Qual molécula corresponde a este espectro?",
+   "alternativas": [
+    "@est:acetofenona",
+    "@est:benzaldeido",
+    "@est:benzoato_metila"
+   ],
+   "correta": 1,
+   "explicacao": "C=O em 1700 (conjugada com o anel), C–H de aldeído (2820, 2740) e anel aromático: aldeído aromático. As outras: acetofenona mostraria C=O perto de 1680 (conjugada); benzoato de metila mostraria C=O perto de 1740 e C–O forte em 1300–1150."
+  },
+  {
+   "id": "iv-c-035",
+   "bloco": 9,
+   "tipo": "mc",
+   "subtipo": "espectro",
+   "nivel": "dificil",
+   "espectro": "dipropilamina",
+   "enunciado": "Qual molécula corresponde a este espectro?",
+   "alternativas": [
+    "@est:n-etilpropanamida",
+    "@est:dipropilamina",
+    "@est:pentanal",
+    "@est:n-etilpiperidina",
+    "@est:hexilamina"
+   ],
+   "correta": 1,
+   "explicacao": "Uma N–H fraca em 3310 e C–N em 1130: amina secundária. As outras: N-etilpiperidina mostraria nenhuma N–H nem C=O, com C–N em 1200–1000; hexilamina mostraria duas N–H entre 3400 e 3300; N-etilpropanamida mostraria uma N–H, C=O perto de 1650 e banda em ~1550; pentanal mostraria C=O perto de 1730 e o par de C–H em 2820/2720."
+  },
+  {
+   "id": "iv-c-036",
+   "bloco": 7,
+   "tipo": "mc",
+   "subtipo": "espectro",
+   "nivel": "facil",
+   "espectro": "dimetilacetamida",
+   "enunciado": "Qual molécula corresponde a este espectro?",
+   "alternativas": [
+    "@est:dimetilacetamida",
+    "@est:octano"
+   ],
+   "correta": 0,
+   "explicacao": "C=O em 1645 (amida) e nenhuma N–H: amida terciária. As outras: octano mostraria só C–H sp³, sem outras bandas fortes."
+  },
+  {
+   "id": "iv-c-037",
+   "bloco": 6,
+   "tipo": "mc",
+   "subtipo": "espectro",
+   "nivel": "dificil",
+   "espectro": "p-cresol",
+   "enunciado": "Qual molécula corresponde a este espectro?",
+   "alternativas": [
+    "@est:ciclohexenona",
+    "@est:etilbenzeno",
+    "@est:dibutil_eter",
+    "@est:1-hexanol",
+    "@est:p-cresol"
+   ],
+   "correta": 4,
+   "explicacao": "O–H larga (3260), anel aromático (1615, 1515), C–O em 1235 e 815 (para-dissubstituído): fenol. As outras: etilbenzeno mostraria C=C do anel em 1600/1500 e C–H acima de 3000; éter dibutílico mostraria C–O forte em 1050–1150 sem O–H e sem C=O; 1-hexanol mostraria O–H larga perto de 3300 e C–O em 1050–1150; ciclo-hex-2-enona mostraria C=O perto de 1680 (conjugada)."
+  },
+  {
+   "id": "iv-c-038",
+   "bloco": 9,
+   "tipo": "mc",
+   "subtipo": "espectro",
+   "nivel": "dificil",
+   "espectro": "anidrido_acetico",
+   "enunciado": "Qual molécula corresponde a este espectro?",
+   "alternativas": [
+    "@est:cloreto_butanoila",
+    "@est:butirolactona",
+    "@est:acetato_etila",
+    "@est:anidrido_acetico",
+    "@est:acido_pentanoico"
+   ],
+   "correta": 3,
+   "explicacao": "Duas C=O (1825 e 1760) e C–O forte em 1125: anidrido. As outras: acetato de etila mostraria C=O perto de 1740 e C–O forte em 1300–1150; ácido pentanoico mostraria O–H larguíssima de 3300 a 2500 e C=O perto de 1710; cloreto de butanoíla mostraria C=O muito alta, perto de 1800; γ-butirolactona mostraria C=O alta, perto de 1770."
+  },
+  {
+   "id": "iv-c-039",
+   "bloco": 5,
+   "tipo": "mc",
+   "subtipo": "espectro",
+   "nivel": "facil",
+   "espectro": "1-bromobutano",
+   "enunciado": "Qual molécula corresponde a este espectro?",
+   "alternativas": [
+    "@est:p-cresol",
+    "@est:1-bromobutano"
+   ],
+   "correta": 1,
+   "explicacao": "Só C–H sp³ e C–Br forte abaixo de 690: haleto de alquila. As outras: p-cresol mostraria O–H larga junto com bandas de anel aromático."
+  },
+  {
+   "id": "iv-c-040",
+   "bloco": 5,
+   "tipo": "mc",
+   "subtipo": "espectro",
+   "nivel": "facil",
+   "espectro": "1-clorobutano",
+   "enunciado": "Qual molécula corresponde a este espectro?",
+   "alternativas": [
+    "@est:1-clorobutano",
+    "@est:nonanal"
+   ],
+   "correta": 0,
+   "explicacao": "Só C–H sp³ e uma banda forte de C–Cl em 730–650; nenhum O–H, C=O ou N–H: haleto de alquila. As outras: nonanal mostraria C=O perto de 1730 e o par de C–H em 2820/2720."
+  },
+  {
+   "id": "iv-c-041",
+   "bloco": 7,
+   "tipo": "mc",
+   "subtipo": "espectro",
+   "nivel": "dificil",
+   "espectro": "butirolactona",
+   "enunciado": "Qual molécula corresponde a este espectro?",
+   "alternativas": [
+    "@est:anidrido_acetico",
+    "@est:butirolactona",
+    "@est:2-pentanona",
+    "@est:pentanonitrila",
+    "@est:propanoato_metila"
+   ],
+   "correta": 1,
+   "explicacao": "C=O em 1770 (éster cíclico de 5 membros, com tensão) e C–O em 1170: lactona. As outras: 2-pentanona mostraria C=O forte perto de 1715, sem O–H; anidrido acético mostraria duas C=O (perto de 1820 e 1760); propanoato de metila mostraria C=O perto de 1740 e C–O forte em 1300–1150; pentanonitrila mostraria C≡N fina perto de 2250."
+  },
+  {
+   "id": "iv-c-042",
+   "bloco": 8,
+   "tipo": "mc",
+   "subtipo": "espectro",
+   "nivel": "facil",
+   "espectro": "nitrobenzeno",
+   "enunciado": "Qual molécula corresponde a este espectro?",
+   "alternativas": [
+    "@est:nitrobenzeno",
+    "@est:cloreto_benzoila"
+   ],
+   "correta": 0,
+   "explicacao": "NO₂ em 1525 e 1350 com anel aromático: nitroareno. As outras: cloreto de benzoíla mostraria C=O muito alta, perto de 1800."
+  },
+  {
+   "id": "iv-c-043",
+   "bloco": 8,
+   "tipo": "mc",
+   "subtipo": "espectro",
+   "nivel": "medio",
+   "espectro": "hexilamina",
+   "enunciado": "Qual molécula corresponde a este espectro?",
+   "alternativas": [
+    "@est:benzonitrila",
+    "@est:dipropilamina",
+    "@est:n-etilpiperidina",
+    "@est:hexilamina"
+   ],
+   "correta": 3,
+   "explicacao": "Duas N–H (3370, 3300) e deformação N–H em 1610: amina primária. As outras: N-etilpiperidina mostraria nenhuma N–H nem C=O, com C–N em 1200–1000; dipropilamina mostraria uma só N–H fraca perto de 3300; benzonitrila mostraria C≡N fina perto de 2250."
+  },
+  {
+   "id": "iv-c-044",
+   "bloco": 7,
+   "tipo": "mc",
+   "subtipo": "espectro",
+   "nivel": "dificil",
+   "espectro": "2-pentanona",
+   "enunciado": "Qual molécula corresponde a este espectro?",
+   "alternativas": [
+    "@est:acetato_etila",
+    "@est:pentanal",
+    "@est:ciclohexenona",
+    "@est:2-pentanona",
+    "@est:acido_butanoico"
+   ],
+   "correta": 3,
+   "explicacao": "C=O forte em 1715 sem O–H e sem C–H de aldeído: cetona. As outras: ácido butanoico mostraria O–H larguíssima de 3300 a 2500 e C=O perto de 1710; pentanal mostraria C=O perto de 1730 e o par de C–H em 2820/2720; ciclo-hex-2-enona mostraria C=O perto de 1680 (conjugada); acetato de etila mostraria C=O perto de 1740 e C–O forte em 1300–1150."
+  },
+  {
+   "id": "iv-c-045",
+   "bloco": 5,
+   "tipo": "mc",
+   "subtipo": "espectro",
+   "nivel": "facil",
+   "espectro": "hexano",
+   "enunciado": "Qual molécula corresponde a este espectro?",
+   "alternativas": [
+    "@est:butanamida",
+    "@est:hexano"
+   ],
+   "correta": 1,
+   "explicacao": "Só C–H sp³ (2960–2850) e CH₂/CH₃ (1465, 1375): alcano. As outras: butanamida mostraria duas N–H e C=O perto de 1660."
+  },
+  {
+   "id": "iv-c-046",
+   "bloco": 7,
+   "tipo": "mc",
+   "subtipo": "espectro",
+   "nivel": "medio",
+   "espectro": "butanamida",
+   "enunciado": "Qual molécula corresponde a este espectro?",
+   "alternativas": [
+    "@est:n-metilacetamida",
+    "@est:butanamida",
+    "@est:acido_propanoico",
+    "@est:dmf"
+   ],
+   "correta": 1,
+   "explicacao": "Duas N–H (3350, 3185) e C=O em 1660: amida primária. As outras: ácido propanoico mostraria O–H larguíssima de 3300 a 2500 e C=O perto de 1710; N-metilacetamida mostraria uma N–H, C=O perto de 1650 e banda em ~1550; N,N-dimetilformamida mostraria C=O perto de 1650 e nenhuma N–H."
+  },
+  {
+   "id": "iv-c-047",
+   "bloco": 9,
+   "tipo": "mc",
+   "subtipo": "espectro",
+   "nivel": "dificil",
+   "espectro": "dietilamina",
+   "enunciado": "Qual molécula corresponde a este espectro?",
+   "alternativas": [
+    "@est:n-etilpropanamida",
+    "@est:dietilamina",
+    "@est:butilamina",
+    "@est:dmf",
+    "@est:2-butanona"
+   ],
+   "correta": 1,
+   "explicacao": "Uma só N–H, fraca, em 3300, e C–N em 1140, sem C=O: amina secundária. As outras: N-etilpropanamida mostraria uma N–H, C=O perto de 1650 e banda em ~1550; butilamina mostraria duas N–H entre 3400 e 3300; 2-butanona mostraria C=O forte perto de 1715, sem O–H; N,N-dimetilformamida mostraria C=O perto de 1650 e nenhuma N–H."
+  },
+  {
+   "id": "iv-c-048",
+   "bloco": 7,
+   "tipo": "mc",
+   "subtipo": "espectro",
+   "nivel": "facil",
+   "espectro": "ciclohexenona",
+   "enunciado": "Qual molécula corresponde a este espectro?",
+   "alternativas": [
+    "@est:ciclohexenona",
+    "@est:n-etilpiperidina"
+   ],
+   "correta": 0,
+   "explicacao": "C=O em 1680 (abaixo de 1715: conjugada com C=C) e C=C em 1617: cetona α,β-insaturada. As outras: N-etilpiperidina mostraria nenhuma N–H nem C=O, com C–N em 1200–1000."
+  },
+  {
+   "id": "iv-c-049",
+   "bloco": 6,
+   "tipo": "mc",
+   "subtipo": "espectro",
+   "nivel": "medio",
+   "espectro": "ciclopentanol",
+   "enunciado": "Qual molécula corresponde a este espectro?",
+   "alternativas": [
+    "@est:fenol",
+    "@est:dietil_eter",
+    "@est:ciclopentanol"
+   ],
+   "correta": 2,
+   "explicacao": "O–H larga em 3340 e C–O em 1060: álcool. As outras: fenol mostraria O–H larga junto com bandas de anel aromático; éter dietílico mostraria C–O forte em 1050–1150 sem O–H e sem C=O."
+  },
+  {
+   "id": "iv-c-050",
+   "bloco": 9,
+   "tipo": "mc",
+   "subtipo": "espectro",
+   "nivel": "dificil",
+   "espectro": "n-metilacetamida",
+   "enunciado": "Qual molécula corresponde a este espectro?",
+   "alternativas": [
+    "@est:acetato_etila",
+    "@est:dimetilacetamida",
+    "@est:1-butanol",
+    "@est:n-metilacetamida",
+    "@est:propanamida"
+   ],
+   "correta": 3,
+   "explicacao": "Uma N–H (3300), C=O em 1655 (amida I) e banda de 1560 (amida II): amida secundária. As outras: propanamida mostraria duas N–H e C=O perto de 1660; acetato de etila mostraria C=O perto de 1740 e C–O forte em 1300–1150; N,N-dimetilacetamida mostraria C=O perto de 1650 e nenhuma N–H; 1-butanol mostraria O–H larga perto de 3300 e C–O em 1050–1150."
+  },
+  {
+   "id": "iv-c-051",
+   "bloco": 7,
+   "tipo": "mc",
+   "subtipo": "espectro",
+   "nivel": "facil",
+   "espectro": "anidrido_propanoico",
+   "enunciado": "Qual molécula corresponde a este espectro?",
+   "alternativas": [
+    "@est:dipropilamina",
+    "@est:anidrido_propanoico"
+   ],
+   "correta": 1,
+   "explicacao": "Par de C=O em 1820 e 1750 e C–O em 1040: anidrido. As outras: dipropilamina mostraria uma só N–H fraca perto de 3300."
+  },
+  {
+   "id": "iv-c-052",
+   "bloco": 9,
+   "tipo": "mc",
+   "subtipo": "espectro",
+   "nivel": "dificil",
+   "espectro": "fenol",
+   "enunciado": "Qual molécula corresponde a este espectro?",
+   "alternativas": [
+    "@est:n-etilpropanamida",
+    "@est:1-hexanol",
+    "@est:anisol",
+    "@est:tolueno",
+    "@est:fenol"
+   ],
+   "correta": 4,
+   "explicacao": "O–H larga em 3250 junto com C=C aromático (1600, 1500) e C–O em 1230: fenol. As outras: tolueno mostraria C=C do anel em 1600/1500 e C–H acima de 3000; 1-hexanol mostraria O–H larga perto de 3300 e C–O em 1050–1150; anisol mostraria C–O forte em 1050–1150 sem O–H e sem C=O; N-etilpropanamida mostraria uma N–H, C=O perto de 1650 e banda em ~1550."
+  },
+  {
+   "id": "iv-c-053",
+   "bloco": 7,
+   "tipo": "mc",
+   "subtipo": "espectro",
+   "nivel": "dificil",
+   "espectro": "benzoato_metila",
+   "enunciado": "Qual molécula corresponde a este espectro?",
+   "alternativas": [
+    "@est:acido_benzoico",
+    "@est:anisol",
+    "@est:benzoato_metila",
+    "@est:cloreto_benzoila",
+    "@est:nonanal"
+   ],
+   "correta": 2,
+   "explicacao": "C=O em 1720 (éster conjugado) e C–O forte em 1280 e 1110, com anel: éster aromático. As outras: ácido benzoico mostraria O–H larguíssima de 3300 a 2500 e C=O perto de 1710; cloreto de benzoíla mostraria C=O muito alta, perto de 1800; nonanal mostraria C=O perto de 1730 e o par de C–H em 2820/2720; anisol mostraria C–O forte em 1050–1150 sem O–H e sem C=O."
+  },
+  {
+   "id": "iv-c-054",
+   "bloco": 8,
+   "tipo": "mc",
+   "subtipo": "espectro",
+   "nivel": "facil",
+   "espectro": "nitropropano",
+   "enunciado": "Qual molécula corresponde a este espectro?",
+   "alternativas": [
+    "@est:pentanal",
+    "@est:nitropropano"
+   ],
+   "correta": 1,
+   "explicacao": "Duas bandas fortes de NO₂ (1550 e 1380), sem C=O e sem N–H: nitroalcano. As outras: pentanal mostraria C=O perto de 1730 e o par de C–H em 2820/2720."
+  },
+  {
+   "id": "iv-c-055",
+   "bloco": 7,
+   "tipo": "mc",
+   "subtipo": "espectro",
+   "nivel": "medio",
+   "espectro": "propanoato_metila",
+   "enunciado": "Qual molécula corresponde a este espectro?",
+   "alternativas": [
+    "@est:2-pentanona",
+    "@est:acido_propanoico",
+    "@est:propanoato_metila",
+    "@est:butirolactona"
+   ],
+   "correta": 2,
+   "explicacao": "C=O em 1740 e C–O forte em 1200: éster. As outras: 2-pentanona mostraria C=O forte perto de 1715, sem O–H; ácido propanoico mostraria O–H larguíssima de 3300 a 2500 e C=O perto de 1710; γ-butirolactona mostraria C=O alta, perto de 1770."
+  },
+  {
+   "id": "iv-c-056",
+   "bloco": 9,
+   "tipo": "mc",
+   "subtipo": "espectro",
+   "nivel": "dificil",
+   "espectro": "octano",
+   "enunciado": "Qual molécula corresponde a este espectro?",
+   "alternativas": [
+    "@est:dibutil_eter",
+    "@est:p-cresol",
+    "@est:1-octino",
+    "@est:tolueno",
+    "@est:octano"
+   ],
+   "correta": 4,
+   "explicacao": "Só C–H sp³ (2960–2850) e deformações de CH₂/CH₃ (1465, 1375): alcano, sem nenhum grupo funcional. As outras: 1-octino mostraria ≡C–H fino em 3300 e C≡C perto de 2120; éter dibutílico mostraria C–O forte em 1050–1150 sem O–H e sem C=O; tolueno mostraria C=C do anel em 1600/1500 e C–H acima de 3000; p-cresol mostraria O–H larga junto com bandas de anel aromático."
+  },
+  {
+   "id": "iv-c-057",
+   "bloco": 7,
+   "tipo": "mc",
+   "subtipo": "espectro",
+   "nivel": "facil",
+   "espectro": "pentanal",
+   "enunciado": "Qual molécula corresponde a este espectro?",
+   "alternativas": [
+    "@est:pentanal",
+    "@est:1-hexino"
+   ],
+   "correta": 0,
+   "explicacao": "C=O em 1730 e C–H de aldeído em 2820 e 2720: aldeído. As outras: 1-hexino mostraria ≡C–H fino em 3300 e C≡C perto de 2120."
+  },
+  {
+   "id": "iv-c-058",
+   "bloco": 7,
+   "tipo": "mc",
+   "subtipo": "espectro",
+   "nivel": "medio",
+   "espectro": "n-etilpropanamida",
+   "enunciado": "Qual molécula corresponde a este espectro?",
+   "alternativas": [
+    "@est:acetato_etila",
+    "@est:n-etilpropanamida",
+    "@est:dimetilacetamida",
+    "@est:butanamida"
+   ],
+   "correta": 1,
+   "explicacao": "Uma N–H em 3290, C=O em 1645 e amida II em 1550: amida secundária. As outras: acetato de etila mostraria C=O perto de 1740 e C–O forte em 1300–1150; butanamida mostraria duas N–H e C=O perto de 1660; N,N-dimetilacetamida mostraria C=O perto de 1650 e nenhuma N–H."
+  },
+  {
+   "id": "iv-c-059",
+   "bloco": 7,
+   "tipo": "mc",
+   "subtipo": "espectro",
+   "nivel": "dificil",
+   "espectro": "ciclohexanona",
+   "enunciado": "Qual molécula corresponde a este espectro?",
+   "alternativas": [
+    "@est:acetato_butila",
+    "@est:ciclohexenona",
+    "@est:acido_pentanoico",
+    "@est:benzaldeido",
+    "@est:ciclohexanona"
+   ],
+   "correta": 4,
+   "explicacao": "C=O em 1715 (anel de 6 sem tensão), sem O–H e sem C–H de aldeído: cetona. As outras: benzaldeído mostraria C=O perto de 1730 e o par de C–H em 2820/2720; acetato de butila mostraria C=O perto de 1740 e C–O forte em 1300–1150; ciclo-hex-2-enona mostraria C=O perto de 1680 (conjugada); ácido pentanoico mostraria O–H larguíssima de 3300 a 2500 e C=O perto de 1710."
+  },
+  {
+   "id": "iv-c-060",
+   "bloco": 7,
+   "tipo": "mc",
+   "subtipo": "espectro",
+   "nivel": "facil",
+   "espectro": "acetato_etila",
+   "enunciado": "Qual molécula corresponde a este espectro?",
+   "alternativas": [
+    "@est:acetato_etila",
+    "@est:dibutil_eter"
+   ],
+   "correta": 0,
+   "explicacao": "C=O em 1740 (acima da cetona) e C–O forte em 1240 e 1050: éster. As outras: éter dibutílico mostraria C–O forte em 1050–1150 sem O–H e sem C=O."
+  },
+  {
+   "id": "iv-c-061",
+   "bloco": 7,
+   "tipo": "mc",
+   "subtipo": "espectro",
+   "nivel": "medio",
+   "espectro": "acetofenona",
+   "enunciado": "Qual molécula corresponde a este espectro?",
+   "alternativas": [
+    "@est:acido_benzoico",
+    "@est:benzaldeido",
+    "@est:acetofenona"
+   ],
+   "correta": 2,
+   "explicacao": "C=O em 1685 (conjugada com o anel) e anel aromático; sem C–H de aldeído: cetona aromática. As outras: benzaldeído mostraria C=O perto de 1730 e o par de C–H em 2820/2720; ácido benzoico mostraria O–H larguíssima de 3300 a 2500 e C=O perto de 1710."
+  },
+  {
+   "id": "iv-c-062",
+   "bloco": 9,
+   "tipo": "mc",
+   "subtipo": "espectro",
+   "nivel": "dificil",
+   "espectro": "trietilamina",
+   "enunciado": "Qual molécula corresponde a este espectro?",
+   "alternativas": [
+    "@est:trietilamina",
+    "@est:acido_pentanoico",
+    "@est:anilina",
+    "@est:dipropilamina",
+    "@est:anidrido_propanoico"
+   ],
+   "correta": 0,
+   "explicacao": "Nenhuma N–H acima de 3200, C–H sp³ (com 2800 de N–CH₂) e C–N em 1205: amina terciária. As outras: anilina mostraria duas N–H entre 3400 e 3300; dipropilamina mostraria uma só N–H fraca perto de 3300; ácido pentanoico mostraria O–H larguíssima de 3300 a 2500 e C=O perto de 1710; anidrido propanoico mostraria duas C=O (perto de 1820 e 1760)."
+  },
+  {
+   "id": "iv-c-063",
+   "bloco": 5,
+   "tipo": "mc",
+   "subtipo": "espectro",
+   "nivel": "facil",
+   "espectro": "1-hexeno",
+   "enunciado": "Qual molécula corresponde a este espectro?",
+   "alternativas": [
+    "@est:1-hexeno",
+    "@est:anilina"
+   ],
+   "correta": 0,
+   "explicacao": "=C–H acima de 3000 (3080), C=C em 1640 e =CH₂ fora do plano (990, 910): alceno terminal. As outras: anilina mostraria duas N–H entre 3400 e 3300."
+  },
+  {
+   "id": "iv-c-064",
+   "bloco": 5,
+   "tipo": "mc",
+   "subtipo": "espectro",
+   "nivel": "medio",
+   "espectro": "ciclohexeno",
+   "enunciado": "Qual molécula corresponde a este espectro?",
+   "alternativas": [
+    "@est:tolueno",
+    "@est:ciclohexeno",
+    "@est:ciclohexano",
+    "@est:1-hexino"
+   ],
+   "correta": 1,
+   "explicacao": "=C–H em 3025 (acima de 3000), C=C fraca em 1655 e C–H cis fora do plano (720): alceno. As outras: tolueno mostraria C=C do anel em 1600/1500 e C–H acima de 3000; 1-hexino mostraria ≡C–H fino em 3300 e C≡C perto de 2120; ciclo-hexano mostraria só C–H sp³, sem outras bandas fortes."
+  },
+  {
+   "id": "iv-c-065",
+   "bloco": 6,
+   "tipo": "mc",
+   "subtipo": "espectro",
+   "nivel": "dificil",
+   "espectro": "ciclohexanol",
+   "enunciado": "Qual molécula corresponde a este espectro?",
+   "alternativas": [
+    "@est:acido_benzoico",
+    "@est:anisol",
+    "@est:ciclohexanol",
+    "@est:p-cresol",
+    "@est:ciclohexanona"
+   ],
+   "correta": 2,
+   "explicacao": "O–H larga em 3340 e C–O em 1070, sem C=O: álcool (secundário, cíclico). As outras: anisol mostraria C–O forte em 1050–1150 sem O–H e sem C=O; p-cresol mostraria O–H larga junto com bandas de anel aromático; ácido benzoico mostraria O–H larguíssima de 3300 a 2500 e C=O perto de 1710; ciclo-hexanona mostraria C=O forte perto de 1715, sem O–H."
+  },
+  {
+   "id": "iv-c-066",
+   "bloco": 6,
+   "tipo": "mc",
+   "subtipo": "espectro",
+   "nivel": "facil",
+   "espectro": "dibutil_eter",
+   "enunciado": "Qual molécula corresponde a este espectro?",
+   "alternativas": [
+    "@est:butanal",
+    "@est:dibutil_eter"
+   ],
+   "correta": 1,
+   "explicacao": "Só C–H sp³ e C–O–C forte em 1120, sem O–H nem C=O: éter. As outras: butanal mostraria C=O perto de 1730 e o par de C–H em 2820/2720."
+  },
+  {
+   "id": "iv-c-067",
+   "bloco": 5,
+   "tipo": "mc",
+   "subtipo": "espectro",
+   "nivel": "medio",
+   "espectro": "tolueno",
+   "enunciado": "Qual molécula corresponde a este espectro?",
+   "alternativas": [
+    "@est:1-hexeno",
+    "@est:tolueno",
+    "@est:ciclohexano"
+   ],
+   "correta": 1,
+   "explicacao": "C–H aromático (3030), C=C do anel (1600, 1500), sobretons e 730/690 (monossubstituído): aromático. As outras: ciclo-hexano mostraria só C–H sp³, sem outras bandas fortes; 1-hexeno mostraria =C–H acima de 3000 e C=C perto de 1650."
+  },
+  {
+   "id": "iv-c-068",
+   "bloco": 9,
+   "tipo": "mc",
+   "subtipo": "espectro",
+   "nivel": "dificil",
+   "espectro": "cloreto_butanoila",
+   "enunciado": "Qual molécula corresponde a este espectro?",
+   "alternativas": [
+    "@est:anidrido_acetico",
+    "@est:cloreto_butanoila",
+    "@est:1-butanol",
+    "@est:propanoato_metila",
+    "@est:butirolactona"
+   ],
+   "correta": 1,
+   "explicacao": "C=O muito alta, em 1800, uma só, sem O–H: cloreto de acila. As outras: propanoato de metila mostraria C=O perto de 1740 e C–O forte em 1300–1150; γ-butirolactona mostraria C=O alta, perto de 1770; anidrido acético mostraria duas C=O (perto de 1820 e 1760); 1-butanol mostraria O–H larga perto de 3300 e C–O em 1050–1150."
+  },
+  {
+   "id": "iv-c-069",
+   "bloco": 5,
+   "tipo": "mc",
+   "subtipo": "espectro",
+   "nivel": "facil",
+   "espectro": "1-octino",
+   "enunciado": "Qual molécula corresponde a este espectro?",
+   "alternativas": [
+    "@est:ciclopentanol",
+    "@est:1-octino"
+   ],
+   "correta": 1,
+   "explicacao": "≡C–H fina e forte em 3300 e C≡C em 2120: alcino terminal. As outras: ciclopentanol mostraria O–H larga perto de 3300 e C–O em 1050–1150."
+  },
+  {
+   "id": "iv-c-070",
+   "bloco": 9,
+   "tipo": "mc",
+   "subtipo": "espectro",
+   "nivel": "dificil",
+   "espectro": "1-butanol",
+   "enunciado": "Qual molécula corresponde a este espectro?",
+   "alternativas": [
+    "@est:acido_propanoico",
+    "@est:thf",
+    "@est:1-butanol",
+    "@est:n-metilacetamida",
+    "@est:dimetilacetamida"
+   ],
+   "correta": 2,
+   "explicacao": "O–H larga em 3330 e C–O em 1070: álcool primário. As outras: ácido propanoico mostraria O–H larguíssima de 3300 a 2500 e C=O perto de 1710; tetra-hidrofurano mostraria C–O forte em 1050–1150 sem O–H e sem C=O; N,N-dimetilacetamida mostraria C=O perto de 1650 e nenhuma N–H; N-metilacetamida mostraria uma N–H, C=O perto de 1650 e banda em ~1550."
+  },
+  {
+   "id": "iv-c-071",
+   "bloco": 6,
+   "tipo": "mc",
+   "subtipo": "espectro",
+   "nivel": "dificil",
+   "espectro": "anisol",
+   "enunciado": "Qual molécula corresponde a este espectro?",
+   "alternativas": [
+    "@est:acetato_butila",
+    "@est:fenol",
+    "@est:anisol",
+    "@est:ciclohexanol",
+    "@est:octano"
+   ],
+   "correta": 2,
+   "explicacao": "Sem O–H e sem C=O; C–O forte em 1250 e 1040 com anel aromático: éter aromático. As outras: ciclo-hexanol mostraria O–H larga perto de 3300 e C–O em 1050–1150; acetato de butila mostraria C=O perto de 1740 e C–O forte em 1300–1150; octano mostraria só C–H sp³, sem outras bandas fortes; fenol mostraria O–H larga junto com bandas de anel aromático."
+  },
+  {
+   "id": "iv-c-072",
+   "bloco": 7,
+   "tipo": "mc",
+   "subtipo": "espectro",
+   "nivel": "facil",
+   "espectro": "metil_vinil_cetona",
+   "enunciado": "Qual molécula corresponde a este espectro?",
+   "alternativas": [
+    "@est:2-butanol",
+    "@est:metil_vinil_cetona"
+   ],
+   "correta": 1,
+   "explicacao": "C=O em 1685 e C=C em 1620: cetona conjugada com dupla. As outras: 2-butanol mostraria O–H larga perto de 3300 e C–O em 1050–1150."
+  },
+  {
+   "id": "iv-c-073",
+   "bloco": 7,
+   "tipo": "mc",
+   "subtipo": "espectro",
+   "nivel": "facil",
+   "espectro": "nonanal",
+   "enunciado": "Qual molécula corresponde a este espectro?",
+   "alternativas": [
+    "@est:nonanal",
+    "@est:tolueno"
+   ],
+   "correta": 0,
+   "explicacao": "C=O em 1730 e o dubleto de C–H de aldeído (2820, 2720): aldeído. As outras: tolueno mostraria C=C do anel em 1600/1500 e C–H acima de 3000."
+  },
+  {
+   "id": "iv-c-074",
+   "bloco": 6,
+   "tipo": "mc",
+   "subtipo": "espectro",
+   "nivel": "dificil",
+   "espectro": "dietil_eter",
+   "enunciado": "Qual molécula corresponde a este espectro?",
+   "alternativas": [
+    "@est:acetato_etila",
+    "@est:1-butanol",
+    "@est:acido_butanoico",
+    "@est:1-bromobutano",
+    "@est:dietil_eter"
+   ],
+   "correta": 4,
+   "explicacao": "Sem O–H e sem C=O; só C–H sp³ e C–O forte em 1120: éter. As outras: acetato de etila mostraria C=O perto de 1740 e C–O forte em 1300–1150; 1-butanol mostraria O–H larga perto de 3300 e C–O em 1050–1150; ácido butanoico mostraria O–H larguíssima de 3300 a 2500 e C=O perto de 1710; 1-bromobutano mostraria C–X forte abaixo de 800 e nenhum grupo oxigenado."
+  },
+  {
+   "id": "iv-c-075",
+   "bloco": 5,
+   "tipo": "mc",
+   "subtipo": "espectro",
+   "nivel": "facil",
+   "espectro": "etilbenzeno",
+   "enunciado": "Qual molécula corresponde a este espectro?",
+   "alternativas": [
+    "@est:2-pentanona",
+    "@est:etilbenzeno"
+   ],
+   "correta": 1,
+   "explicacao": "C–H aromático acima de 3000, C=C do anel em 1600/1495 e 750/695: aromático monossubstituído. As outras: 2-pentanona mostraria C=O forte perto de 1715, sem O–H."
+  },
+  {
+   "id": "iv-c-076",
+   "bloco": 7,
+   "tipo": "mc",
+   "subtipo": "espectro",
+   "nivel": "medio",
+   "espectro": "butanal",
+   "enunciado": "Qual molécula corresponde a este espectro?",
+   "alternativas": [
+    "@est:butanal",
+    "@est:2-pentanona",
+    "@est:metil_vinil_cetona"
+   ],
+   "correta": 0,
+   "explicacao": "C=O em 1730 com o par 2820/2720 (C–H de aldeído): aldeído. As outras: 2-pentanona mostraria C=O forte perto de 1715, sem O–H; 3-buten-2-ona mostraria C=O perto de 1680 (conjugada)."
+  },
+  {
+   "id": "iv-c-077",
+   "bloco": 8,
+   "tipo": "mc",
+   "subtipo": "espectro",
+   "nivel": "dificil",
+   "espectro": "butilamina",
+   "enunciado": "Qual molécula corresponde a este espectro?",
+   "alternativas": [
+    "@est:pentanal",
+    "@est:dietilamina",
+    "@est:propanamida",
+    "@est:butilamina",
+    "@est:acido_butanoico"
+   ],
+   "correta": 3,
+   "explicacao": "Duas N–H fracas (3375 e 3300) e N–H dobrada em 1600, sem C=O: amina primária. As outras: propanamida mostraria duas N–H e C=O perto de 1660; dietilamina mostraria uma só N–H fraca perto de 3300; pentanal mostraria C=O perto de 1730 e o par de C–H em 2820/2720; ácido butanoico mostraria O–H larguíssima de 3300 a 2500 e C=O perto de 1710."
+  },
+  {
+   "id": "iv-c-078",
+   "bloco": 5,
+   "tipo": "mc",
+   "subtipo": "espectro",
+   "nivel": "facil",
+   "espectro": "1-hexino",
+   "enunciado": "Qual molécula corresponde a este espectro?",
+   "alternativas": [
+    "@est:1-hexino",
+    "@est:1-hexanol"
+   ],
+   "correta": 0,
+   "explicacao": "≡C–H em 3300 (fina) e C≡C em 2120: alcino terminal. As outras: 1-hexanol mostraria O–H larga perto de 3300 e C–O em 1050–1150."
+  },
+  {
+   "id": "iv-c-079",
+   "bloco": 5,
+   "tipo": "mc",
+   "subtipo": "espectro",
+   "nivel": "medio",
+   "espectro": "ciclohexano",
+   "enunciado": "Qual molécula corresponde a este espectro?",
+   "alternativas": [
+    "@est:tolueno",
+    "@est:ciclohexano",
+    "@est:ciclohexeno",
+    "@est:1-hexino"
+   ],
+   "correta": 1,
+   "explicacao": "C–H sp³ e CH₂ em 1450, sem CH₃ (falta 1375) e sem grupo funcional: cicloalcano. As outras: ciclo-hexeno mostraria =C–H acima de 3000 e C=C perto de 1650; tolueno mostraria C=C do anel em 1600/1500 e C–H acima de 3000; 1-hexino mostraria ≡C–H fino em 3300 e C≡C perto de 2120."
+  },
+  {
+   "id": "iv-c-080",
+   "bloco": 9,
+   "tipo": "mc",
+   "subtipo": "espectro",
+   "nivel": "dificil",
+   "espectro": "thf",
+   "enunciado": "Qual molécula corresponde a este espectro?",
+   "alternativas": [
+    "@est:1-butanol",
+    "@est:n-metilacetamida",
+    "@est:dimetilacetamida",
+    "@est:acetato_etila",
+    "@est:thf"
+   ],
+   "correta": 4,
+   "explicacao": "C–O–C forte em 1070, sem O–H e sem C=O: éter (cíclico). As outras: acetato de etila mostraria C=O perto de 1740 e C–O forte em 1300–1150; 1-butanol mostraria O–H larga perto de 3300 e C–O em 1050–1150; N,N-dimetilacetamida mostraria C=O perto de 1650 e nenhuma N–H; N-metilacetamida mostraria uma N–H, C=O perto de 1650 e banda em ~1550."
+  },
+  {
+   "id": "iv-c-081",
+   "bloco": 8,
+   "tipo": "mc",
+   "subtipo": "espectro",
+   "nivel": "facil",
+   "espectro": "n-etilpiperidina",
+   "enunciado": "Qual molécula corresponde a este espectro?",
+   "alternativas": [
+    "@est:1-butanol",
+    "@est:n-etilpiperidina"
+   ],
+   "correta": 1,
+   "explicacao": "Sem N–H e sem C=O; C–H sp³ (2780 de N–CH₂) e C–N em 1155: amina terciária. As outras: 1-butanol mostraria O–H larga perto de 3300 e C–O em 1050–1150."
+  },
+  {
+   "id": "iv-c-082",
+   "bloco": 7,
+   "tipo": "mc",
+   "subtipo": "espectro",
+   "nivel": "medio",
+   "espectro": "2-butanona",
+   "enunciado": "Qual molécula corresponde a este espectro?",
+   "alternativas": [
+    "@est:metil_vinil_cetona",
+    "@est:2-butanona",
+    "@est:acido_propanoico"
+   ],
+   "correta": 1,
+   "explicacao": "C=O em 1715 e nada de O–H ou C–H de aldeído: cetona. As outras: ácido propanoico mostraria O–H larguíssima de 3300 a 2500 e C=O perto de 1710; 3-buten-2-ona mostraria C=O perto de 1680 (conjugada)."
+  },
+  {
+   "id": "iv-c-083",
+   "bloco": 7,
+   "tipo": "mc",
+   "subtipo": "espectro",
+   "nivel": "dificil",
+   "espectro": "dmf",
+   "enunciado": "Qual molécula corresponde a este espectro?",
+   "alternativas": [
+    "@est:n-metilacetamida",
+    "@est:acetato_etila",
+    "@est:dmf",
+    "@est:2-butanona",
+    "@est:butironitrila"
+   ],
+   "correta": 2,
+   "explicacao": "C=O em 1675 e sem N–H: amida terciária. As outras: 2-butanona mostraria C=O forte perto de 1715, sem O–H; acetato de etila mostraria C=O perto de 1740 e C–O forte em 1300–1150; N-metilacetamida mostraria uma N–H, C=O perto de 1650 e banda em ~1550; butironitrila mostraria C≡N fina perto de 2250."
+  },
+  {
+   "id": "iv-c-084",
+   "bloco": 6,
+   "tipo": "mc",
+   "subtipo": "espectro",
+   "nivel": "facil",
+   "espectro": "2-butanol",
+   "enunciado": "Qual molécula corresponde a este espectro?",
+   "alternativas": [
+    "@est:pentanal",
+    "@est:2-butanol"
+   ],
+   "correta": 1,
+   "explicacao": "O–H larga em 3350 e C–O em 1110: álcool secundário. As outras: pentanal mostraria C=O perto de 1730 e o par de C–H em 2820/2720."
+  },
+  {
+   "id": "iv-c-085",
+   "bloco": 8,
+   "tipo": "mc",
+   "subtipo": "espectro",
+   "nivel": "medio",
+   "espectro": "butironitrila",
+   "enunciado": "Qual molécula corresponde a este espectro?",
+   "alternativas": [
+    "@est:butironitrila",
+    "@est:dietilamina",
+    "@est:nitropropano"
+   ],
+   "correta": 0,
+   "explicacao": "C≡N fina e média em 2250, sem N–H e sem C=O: nitrila. As outras: 1-nitropropano mostraria duas bandas fortes perto de 1550 e 1380; dietilamina mostraria uma só N–H fraca perto de 3300."
+  },
+  {
+   "id": "iv-c-086",
+   "bloco": 8,
+   "tipo": "mc",
+   "subtipo": "espectro",
+   "nivel": "dificil",
+   "espectro": "pentanonitrila",
+   "enunciado": "Qual molécula corresponde a este espectro?",
+   "alternativas": [
+    "@est:n-etilpropanamida",
+    "@est:anidrido_propanoico",
+    "@est:butanamida",
+    "@est:trietilamina",
+    "@est:pentanonitrila"
+   ],
+   "correta": 4,
+   "explicacao": "C≡N em 2250: nitrila. As outras: butanamida mostraria duas N–H e C=O perto de 1660; trietilamina mostraria nenhuma N–H nem C=O, com C–N em 1200–1000; N-etilpropanamida mostraria uma N–H, C=O perto de 1650 e banda em ~1550; anidrido propanoico mostraria duas C=O (perto de 1820 e 1760)."
+  },
+  {
+   "id": "iv-c-087",
+   "bloco": 7,
+   "tipo": "mc",
+   "subtipo": "espectro",
+   "nivel": "facil",
+   "espectro": "propanamida",
+   "enunciado": "Qual molécula corresponde a este espectro?",
+   "alternativas": [
+    "@est:octano",
+    "@est:propanamida"
+   ],
+   "correta": 1,
+   "explicacao": "Duas N–H (3360, 3190) e C=O baixa em 1665 (amida I): amida primária. As outras: octano mostraria só C–H sp³, sem outras bandas fortes."
+  },
+  {
+   "id": "iv-c-088",
+   "bloco": 6,
+   "tipo": "mc",
+   "subtipo": "espectro",
+   "nivel": "medio",
+   "espectro": "1-hexanol",
+   "enunciado": "Qual molécula corresponde a este espectro?",
+   "alternativas": [
+    "@est:fenol",
+    "@est:anisol",
+    "@est:1-hexanol"
+   ],
+   "correta": 2,
+   "explicacao": "O–H larga e arredondada em 3330 (ligação de H) e C–O em 1060: álcool primário. As outras: fenol mostraria O–H larga junto com bandas de anel aromático; anisol mostraria C–O forte em 1050–1150 sem O–H e sem C=O."
+  },
+  {
+   "id": "iv-c-089",
+   "bloco": 7,
+   "tipo": "mc",
+   "subtipo": "espectro",
+   "nivel": "dificil",
+   "espectro": "acetato_butila",
+   "enunciado": "Qual molécula corresponde a este espectro?",
+   "alternativas": [
+    "@est:anidrido_propanoico",
+    "@est:3-pentanona",
+    "@est:acetato_butila",
+    "@est:nitrobenzeno",
+    "@est:acido_pentanoico"
+   ],
+   "correta": 2,
+   "explicacao": "C=O em 1740 e C–O em 1240/1040, sem O–H: éster (acetato). As outras: 3-pentanona mostraria C=O forte perto de 1715, sem O–H; ácido pentanoico mostraria O–H larguíssima de 3300 a 2500 e C=O perto de 1710; anidrido propanoico mostraria duas C=O (perto de 1820 e 1760); nitrobenzeno mostraria duas bandas fortes perto de 1550 e 1380."
+  },
+  {
+   "id": "iv-c-090",
+   "bloco": 8,
+   "tipo": "mc",
+   "subtipo": "espectro",
+   "nivel": "facil",
+   "espectro": "benzonitrila",
+   "enunciado": "Qual molécula corresponde a este espectro?",
+   "alternativas": [
+    "@est:benzonitrila",
+    "@est:cloreto_benzoila"
+   ],
+   "correta": 0,
+   "explicacao": "C≡N em 2230 (conjugada com o anel, abaixo de 2250) e anel aromático: nitrila aromática. As outras: cloreto de benzoíla mostraria C=O muito alta, perto de 1800."
+  },
+  {
+   "bloco": 1,
+   "nivel": "facil",
+   "tipo": "mc",
+   "enunciado": "O IV médio, usado para identificar grupos funcionais, vai de…",
+   "alternativas": [
+    "4000 a 400 cm⁻¹",
+    "12 800 a 4000 cm⁻¹",
+    "400 a 10 cm⁻¹",
+    "200 a 800 nm"
+   ],
+   "correta": 0,
+   "explicacao": "IV próximo 12 800–4000, médio 4000–400, distante 400–10 cm⁻¹.",
+   "id": "iv-ct-1"
+  },
+  {
+   "bloco": 1,
+   "nivel": "medio",
+   "tipo": "mc",
+   "enunciado": "Quanto vale 1715 cm⁻¹ em micrômetros?",
+   "alternativas": [
+    "5,83 µm",
+    "1,715 µm",
+    "17,15 µm",
+    "0,583 µm"
+   ],
+   "correta": 0,
+   "explicacao": "λ (µm) = 10 000 / ν̃ (cm⁻¹) = 10 000 / 1715 = 5,83 µm.",
+   "id": "iv-ct-2"
+  },
+  {
+   "bloco": 1,
+   "nivel": "facil",
+   "tipo": "mc",
+   "enunciado": "No espectro de IV (%T), uma banda de absorção aparece como…",
+   "alternativas": [
+    "Um vale (queda de %T)",
+    "Um pico para cima",
+    "Uma linha vertical",
+    "Uma faixa colorida"
+   ],
+   "correta": 0,
+   "explicacao": "T = I/I₀: onde a amostra absorve, menos luz passa e %T cai — a banda é um vale.",
+   "id": "iv-ct-3"
+  },
+  {
+   "bloco": 1,
+   "nivel": "facil",
+   "tipo": "mc",
+   "enunciado": "A radiação IV provoca na molécula uma transição…",
+   "alternativas": [
+    "Vibracional",
+    "Eletrônica",
+    "Nuclear",
+    "Só de translação"
+   ],
+   "correta": 0,
+   "explicacao": "A energia do IV (~300–4000 cm⁻¹) corresponde a níveis vibracionais; a eletrônica exige UV-vis.",
+   "id": "iv-ct-4"
+  },
+  {
+   "bloco": 2,
+   "nivel": "medio",
+   "tipo": "mc",
+   "enunciado": "Quantos modos vibracionais tem uma molécula não linear com N átomos?",
+   "alternativas": [
+    "3N − 6",
+    "3N − 5",
+    "3N",
+    "N − 1"
+   ],
+   "correta": 0,
+   "explicacao": "3N graus de liberdade menos 3 de translação e 3 de rotação (linear: 3N − 5).",
+   "id": "iv-ct-5"
+  },
+  {
+   "bloco": 2,
+   "nivel": "dificil",
+   "tipo": "mc",
+   "enunciado": "No CO₂ (linear), qual modo NÃO aparece no IV?",
+   "alternativas": [
+    "Estiramento simétrico",
+    "Estiramento assimétrico",
+    "Deformação angular",
+    "Todos aparecem"
+   ],
+   "correta": 0,
+   "explicacao": "No estiramento simétrico o dipolo continua zero; o assimétrico (2350) e a deformação (667) mudam o dipolo.",
+   "id": "iv-ct-6"
+  },
+  {
+   "bloco": 2,
+   "nivel": "facil",
+   "tipo": "mc",
+   "enunciado": "O HCl absorve no IV porque…",
+   "alternativas": [
+    "A vibração muda o dipolo",
+    "É um gás",
+    "É diatômico",
+    "Tem ligação simples"
+   ],
+   "correta": 0,
+   "explicacao": "H–Cl é polar: ao vibrar, o momento de dipolo varia — condição para absorver no IV.",
+   "id": "iv-ct-7"
+  },
+  {
+   "bloco": 2,
+   "nivel": "medio",
+   "tipo": "mc",
+   "enunciado": "Uma banda de IV é intensa quando…",
+   "alternativas": [
+    "A vibração muda muito o dipolo",
+    "A ligação é apolar",
+    "A molécula é grande",
+    "A massa é pequena"
+   ],
+   "correta": 0,
+   "explicacao": "Intensidade ∝ (dμ/dx)²: C=O e O–H (polares) dão bandas fortes; C=C simétrica, fraca.",
+   "id": "iv-ct-8"
+  },
+  {
+   "bloco": 3,
+   "nivel": "medio",
+   "tipo": "mc",
+   "enunciado": "Pela Lei de Hooke, o número de onda aumenta com…",
+   "alternativas": [
+    "k maior e massa reduzida menor",
+    "k menor",
+    "Massa reduzida maior",
+    "A temperatura"
+   ],
+   "correta": 0,
+   "explicacao": "ν̃ = (1/2πc)·√(k/μ): ligação mais forte e átomos mais leves vibram mais rápido.",
+   "id": "iv-ct-9"
+  },
+  {
+   "bloco": 3,
+   "nivel": "medio",
+   "tipo": "mc",
+   "enunciado": "Uma C=O conjugada com C=C absorve…",
+   "alternativas": [
+    "Em ν̃ menor (~1680)",
+    "Em ν̃ maior (~1750)",
+    "No mesmo lugar (1715)",
+    "Não absorve"
+   ],
+   "correta": 0,
+   "explicacao": "A ressonância dá caráter de ligação simples à C=O (k menor) → ν̃ menor.",
+   "id": "iv-ct-10"
+  },
+  {
+   "bloco": 3,
+   "nivel": "medio",
+   "tipo": "mc",
+   "enunciado": "Ordem de número de onda do C–H por hibridização:",
+   "alternativas": [
+    "sp > sp² > sp³",
+    "sp³ > sp² > sp",
+    "sp² > sp > sp³",
+    "Todas iguais"
+   ],
+   "correta": 0,
+   "explicacao": "Mais caráter s, ligação mais forte: ≡C–H ~3300 > =C–H ~3080 > C–H ~2950 cm⁻¹.",
+   "id": "iv-ct-11"
+  },
+  {
+   "bloco": 3,
+   "nivel": "dificil",
+   "tipo": "mc",
+   "enunciado": "A ciclopentanona tem C=O em…",
+   "alternativas": [
+    "~1745 (tensão do anel)",
+    "~1715",
+    "~1680",
+    "~1800"
+   ],
+   "correta": 0,
+   "explicacao": "Anéis pequenos aumentam a frequência da C=O: ciclo-hexanona 1715, ciclopentanona ~1745.",
+   "id": "iv-ct-12"
+  },
+  {
+   "bloco": 4,
+   "nivel": "facil",
+   "tipo": "mc",
+   "enunciado": "Por que não se usam janelas de vidro no IV médio?",
+   "alternativas": [
+    "O vidro absorve no IV",
+    "O vidro reflete demais",
+    "O vidro é caro",
+    "Funcionam bem"
+   ],
+   "correta": 0,
+   "explicacao": "Vidro e quartzo absorvem no IV médio; usam-se NaCl ou KBr (transparentes).",
+   "id": "iv-ct-13"
+  },
+  {
+   "bloco": 4,
+   "nivel": "facil",
+   "tipo": "mc",
+   "enunciado": "A pastilha de KBr é usada para amostras…",
+   "alternativas": [
+    "Sólidas",
+    "Gasosas",
+    "Só líquidas voláteis",
+    "Aquosas"
+   ],
+   "correta": 0,
+   "explicacao": "O sólido é moído com KBr e prensado; KBr é transparente no IV médio.",
+   "id": "iv-ct-14"
+  },
+  {
+   "bloco": 4,
+   "nivel": "medio",
+   "tipo": "mc",
+   "enunciado": "Bandas em ~2350 e em ~3700/1600 no espectro de fundo vêm de…",
+   "alternativas": [
+    "CO₂ e H₂O do ar",
+    "Da amostra",
+    "Da janela de NaCl",
+    "Do detector"
+   ],
+   "correta": 0,
+   "explicacao": "O espectro de fundo (background) registra o CO₂ e o vapor de água do caminho óptico (Pavia §2.22).",
+   "id": "iv-ct-15"
+  },
+  {
+   "bloco": 4,
+   "nivel": "medio",
+   "tipo": "mc",
+   "enunciado": "A água é um mau solvente para IV porque…",
+   "alternativas": [
+    "Absorve forte e dissolve NaCl/KBr",
+    "É apolar",
+    "Não dissolve nada",
+    "É volátil demais"
+   ],
+   "correta": 0,
+   "explicacao": "O–H da água cobre regiões importantes e ela dissolve as janelas de sal.",
+   "id": "iv-ct-16"
+  },
+  {
+   "bloco": 9,
+   "nivel": "facil",
+   "tipo": "mc",
+   "enunciado": "Por onde começar a ler um espectro desconhecido?",
+   "alternativas": [
+    "Pela região de C=O (1700) e acima de 3000",
+    "Pela impressão digital",
+    "Pela banda mais fraca",
+    "Pelo eixo de %T"
+   ],
+   "correta": 0,
+   "explicacao": "Estratégia (Lopes & Fascio): procure primeiro C=O (~1700) e O–H/N–H (3500–3200); depois o resto.",
+   "id": "iv-ct-17"
+  },
+  {
+   "bloco": 9,
+   "nivel": "medio",
+   "tipo": "mc",
+   "enunciado": "Quantas insaturações tem C₄H₈O?",
+   "alternativas": [
+    "1",
+    "0",
+    "2",
+    "4"
+   ],
+   "correta": 0,
+   "explicacao": "I = C − H/2 + N/2 + 1 = 4 − 4 + 0 + 1 = 1 (uma C=O, uma C=C ou um anel).",
+   "id": "iv-ct-18"
+  },
+  {
+   "bloco": 9,
+   "nivel": "medio",
+   "tipo": "mc",
+   "enunciado": "C=O forte em 1715, sem O–H e sem 2820/2720. A função é…",
+   "alternativas": [
+    "Cetona",
+    "Álcool",
+    "Aldeído",
+    "Ácido"
+   ],
+   "correta": 0,
+   "explicacao": "C=O em 1715 sem C–H de aldeído (2820/2720) e sem O–H: cetona.",
+   "id": "iv-ct-19"
+  },
+  {
+   "bloco": 9,
+   "nivel": "facil",
+   "tipo": "mc",
+   "enunciado": "A região de impressão digital (1500–400 cm⁻¹) serve sobretudo para…",
+   "alternativas": [
+    "Confirmar a identidade com um padrão",
+    "Achar o grupo funcional",
+    "Medir concentração",
+    "Ver O–H"
+   ],
+   "correta": 0,
+   "explicacao": "É única de cada molécula, mas difícil de interpretar: use para comparar com um espectro de referência.",
+   "id": "iv-ct-20"
+  },
+  {
+   "bloco": 9,
+   "nivel": "medio",
+   "tipo": "mc",
+   "enunciado": "Banda larguíssima de 3300 a 2500 cm⁻¹ sobre o C–H indica…",
+   "alternativas": [
+    "Ácido carboxílico",
+    "Álcool",
+    "Amina",
+    "Nitrila"
+   ],
+   "correta": 0,
+   "explicacao": "O–H de ácido forma dímeros com ligação de H muito forte: banda enorme que cobre o C–H.",
+   "id": "iv-ct-21"
+  },
+  {
+   "bloco": 9,
+   "nivel": "dificil",
+   "tipo": "mc",
+   "enunciado": "C₅H₁₀O com C=O em 1730 e dubleto 2820/2720: quantas estruturas são aldeídos possíveis?",
+   "alternativas": [
+    "4",
+    "2",
+    "3",
+    "5"
+   ],
+   "correta": 0,
+   "explicacao": "Aldeídos C₅H₁₀O: pentanal, 2-metilbutanal, 3-metilbutanal e 2,2-dimetilpropanal.",
+   "id": "iv-ct-22"
+  }
+ ]
+}

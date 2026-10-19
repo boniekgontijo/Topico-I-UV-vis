@@ -1,0 +1,422 @@
+[
+ {
+  "uso": "sala",
+  "bloco": 1,
+  "nivel": "facil",
+  "tipo": "mc",
+  "enunciado": "O número de onda (cm⁻¹) é proporcional a…",
+  "alternativas": [
+   "Energia do fóton",
+   "Comprimento de onda",
+   "Intensidade da banda",
+   "Massa da molécula"
+  ],
+  "correta": 0,
+  "explicacao": "ν̃ = 1/λ e E = hcν̃: por isso usamos cm⁻¹, que é proporcional à energia."
+ },
+ {
+  "uso": "sala",
+  "bloco": 2,
+  "nivel": "facil",
+  "tipo": "mc",
+  "enunciado": "Por que N₂ e O₂ não absorvem no IV?",
+  "alternativas": [
+   "A vibração não muda o dipolo",
+   "A ligação é fraca demais",
+   "Absorvem só no UV",
+   "Porque são gases"
+  ],
+  "correta": 0,
+  "explicacao": "Só absorve no IV a vibração que altera o momento de dipolo; N≡N e O=O são simétricas e apolares."
+ },
+ {
+  "uso": "sala",
+  "bloco": 3,
+  "nivel": "medio",
+  "tipo": "mc",
+  "enunciado": "C≡C, C=C ou C–C: qual absorve em maior número de onda?",
+  "alternativas": [
+   "C≡C",
+   "C=C",
+   "C–C",
+   "Todas no mesmo lugar"
+  ],
+  "correta": 0,
+  "explicacao": "Lei de Hooke: ligação mais forte (k maior) → ν̃ maior. C≡C ~2150, C=C ~1650, C–C ~1200 cm⁻¹."
+ },
+ {
+  "uso": "sala",
+  "bloco": 3,
+  "nivel": "medio",
+  "tipo": "mc",
+  "enunciado": "Trocar H por D (C–H → C–D) desloca a banda para…",
+  "alternativas": [
+   "Número de onda menor",
+   "Número de onda maior",
+   "O mesmo lugar",
+   "Fora do IV"
+  ],
+  "correta": 0,
+  "explicacao": "Massa reduzida maior → ν̃ menor: C–H ~3000, C–D ~2200 cm⁻¹ (Pavia, Tab. 2.2)."
+ },
+ {
+  "uso": "sala",
+  "bloco": 3,
+  "nivel": "dificil",
+  "tipo": "mc",
+  "enunciado": "A ligação de hidrogênio deixa a banda de O–H…",
+  "alternativas": [
+   "Larga e em ν̃ menor",
+   "Fina e em ν̃ maior",
+   "Igual",
+   "Ausente"
+  ],
+  "correta": 0,
+  "explicacao": "A ligação de H enfraquece O–H e cria uma distribuição de ambientes: banda larga, deslocada para ~3300 (livre: ~3600)."
+ },
+ {
+  "uso": "sala",
+  "bloco": 4,
+  "nivel": "facil",
+  "tipo": "mc",
+  "enunciado": "Uma vantagem do FT-IR sobre o dispersivo:",
+  "alternativas": [
+   "Mede todo o espectro de uma vez",
+   "Não precisa de fonte",
+   "Mede no UV",
+   "Dispensa a amostra"
+  ],
+  "correta": 0,
+  "explicacao": "O interferômetro mede todas as frequências ao mesmo tempo: mais rápido e com melhor sinal/ruído."
+ },
+ {
+  "uso": "casa",
+  "bloco": 1,
+  "nivel": "facil",
+  "tipo": "mc",
+  "enunciado": "O IV médio, usado para identificar grupos funcionais, vai de…",
+  "alternativas": [
+   "4000 a 400 cm⁻¹",
+   "12 800 a 4000 cm⁻¹",
+   "400 a 10 cm⁻¹",
+   "200 a 800 nm"
+  ],
+  "correta": 0,
+  "explicacao": "IV próximo 12 800–4000, médio 4000–400, distante 400–10 cm⁻¹."
+ },
+ {
+  "uso": "casa",
+  "bloco": 1,
+  "nivel": "medio",
+  "tipo": "mc",
+  "enunciado": "Quanto vale 1715 cm⁻¹ em micrômetros?",
+  "alternativas": [
+   "5,83 µm",
+   "1,715 µm",
+   "17,15 µm",
+   "0,583 µm"
+  ],
+  "correta": 0,
+  "explicacao": "λ (µm) = 10 000 / ν̃ (cm⁻¹) = 10 000 / 1715 = 5,83 µm."
+ },
+ {
+  "uso": "casa",
+  "bloco": 1,
+  "nivel": "facil",
+  "tipo": "mc",
+  "enunciado": "No espectro de IV (%T), uma banda de absorção aparece como…",
+  "alternativas": [
+   "Um vale (queda de %T)",
+   "Um pico para cima",
+   "Uma linha vertical",
+   "Uma faixa colorida"
+  ],
+  "correta": 0,
+  "explicacao": "T = I/I₀: onde a amostra absorve, menos luz passa e %T cai — a banda é um vale."
+ },
+ {
+  "uso": "casa",
+  "bloco": 1,
+  "nivel": "facil",
+  "tipo": "mc",
+  "enunciado": "A radiação IV provoca na molécula uma transição…",
+  "alternativas": [
+   "Vibracional",
+   "Eletrônica",
+   "Nuclear",
+   "Só de translação"
+  ],
+  "correta": 0,
+  "explicacao": "A energia do IV (~300–4000 cm⁻¹) corresponde a níveis vibracionais; a eletrônica exige UV-vis."
+ },
+ {
+  "uso": "casa",
+  "bloco": 2,
+  "nivel": "medio",
+  "tipo": "mc",
+  "enunciado": "Quantos modos vibracionais tem uma molécula não linear com N átomos?",
+  "alternativas": [
+   "3N − 6",
+   "3N − 5",
+   "3N",
+   "N − 1"
+  ],
+  "correta": 0,
+  "explicacao": "3N graus de liberdade menos 3 de translação e 3 de rotação (linear: 3N − 5)."
+ },
+ {
+  "uso": "casa",
+  "bloco": 2,
+  "nivel": "dificil",
+  "tipo": "mc",
+  "enunciado": "No CO₂ (linear), qual modo NÃO aparece no IV?",
+  "alternativas": [
+   "Estiramento simétrico",
+   "Estiramento assimétrico",
+   "Deformação angular",
+   "Todos aparecem"
+  ],
+  "correta": 0,
+  "explicacao": "No estiramento simétrico o dipolo continua zero; o assimétrico (2350) e a deformação (667) mudam o dipolo."
+ },
+ {
+  "uso": "casa",
+  "bloco": 2,
+  "nivel": "facil",
+  "tipo": "mc",
+  "enunciado": "O HCl absorve no IV porque…",
+  "alternativas": [
+   "A vibração muda o dipolo",
+   "É um gás",
+   "É diatômico",
+   "Tem ligação simples"
+  ],
+  "correta": 0,
+  "explicacao": "H–Cl é polar: ao vibrar, o momento de dipolo varia — condição para absorver no IV."
+ },
+ {
+  "uso": "casa",
+  "bloco": 2,
+  "nivel": "medio",
+  "tipo": "mc",
+  "enunciado": "Uma banda de IV é intensa quando…",
+  "alternativas": [
+   "A vibração muda muito o dipolo",
+   "A ligação é apolar",
+   "A molécula é grande",
+   "A massa é pequena"
+  ],
+  "correta": 0,
+  "explicacao": "Intensidade ∝ (dμ/dx)²: C=O e O–H (polares) dão bandas fortes; C=C simétrica, fraca."
+ },
+ {
+  "uso": "casa",
+  "bloco": 3,
+  "nivel": "medio",
+  "tipo": "mc",
+  "enunciado": "Pela Lei de Hooke, o número de onda aumenta com…",
+  "alternativas": [
+   "k maior e massa reduzida menor",
+   "k menor",
+   "Massa reduzida maior",
+   "A temperatura"
+  ],
+  "correta": 0,
+  "explicacao": "ν̃ = (1/2πc)·√(k/μ): ligação mais forte e átomos mais leves vibram mais rápido."
+ },
+ {
+  "uso": "casa",
+  "bloco": 3,
+  "nivel": "medio",
+  "tipo": "mc",
+  "enunciado": "Uma C=O conjugada com C=C absorve…",
+  "alternativas": [
+   "Em ν̃ menor (~1680)",
+   "Em ν̃ maior (~1750)",
+   "No mesmo lugar (1715)",
+   "Não absorve"
+  ],
+  "correta": 0,
+  "explicacao": "A ressonância dá caráter de ligação simples à C=O (k menor) → ν̃ menor."
+ },
+ {
+  "uso": "casa",
+  "bloco": 3,
+  "nivel": "medio",
+  "tipo": "mc",
+  "enunciado": "Ordem de número de onda do C–H por hibridização:",
+  "alternativas": [
+   "sp > sp² > sp³",
+   "sp³ > sp² > sp",
+   "sp² > sp > sp³",
+   "Todas iguais"
+  ],
+  "correta": 0,
+  "explicacao": "Mais caráter s, ligação mais forte: ≡C–H ~3300 > =C–H ~3080 > C–H ~2950 cm⁻¹."
+ },
+ {
+  "uso": "casa",
+  "bloco": 3,
+  "nivel": "dificil",
+  "tipo": "mc",
+  "enunciado": "A ciclopentanona tem C=O em…",
+  "alternativas": [
+   "~1745 (tensão do anel)",
+   "~1715",
+   "~1680",
+   "~1800"
+  ],
+  "correta": 0,
+  "explicacao": "Anéis pequenos aumentam a frequência da C=O: ciclo-hexanona 1715, ciclopentanona ~1745."
+ },
+ {
+  "uso": "casa",
+  "bloco": 4,
+  "nivel": "facil",
+  "tipo": "mc",
+  "enunciado": "Por que não se usam janelas de vidro no IV médio?",
+  "alternativas": [
+   "O vidro absorve no IV",
+   "O vidro reflete demais",
+   "O vidro é caro",
+   "Funcionam bem"
+  ],
+  "correta": 0,
+  "explicacao": "Vidro e quartzo absorvem no IV médio; usam-se NaCl ou KBr (transparentes)."
+ },
+ {
+  "uso": "casa",
+  "bloco": 4,
+  "nivel": "facil",
+  "tipo": "mc",
+  "enunciado": "A pastilha de KBr é usada para amostras…",
+  "alternativas": [
+   "Sólidas",
+   "Gasosas",
+   "Só líquidas voláteis",
+   "Aquosas"
+  ],
+  "correta": 0,
+  "explicacao": "O sólido é moído com KBr e prensado; KBr é transparente no IV médio."
+ },
+ {
+  "uso": "casa",
+  "bloco": 4,
+  "nivel": "medio",
+  "tipo": "mc",
+  "enunciado": "Bandas em ~2350 e em ~3700/1600 no espectro de fundo vêm de…",
+  "alternativas": [
+   "CO₂ e H₂O do ar",
+   "Da amostra",
+   "Da janela de NaCl",
+   "Do detector"
+  ],
+  "correta": 0,
+  "explicacao": "O espectro de fundo (background) registra o CO₂ e o vapor de água do caminho óptico (Pavia §2.22)."
+ },
+ {
+  "uso": "casa",
+  "bloco": 4,
+  "nivel": "medio",
+  "tipo": "mc",
+  "enunciado": "A água é um mau solvente para IV porque…",
+  "alternativas": [
+   "Absorve forte e dissolve NaCl/KBr",
+   "É apolar",
+   "Não dissolve nada",
+   "É volátil demais"
+  ],
+  "correta": 0,
+  "explicacao": "O–H da água cobre regiões importantes e ela dissolve as janelas de sal."
+ },
+ {
+  "uso": "casa",
+  "bloco": 9,
+  "nivel": "facil",
+  "tipo": "mc",
+  "enunciado": "Por onde começar a ler um espectro desconhecido?",
+  "alternativas": [
+   "Pela região de C=O (1700) e acima de 3000",
+   "Pela impressão digital",
+   "Pela banda mais fraca",
+   "Pelo eixo de %T"
+  ],
+  "correta": 0,
+  "explicacao": "Estratégia (Lopes & Fascio): procure primeiro C=O (~1700) e O–H/N–H (3500–3200); depois o resto."
+ },
+ {
+  "uso": "casa",
+  "bloco": 9,
+  "nivel": "medio",
+  "tipo": "mc",
+  "enunciado": "Quantas insaturações tem C₄H₈O?",
+  "alternativas": [
+   "1",
+   "0",
+   "2",
+   "4"
+  ],
+  "correta": 0,
+  "explicacao": "I = C − H/2 + N/2 + 1 = 4 − 4 + 0 + 1 = 1 (uma C=O, uma C=C ou um anel)."
+ },
+ {
+  "uso": "casa",
+  "bloco": 9,
+  "nivel": "medio",
+  "tipo": "mc",
+  "enunciado": "C=O forte em 1715, sem O–H e sem 2820/2720. A função é…",
+  "alternativas": [
+   "Cetona",
+   "Álcool",
+   "Aldeído",
+   "Ácido"
+  ],
+  "correta": 0,
+  "explicacao": "C=O em 1715 sem C–H de aldeído (2820/2720) e sem O–H: cetona."
+ },
+ {
+  "uso": "casa",
+  "bloco": 9,
+  "nivel": "facil",
+  "tipo": "mc",
+  "enunciado": "A região de impressão digital (1500–400 cm⁻¹) serve sobretudo para…",
+  "alternativas": [
+   "Confirmar a identidade com um padrão",
+   "Achar o grupo funcional",
+   "Medir concentração",
+   "Ver O–H"
+  ],
+  "correta": 0,
+  "explicacao": "É única de cada molécula, mas difícil de interpretar: use para comparar com um espectro de referência."
+ },
+ {
+  "uso": "casa",
+  "bloco": 9,
+  "nivel": "medio",
+  "tipo": "mc",
+  "enunciado": "Banda larguíssima de 3300 a 2500 cm⁻¹ sobre o C–H indica…",
+  "alternativas": [
+   "Ácido carboxílico",
+   "Álcool",
+   "Amina",
+   "Nitrila"
+  ],
+  "correta": 0,
+  "explicacao": "O–H de ácido forma dímeros com ligação de H muito forte: banda enorme que cobre o C–H."
+ },
+ {
+  "uso": "casa",
+  "bloco": 9,
+  "nivel": "dificil",
+  "tipo": "mc",
+  "enunciado": "C₅H₁₀O com C=O em 1730 e dubleto 2820/2720: quantas estruturas são aldeídos possíveis?",
+  "alternativas": [
+   "4",
+   "2",
+   "3",
+   "5"
+  ],
+  "correta": 0,
+  "explicacao": "Aldeídos C₅H₁₀O: pentanal, 2-metilbutanal, 3-metilbutanal e 2,2-dimetilpropanal."
+ }
+]
