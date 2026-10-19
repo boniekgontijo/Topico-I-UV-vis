@@ -35,7 +35,9 @@ export async function telaCompeticao(el, aluno, codigo) {
   const equipe = s0.modo === "equipe" ? ls.get(`equipe:${codigo}`) : null;
   if (s0.modo === "equipe" && !equipe) return formEquipe(el, aluno, codigo);
   // não espera: se a rede cair, o Firestore envia quando voltar
-  fb.entrarSala(codigo, equipe ? { nome: equipe.nome, matricula: aluno.matricula, membros: equipe.membros } : aluno).catch((e) => console.warn(e));
+  let erroEntrada = null;
+  fb.entrarSala(codigo, equipe ? { nome: equipe.nome, matricula: aluno.matricula, membros: equipe.membros } : aluno)
+    .catch((e) => { console.error(e); erroEntrada = e.code ?? e.message; render(); });
 
   const minhas = ls.get(`comp:${codigo}`, {}); // índice → alternativa escolhida
   let sala = null, placar = {}, tic = null;
@@ -55,6 +57,10 @@ export async function telaCompeticao(el, aluno, codigo) {
       h("p", {}, "Conexão perdida com a sala."), h("button", { class: "btn", onclick: () => telaCompeticao(el, aluno, codigo) }, "Reconectar")));
     const p = meuPlacar();
     const cab = h("div", { class: "ajuda centro" }, `Sala ${codigo}`, sala.indice >= 0 ? ` · pergunta ${sala.indice + 1} de ${sala.total}` : "", ` · ${p.pontos} pts`);
+
+    if (erroEntrada) return limpar(corpo, cab, h("div", { class: "cartao status-grande" }, h("div", { class: "grande" }, "⚠️"),
+      h("p", {}, "Não consegui registrar você na sala."), h("p", { class: "ajuda" }, `Erro: ${erroEntrada}. Mostre esta mensagem ao professor.`),
+      h("button", { class: "btn", onclick: () => telaCompeticao(el, aluno, codigo) }, "Tentar de novo")));
 
     if (sala.estado === "lobby") return limpar(corpo, cab, h("div", { class: "cartao status-grande" },
       h("div", { class: "grande" }, "✅"), h("h2", {}, equipe ? "Equipe dentro!" : "Você está dentro!"),

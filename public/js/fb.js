@@ -64,11 +64,11 @@ const salaDe = (s) => s.exists() ? { codigo: s.id, ...s.data(), abertaEmMs: msDe
 export const ouvirSala = (codigo, cb) => onSnapshot(doc(db, "salas", codigo), (s) => cb(salaDe(s)), () => cb(null));
 export async function entrarSala(codigo, { nome, matricula, membros }) {
   const u = await eu();
-  const j = { nome, matricula, entrouEm: serverTimestamp() };
+  const ref = doc(db, "salas", codigo, "jogadores", u);
+  if ((await getDoc(ref)).exists()) return; // já tinha entrado (o próprio registro pode ser lido)
+  const j = { nome: String(nome).slice(0, 80), matricula: String(matricula), entrouEm: serverTimestamp() };
   if (membros) j.membros = membros; // quiz em equipes
-  return setDoc(doc(db, "salas", codigo, "jogadores", u), j).catch((e) => {
-    if (e.code !== "permission-denied") throw e; // já tinha entrado
-  });
+  return setDoc(ref, j);
 }
 export async function responder(codigo, indice, alternativa) {
   const u = await eu();
@@ -104,10 +104,10 @@ export async function criarSala({ turma, modulo, limiteMs, total, modo = "indivi
   }
 }
 export const lerSala = async (codigo) => salaDe(await getDoc(doc(db, "salas", codigo)));
-export const ouvirJogadores = (codigo, cb) =>
-  onSnapshot(collection(db, "salas", codigo, "jogadores"), (q) => cb(q.docs.map((d) => ({ uid: d.id, ...d.data() }))));
-export const ouvirNumRespostas = (codigo, indice, cb) =>
-  onSnapshot(query(collection(db, "salas", codigo, "respostas"), where("indice", "==", indice)), (q) => cb(q.size));
+export const ouvirJogadores = (codigo, cb, aoErro = console.error) =>
+  onSnapshot(collection(db, "salas", codigo, "jogadores"), (q) => cb(q.docs.map((d) => ({ uid: d.id, ...d.data() }))), aoErro);
+export const ouvirNumRespostas = (codigo, indice, cb, aoErro = console.error) =>
+  onSnapshot(query(collection(db, "salas", codigo, "respostas"), where("indice", "==", indice)), (q) => cb(q.size), aoErro);
 
 // O prazo é contado pelo servidor (abertaEm + limiteMs), não pelo relógio do computador.
 export async function abrirPergunta(codigo, indice, pergunta) {

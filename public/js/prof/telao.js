@@ -69,13 +69,20 @@ export async function telaSala(el, codigo) {
   const area = h("div", { class: "telao" });
   limpar(el, h("p", { class: "ajuda" }, "Conectando…"));
   desligar.push(() => clearInterval(tic), () => cancelarNResp?.());
-  // espera a lista de jogadores antes de desenhar (evita nomes "?" ao retomar)
+  // espera a lista de jogadores antes de desenhar (evita nomes "?" ao retomar), mas no máximo 6 s
+  let erroJogadores = null;
   await new Promise((ok) => {
     let primeira = true;
+    const pronto = () => { if (primeira) { primeira = false; ok(); return true; } return false; };
+    setTimeout(pronto, 6000);
     desligar.push(fb.ouvirJogadores(codigo, (js) => {
-      jogadores = js;
-      if (primeira) { primeira = false; return ok(); }
+      jogadores = js; erroJogadores = null;
+      if (pronto()) return;
       if (sala.estado === "lobby") render();
+    }, (e) => {
+      console.error(e);
+      erroJogadores = `Não consegui ler a lista de alunos (${e.code ?? e.message}).`;
+      if (!pronto() && sala.estado === "lobby") render();
     }));
   });
   limpar(el, area);
@@ -146,7 +153,11 @@ export async function telaSala(el, codigo) {
   const top = (n) => ranking(Object.fromEntries(Object.entries(nomesPlacar).filter(([u]) => u))).slice(0, n);
   let nomesPlacar = {};
 
-  const render = async () => {
+  const render = () => desenhar().catch((e) => {
+    console.error(e);
+    limpar(area, h("p", { class: "aviso" }, `Erro ao desenhar a sala: ${e.message}`), h("button", { class: "btn", onclick: () => location.reload() }, "Recarregar"));
+  });
+  const desenhar = async () => {
     clearInterval(tic);
     cancelarNResp?.(); cancelarNResp = null;
     const cab = h("div", { class: "abas", style: { fontSize: "1rem" } },
@@ -165,7 +176,8 @@ export async function telaSala(el, codigo) {
           emEquipe ? h("p", { class: "ajuda" }, "Um celular por equipe: discutam e enviem uma resposta.") : null,
           h("div", { class: "nomes" }, jogadores.map((j) => h("span", {}, j.membros ? `👥 ${String(j.nome)} (${j.membros.length})` : String(j.nome)))),
           h("div", { class: "linha-acoes", style: { justifyContent: "flex-start" } },
-            h("button", { class: "btn", onclick: () => abrir(0), disabled: !jogadores.length }, `Começar (${qs.length} perguntas)`)))));
+            h("button", { class: "btn", onclick: () => abrir(0) }, `▶ Começar (${qs.length} perguntas)`)),
+          erroJogadores ? h("p", { class: "aviso" }, erroJogadores, " Recarregue a página; se continuar, me mande esta mensagem.") : null)));
     }
 
     if (sala.estado === "pergunta") {
@@ -183,7 +195,7 @@ export async function telaSala(el, codigo) {
       cancelarNResp = fb.ouvirNumRespostas(codigo, sala.indice, (n) => {
         nResp = n; contagem.textContent = `${n}/${rotJog(jogadores.length)} responderam`;
         if (jogadores.length && n >= jogadores.length) fechar();
-      });
+      }, (e) => { console.error(e); contagem.textContent = `(não consegui contar as respostas: ${e.code ?? e.message})`; });
       return limpar(area, cab, relogio, cartaoPergunta(q, false, null),
         h("div", { class: "linha-acoes" }, contagem, h("button", { class: "btn sec", onclick: fechar }, "Encerrar tempo")));
     }
