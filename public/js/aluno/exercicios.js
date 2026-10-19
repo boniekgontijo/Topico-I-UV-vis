@@ -109,7 +109,8 @@ function executar(el, aluno, cfg) {
     tentativas[q.id] = (tentativas[q.id] ?? 0) + 1;
     ls.set(tentKey, tentativas);
     if (!(q.id in prog)) { prog[q.id] = correta; gravarProg(cfg.atividade, aluno, prog); }
-    salvarResposta({ tipo: cfg.tipo, modulo: moduloAtual(), turma: aluno.turma, atividade: cfg.atividade, questaoId: q.id, bloco: q.bloco,
+    // só o IV envia "modulo": o UV-vis continua aceito pelas regras antigas enquanto as novas não forem publicadas
+    salvarResposta({ tipo: cfg.tipo, modulo: moduloAtual() === "iv" ? "iv" : undefined, turma: aluno.turma, atividade: cfg.atividade, questaoId: q.id, bloco: q.bloco,
       correta, tentativa: tentativas[q.id], equipe: cfg.equipe, membros: cfg.membros });
   };
 
