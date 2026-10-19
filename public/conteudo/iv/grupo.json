@@ -1,0 +1,109 @@
+{
+ "modulo": "iv",
+ "problemas": [
+  {
+   "n": 1,
+   "formula": "C5H10O",
+   "espectro": "3-metil-2-butanona",
+   "pista": "A cadeia é ramificada e o composto não é oxidado pelo reagente de Tollens.",
+   "candidatas": [
+    "@est:ciclopentanol",
+    "@est:3-metil-2-butanona",
+    "@est:2-metilbutanal",
+    "@est:pentanal",
+    "@est:2-pentanona",
+    "@est:3-pentanona"
+   ]
+  },
+  {
+   "n": 2,
+   "formula": "C6H12O",
+   "espectro": "hexanal",
+   "pista": "Cadeia linear, sem ramificação.",
+   "candidatas": [
+    "@est:hex-5-en-1-ol",
+    "@est:3-hexanona",
+    "@est:4-metil-2-pentanona",
+    "@est:2-hexanona",
+    "@est:ciclohexanol",
+    "@est:hexanal"
+   ]
+  },
+  {
+   "n": 3,
+   "formula": "C6H14O",
+   "espectro": "3-hexanol",
+   "pista": "A oxidação branda dá uma cetona; a cadeia não é ramificada.",
+   "candidatas": [
+    "@est:3-hexanol",
+    "@est:2-metil-2-pentanol",
+    "@est:dipropil_eter",
+    "@est:butil_etil_eter",
+    "@est:1-hexanol"
+   ]
+  },
+  {
+   "n": 4,
+   "formula": "C5H10O2",
+   "espectro": "propanoato_etila",
+   "pista": "A hidrólise produz etanol e ácido propanoico.",
+   "candidatas": [
+    "@est:butanoato_metila",
+    "@est:4-hidroxi-2-pentanona",
+    "@est:acetato_propila",
+    "@est:acido_pentanoico",
+    "@est:propanoato_etila"
+   ]
+  },
+  {
+   "n": 5,
+   "formula": "C4H8O2",
+   "espectro": "acido_isobutirico",
+   "pista": "Cadeia ramificada.",
+   "candidatas": [
+    "@est:acido_isobutirico",
+    "@est:propanoato_metila",
+    "@est:3-hidroxibutanona",
+    "@est:acido_butanoico",
+    "@est:acetato_etila",
+    "@est:dioxano"
+   ]
+  },
+  {
+   "n": 6,
+   "formula": "C5H13N",
+   "espectro": "pentilamina",
+   "pista": "O nitrogênio está na ponta de uma cadeia linear.",
+   "candidatas": [
+    "@est:dimetilpropilamina",
+    "@est:n-metilbutilamina",
+    "@est:2-pentanamina",
+    "@est:pentilamina"
+   ]
+  },
+  {
+   "n": 7,
+   "formula": "C9H8O",
+   "espectro": "cinamaldeido",
+   "pista": "Dá o aroma da canela; a C=C fica entre o anel e o grupo funcional.",
+   "candidatas": [
+    "@est:4-vinilbenzaldeido",
+    "@est:3-fenil-2-propin-1-ol",
+    "@est:indanona",
+    "@est:cinamaldeido"
+   ]
+  },
+  {
+   "n": 8,
+   "formula": "C6H11N",
+   "espectro": "hexanonitrila",
+   "pista": "Cadeia linear.",
+   "candidatas": [
+    "@est:hex-5-in-1-amina",
+    "@est:2-metilpentanonitrila",
+    "@est:4-metilpentanonitrila",
+    "@est:hexanonitrila"
+   ]
+  }
+ ]
+}

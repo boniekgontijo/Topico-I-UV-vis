@@ -132,7 +132,7 @@ export async function criarSala({ turma, modulo, limiteMs, total, porRodada = nu
     if ((await getDoc(ref)).exists()) continue;
     await setDoc(ref, { turma, modulo, modo, porRodada, estado: "lobby", indice: -1, total, limiteMs, pergunta: null,
       abertaEm: null, correta: null, criadaEm: serverTimestamp() });
-    await setDoc(doc(db, "turmas", turma), { salaAtual: codigo, atualizadoEm: serverTimestamp() });
+    await setDoc(doc(db, "turmas", turma), { salaAtual: codigo, atualizadoEm: serverTimestamp() }, { merge: true });
     return codigo;
   }
 }
@@ -204,3 +204,25 @@ export async function lerQuizzes(turma) {
       placar: Object.fromEntries(pl.docs.map((d) => [d.id, d.data()])) };
   }));
 }
+
+// ---------- atividade em grupo do IV ----------
+const codigoNovo = () => String(Math.floor(100000 + Math.random() * 900000));
+export async function criarAtividade({ turma, problemas }) {
+  for (;;) {
+    const codigo = codigoNovo(), ref = doc(db, "atividades", codigo);
+    if ((await getDoc(ref)).exists()) continue;
+    await setDoc(ref, { turma, modulo: "iv", estado: "aberta", problemas, revelados: {}, criadaEm: serverTimestamp() });
+    await setDoc(doc(db, "turmas", turma), { atividadeIV: codigo, atualizadoEm: serverTimestamp() }, { merge: true });
+    return codigo;
+  }
+}
+export const ouvirAtividade = (codigo, cb) =>
+  onSnapshot(doc(db, "atividades", codigo), (s) => cb(s.exists() ? { codigo: s.id, ...s.data() } : null), () => cb(null));
+export async function entregar(codigo, { grupo, problema, escolha, justificativa, membros }) {
+  await setDoc(doc(db, "atividades", codigo, "entregas", String(grupo)),
+    { grupo, problema, escolha, justificativa, membros, uid: await eu(), quando: serverTimestamp() });
+}
+export const ouvirEntregas = (codigo, cb, aoErro = console.error) =>
+  onSnapshot(collection(db, "atividades", codigo, "entregas"), (q) => cb(q.docs.map((d) => ({ ...d.data(), quando: msDe(d.data().quando) }))), aoErro);
+export const revelarProblema = (codigo, n, dados) => updateDoc(doc(db, "atividades", codigo), { [`revelados.${n}`]: dados });
+export const fecharAtividade = (codigo, estado = "fechada") => updateDoc(doc(db, "atividades", codigo), { estado });

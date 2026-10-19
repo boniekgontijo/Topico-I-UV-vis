@@ -8,7 +8,7 @@ let email = null;
 function abas(ativa) {
   const a = (href, txt) => h("a", { href, class: ativa === href ? "ativa" : "" }, txt);
   return h("nav", { class: "abas" }, h("span", { class: "marca" }, "UV-", h("b", {}, "vis"), " · professor"),
-    a("#comp", "🏆 Quiz"), a("#painel", "📊 Painel"), a("#perguntas", "🗂️ Perguntas"),
+    a("#comp", "🏆 Quiz"), a("#grupos-iv", "👥 Grupos IV"), a("#painel", "📊 Painel"), a("#perguntas", "🗂️ Perguntas"),
     h("span", { class: "quem" }, email ?? ""),
     h("a", { href: "#", onclick: async (e) => { e.preventDefault(); await fb.sairProfessor(); location.reload(); } }, "Sair"));
 }
@@ -41,6 +41,7 @@ function iniciarRotas() {
     // #comp, #comp/iv, #comp/slides, #comp/slides/iv
     comp: aba("#comp", async (a, ps) => (await import("./telao.js")).telaNova(a, { slides: ps.includes("slides"), modulo: ps.includes("iv") ? "iv" : "uvvis" })),
     sala: aba("#comp", async (a, [c]) => (await import("./telao.js")).telaSala(a, c)),
+    "grupos-iv": aba("#grupos-iv", async (a, [c]) => (await import("./grupos-iv.js")).telaGruposIV(a, c)),
     painel: aba("#painel", async (a) => (await import("./painel.js")).telaPainel(a)),
     perguntas: aba("#perguntas", async (a, [m]) => (await import("./banco.js")).telaBanco(a, m)),
   });

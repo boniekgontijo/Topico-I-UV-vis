@@ -199,3 +199,22 @@ test("quiz: alternativa de 0 a 4 (IV tem 5 opções); 5 é recusada", async () =
   await assertFails(setDoc(doc(aluno("q5"), "salas/111111/respostas/2_q5"), { ...resp("q5"), alternativa: 5 }));
   await assertFails(setDoc(doc(aluno("q6"), "salas/111111/respostas/2_q6"), { ...resp("q6"), alternativa: -1 }));
 });
+
+test("atividade em grupo do IV: entrega por grupo (cria/atualiza), só o professor lê; respostas ficam no banco privado", async () => {
+  await semRegras((db) => setDoc(doc(db, "atividades/777777"), { turma: "2026-2", modulo: "iv", estado: "aberta", problemas: [1, 2, 3, 4, 5, 6], revelados: {} }));
+  const e = (uid, extra = {}) => ({ grupo: 2, problema: 2, escolha: 1, justificativa: "1715 cm⁻¹ = C=O de cetona",
+    membros: [{ nome: "Ana", matricula: "123" }], uid, quando: serverTimestamp(), ...extra });
+  await assertSucceeds(getDoc(doc(aluno("g1"), "atividades/777777")));
+  await assertFails(getDocs(collection(aluno("g1"), "atividades")));
+  await assertSucceeds(setDoc(doc(aluno("g1"), "atividades/777777/entregas/2"), e("g1")));
+  await assertSucceeds(setDoc(doc(aluno("g2"), "atividades/777777/entregas/2"), e("g2", { escolha: 3 })));   // outro celular do grupo atualiza
+  await assertFails(setDoc(doc(aluno("g3"), "atividades/777777/entregas/7"), e("g3", { grupo: 7 })));
+  await assertFails(setDoc(doc(aluno("g3"), "atividades/777777/entregas/3"), e("g3", { grupo: 2 })));       // id ≠ grupo
+  await assertFails(setDoc(doc(aluno("g3"), "atividades/777777/entregas/2"), e("g3", { justificativa: "x".repeat(1501) })));
+  await assertFails(getDoc(doc(aluno("g1"), "atividades/777777/entregas/2")));
+  await assertSucceeds(getDoc(doc(prof(), "atividades/777777/entregas/2")));
+  await assertFails(getDoc(doc(aluno("g1"), "bancos/iv-grupo")));
+  await assertFails(setDoc(doc(aluno("g1"), "atividades/777777"), { estado: "fechada" }));
+  await semRegras((db) => setDoc(doc(db, "atividades/777777"), { estado: "fechada" }, { merge: true }));
+  await assertFails(setDoc(doc(aluno("g4"), "atividades/777777/entregas/4"), e("g4", { grupo: 4 })));         // fechada
+});

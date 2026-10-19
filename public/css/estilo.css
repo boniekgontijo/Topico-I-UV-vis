@@ -152,3 +152,4 @@ input[type=range] { width: 100%; min-height: 36px; padding: 0; border: 0; accent
 .modulos { display: flex; gap: 8px; margin: 4px 0 12px; }
 .modulos button { flex: 1; min-height: 48px; border-radius: 12px; border: 2px solid var(--borda); background: #fff; font: inherit; font-weight: 800; cursor: pointer; }
 .modulos button.ativo { background: var(--azul-escuro); color: #fff; border-color: var(--azul-escuro); }
+.alt.escolhida { border-color: var(--hipso); background: #E6F1FB; box-shadow: 0 0 0 3px var(--hipso); }

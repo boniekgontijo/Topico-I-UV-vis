@@ -75,6 +75,31 @@ service cloud.firestore {
       }
     }
 
+    // atividade em grupo do IV: cada grupo (1–6) envia uma entrega; só o professor lê as entregas.
+    // A resposta certa fica em bancos/iv-grupo (só professor) e vai para "revelados" quando ele revela.
+    match /atividades/{codigo} {
+      allow get: if logado();
+      allow list: if isProf();
+      allow write: if isProf();
+
+      function atividade() { return get(/databases/$(database)/documents/atividades/$(codigo)).data; }
+
+      match /entregas/{grupo} {
+        allow read: if isProf();
+        allow create, update: if logado()
+          && atividade().estado == "aberta"
+          && soCampos(["grupo", "problema", "escolha", "justificativa", "membros", "uid", "quando"])
+          && request.resource.data.grupo is int && request.resource.data.grupo >= 1 && request.resource.data.grupo <= 6
+          && grupo == string(request.resource.data.grupo)
+          && request.resource.data.problema is int && request.resource.data.escolha is int
+          && texto(request.resource.data.justificativa, 1500)
+          && membrosOk(request.resource.data.membros)
+          && request.resource.data.uid == request.auth.uid
+          && agora("quando");
+        allow delete: if isProf();
+      }
+    }
+
     // gabarito da competição: só o professor
     match /bancos/{modulo} {
       allow read, write: if isProf();

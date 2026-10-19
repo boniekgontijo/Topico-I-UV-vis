@@ -39,5 +39,6 @@ rotas({
   grupo: protegido(([id]) => (id ? telaGrupoEstacao(el, aluno, id) : telaGrupoLista(el, aluno))),
   sim: protegido(sim),
   quiz: protegido(competicao),
+  "grupo-iv": protegido(async ([c]) => (await import("./grupo-iv.js")).telaGrupoIV(el, aluno, c)),
   competicao: protegido(competicao), // endereço antigo
 });

@@ -36,6 +36,26 @@ export async function telaBanco(el, modulo = "uvvis") {
       h("p", {}, "Escolha o arquivo ", h("code", {}, `privado/${mod}-competicao.json`),
         ". Ele fica guardado no Firebase, visível só para você — o gabarito nunca vai para o site público."),
       arquivo),
-    h("div", { class: "cartao" }, h("h2", {}, "Banco atual"), resumo));
+    h("div", { class: "cartao" }, h("h2", {}, "Banco atual"), resumo),
+    mod === "iv" ? cartaoGrupo() : null);
   mostrar(atual?.questoes, atual?.sequencia);
+}
+
+// IV: respostas da atividade em grupo (privado/iv-grupo.json), lidas só pelo professor
+function cartaoGrupo() {
+  const info = h("p", { class: "ajuda" }, "Carregando…");
+  lerBancoCompleto("iv-grupo").then((b) => (info.textContent = b?.questoes?.length ? `${b.questoes.length} respostas carregadas.` : "Nenhuma resposta carregada."));
+  const arq = h("input", { type: "file", accept: ".json,application/json" });
+  arq.addEventListener("change", async () => {
+    try {
+      const j = JSON.parse(await arq.files[0].text());
+      const ok = j.modulo === "iv-grupo" && Array.isArray(j.problemas) && j.problemas.every((p) => Number.isInteger(p.n) && Number.isInteger(p.correta) && p.resolucao?.trim());
+      if (!ok) return toast("Este não é o arquivo privado/iv-grupo.json.", "erro");
+      await salvarBanco("iv-grupo", j.problemas);
+      info.textContent = `${j.problemas.length} respostas carregadas.`;
+      toast("Respostas da atividade em grupo carregadas.");
+    } catch (e) { console.error(e); toast("Não consegui ler o arquivo.", "erro"); }
+  });
+  return h("div", { class: "cartao" }, h("h2", {}, "👥 Respostas da atividade em grupo"),
+    h("p", {}, "Escolha ", h("code", {}, "privado/iv-grupo.json"), ". Fica visível só para você; os alunos veem a resposta quando você revelar."), arq, info);
 }
