@@ -2,10 +2,12 @@
 import { h, limpar, toast, carregarJSON } from "../ui/dom.js";
 import { validarBanco } from "../core/competicao.js";
 import { salvarBanco, lerBancoCompleto } from "../fb.js";
+import { MODULOS } from "../core/modulo.js";
 
-export async function telaBanco(el) {
-  const blocos = await carregarJSON("conteudo/uvvis/blocos.json");
-  const atual = await lerBancoCompleto("uvvis");
+export async function telaBanco(el, modulo = "uvvis") {
+  const mod = modulo in MODULOS ? modulo : "uvvis";
+  const blocos = await carregarJSON(MODULOS[mod].base + "blocos.json");
+  const atual = await lerBancoCompleto(mod);
   const resumo = h("div");
   const mostrar = (qs, seq) => {
     const { porBloco } = validarBanco({ questoes: qs ?? [] });
@@ -21,14 +23,17 @@ export async function telaBanco(el) {
       const json = JSON.parse(await arquivo.files[0].text());
       const v = validarBanco(json);
       if (!v.ok) return toast(`Arquivo com problemas: ${v.erros.slice(0, 3).join("; ")}`, "erro");
-      await salvarBanco("uvvis", json.questoes, json.sequencia ?? null);
+      if ((json.modulo ?? "uvvis") !== mod) return toast(`Este arquivo é do módulo ${json.modulo}; escolha o módulo certo acima.`, "erro");
+      await salvarBanco(mod, json.questoes, json.sequencia ?? null);
       toast(`${json.questoes.length} perguntas carregadas${v.nSequencia ? ` + sequência dos slides (${v.nSequencia})` : ""}.`);
       mostrar(json.questoes, json.sequencia);
     } catch (e) { console.error(e); toast("Não consegui ler o arquivo (é o JSON do quiz?)", "erro"); }
   });
-  limpar(el, h("h1", {}, "🗂️ Perguntas do quiz"),
+  limpar(el, h("div", { class: "abas" }, h("b", {}, "Módulo:"), Object.entries(MODULOS).map(([k, v]) =>
+      h("a", { href: `#perguntas/${k}`, class: k === mod ? "ativa" : "" }, v.titulo))),
+    h("h1", {}, `🗂️ Perguntas do quiz — ${MODULOS[mod].titulo}`),
     h("div", { class: "cartao" },
-      h("p", {}, "Escolha o arquivo ", h("code", {}, "privado/uvvis-competicao.json"),
+      h("p", {}, "Escolha o arquivo ", h("code", {}, `privado/${mod}-competicao.json`),
         ". Ele fica guardado no Firebase, visível só para você — o gabarito nunca vai para o site público."),
       arquivo),
     h("div", { class: "cartao" }, h("h2", {}, "Banco atual"), resumo));

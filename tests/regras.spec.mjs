@@ -192,3 +192,10 @@ test("resposta registra o módulo (uvvis ou iv); registros antigos sem módulo c
   await assertFails(setDoc(doc(aluno(), "respostas/m2"), { ...r, modulo: "rmn" }));
   await assertSucceeds(setDoc(doc(aluno(), "respostas/m3"), r));
 });
+
+test("quiz: alternativa de 0 a 4 (IV tem 5 opções); 5 é recusada", async () => {
+  await salaEmPergunta();
+  await assertSucceeds(setDoc(doc(aluno("q4"), "salas/111111/respostas/2_q4"), { ...resp("q4"), alternativa: 4 }));
+  await assertFails(setDoc(doc(aluno("q5"), "salas/111111/respostas/2_q5"), { ...resp("q5"), alternativa: 5 }));
+  await assertFails(setDoc(doc(aluno("q6"), "salas/111111/respostas/2_q6"), { ...resp("q6"), alternativa: -1 }));
+});

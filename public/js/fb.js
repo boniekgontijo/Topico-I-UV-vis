@@ -87,7 +87,13 @@ export async function entrarSala(codigo, { nome, matricula, membros, avatar }) {
   const j = { nome: String(nome).slice(0, 80), matricula: String(matricula), entrouEm: serverTimestamp() };
   if (membros) j.membros = membros; // quiz em equipes
   if (avatar) j.avatar = avatar;
-  return setDoc(ref, j);
+  try {
+    await setDoc(ref, j);
+  } catch (e) {
+    // duas telas entrando ao mesmo tempo: a segunda é recusada porque o registro já existe — então entrou
+    if (e.code === "permission-denied" && (await getDoc(ref)).exists()) return;
+    throw e;
+  }
 }
 export async function responder(codigo, indice, alternativa) {
   const u = await eu();

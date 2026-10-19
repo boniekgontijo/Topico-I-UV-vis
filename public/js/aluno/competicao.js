@@ -5,7 +5,13 @@ import { api, online } from "./dados.js";
 import { incentivo } from "../core/mensagens.js";
 import { infoRodada, AVATARES } from "../core/competicao.js";
 
-export const FORMAS = ["▲", "◆", "●", "■"];
+import { FORMAS_QUIZ as FORMAS } from "../core/competicao.js";
+import { MODULOS } from "../core/modulo.js";
+import { alternativa } from "../ui/alternativa.js";
+import { desenharEspectroIV } from "../ui/espectro-iv.js";
+import { carregarJSON } from "../ui/dom.js";
+export { FORMAS };
+const compostosIV = {}; // cache do compostos.json do IV
 let desligar = [];
 let geracao = 0; // muda a cada navegação: telas antigas param depois de um await
 const parar = () => { geracao++; desligar.forEach((f) => f()); desligar = []; };
@@ -45,6 +51,14 @@ export async function telaCompeticao(el, aluno, codigo) {
 
   const minhas = ls.get(`comp:${codigo}`, {}); // índice → alternativa escolhida
   let sala = null, placar = {}, tic = null;
+  const baseSala = () => MODULOS[sala?.modulo ?? "uvvis"]?.base ?? MODULOS.uvvis.base;
+  if (s0.modulo === "iv") compostosIV.dados ??= (await carregarJSON(MODULOS.iv.base + "compostos.json")).compostos;
+  const espectroDaPergunta = (q) => {
+    if (!q.espectro || !compostosIV.dados?.[q.espectro]) return null;
+    const d = h("div", { style: { margin: "6px 0 4px" } });
+    desenharEspectroIV(d, compostosIV.dados[q.espectro].bandas, { altura: 170 });
+    return d;
+  };
   desligar.push(() => clearInterval(tic));
   const corpo = h("div");
   limpar(el, topo(aluno, "#menu"),
@@ -100,11 +114,12 @@ export async function telaCompeticao(el, aluno, codigo) {
       };
       return limpar(corpo, cab, barra,
         h("div", { class: "cartao" }, h("p", { class: "enunciado", html: q.enunciado }),
+          espectroDaPergunta(q),
           escolhida === NEGADA ? h("p", { class: "centro" }, h("b", {}, "⏳ O tempo acabou. "), "Na próxima você responde!")
             : escolhida != null ? h("p", { class: "centro" }, h("b", {}, "Resposta enviada! "), "Aguarde o fim do tempo.") : null,
           h("div", { class: "k-alts" }, q.alternativas.map((a, k) => h("button", {
             class: `k-alt k${k} ${escolhida === k ? "escolhida" : ""}`, disabled: escolhida != null,
-            onclick: () => responder(k) }, h("span", { class: "forma", "aria-hidden": "true" }, FORMAS[k]), h("span", { html: a }))))));
+            onclick: () => responder(k) }, h("span", { class: "forma", "aria-hidden": "true" }, FORMAS[k]), alternativa(a, baseSala()))))));
     }
 
     if (sala.estado === "fechando") return limpar(corpo, cab, h("div", { class: "cartao status-grande" },
@@ -116,7 +131,7 @@ export async function telaCompeticao(el, aluno, codigo) {
       return limpar(corpo, cab, h("div", { class: "cartao status-grande", style: { background: acertou ? "#E3F7EC" : "#FFF6E0" } },
         h("div", { class: "grande" }, escolhida == null ? "⏳" : acertou ? "🎉" : "💪"),
         h("h2", {}, escolhida == null ? "O tempo voou! Na próxima você responde." : incentivo(acertou)),
-        h("p", {}, "Resposta: ", h("b", { html: `${FORMAS[sala.correta]} ${sala.pergunta.alternativas[sala.correta]}` })),
+        h("p", {}, "Resposta: ", h("b", {}, `${FORMAS[sala.correta]} `), alternativa(sala.pergunta.alternativas[sala.correta], baseSala())),
         h("p", { class: "grande", style: { fontSize: "1.6rem" } }, `${p.pontos} pts`),
         p.pos ? h("p", {}, `${equipe ? "Sua equipe está" : "Você está"} em ${p.pos}º de ${p.total}`) : null,
         ri?.fimDaRodada && !ri.ultima ? h("p", { class: "cartao", style: { background: "#FFF6E0" } },

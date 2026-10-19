@@ -6,20 +6,25 @@ import * as fb from "../fb.js";
 import { TURMA_PADRAO } from "../config.js";
 import { plural } from "../core/mensagens.js";
 
-const FORMAS = ["▲", "◆", "●", "■"];
-const IMG = "conteudo/uvvis/";
+import { FORMAS_QUIZ as FORMAS } from "../core/competicao.js";
+import { MODULOS } from "../core/modulo.js";
+import { alternativa } from "../ui/alternativa.js";
+import { desenharEspectroIV } from "../ui/espectro-iv.js";
 let desligar = [];
 const parar = () => { desligar.forEach((f) => f()); desligar = []; };
 window.addEventListener("hashchange", () => { if (!location.hash.startsWith("#sala")) parar(); });
 
 // ---------- criar ----------
-// telaNova(el, { slides: true }) = link direto professor.html#comp/slides (sequência dos slides já escolhida)
-export async function telaNova(el, { slides = false } = {}) {
+// telaNova(el, { slides: true, modulo }) = link direto professor.html#comp/slides[/iv] (sequência dos slides já escolhida)
+export async function telaNova(el, { slides = false, modulo = "uvvis" } = {}) {
   parar();
-  const [blocos, bancoDoc] = await Promise.all([carregarJSON(IMG + "blocos.json"), fb.lerBancoCompleto("uvvis")]);
+  const mod = modulo in MODULOS ? modulo : "uvvis";
+  const [blocos, bancoDoc] = await Promise.all([carregarJSON(MODULOS[mod].base + "blocos.json"), fb.lerBancoCompleto(mod)]);
   const banco = bancoDoc?.questoes, sequencia = bancoDoc?.sequencia ?? [];
-  if (!banco?.length) return limpar(el, h("div", { class: "cartao" },
-    h("h2", {}, "Carregue as perguntas primeiro"), h("p", {}, "Vá à aba Perguntas e escolha o arquivo privado/uvvis-competicao.json."),
+  const seletor = h("div", { class: "abas" }, h("b", {}, "Módulo:"), Object.entries(MODULOS).map(([k, v]) =>
+    h("a", { href: slides ? `#comp/slides/${k}` : `#comp/${k}`, class: k === mod ? "ativa" : "" }, v.titulo)));
+  if (!banco?.length) return limpar(el, seletor, h("div", { class: "cartao" },
+    h("h2", {}, "Carregue as perguntas primeiro"), h("p", {}, `Vá à aba Perguntas e escolha o arquivo privado/${mod}-competicao.json.`),
     h("a", { class: "btn", href: "#perguntas" }, "Ir para Perguntas")));
   const conta = (n) => banco.filter((q) => q.bloco === n).length;
   const caixas = blocos.map((b) => ({ n: b.n, el: h("input", { type: "checkbox", checked: true }) }));
@@ -47,12 +52,12 @@ export async function telaNova(el, { slides = false } = {}) {
     if (qs.length < n) toast(`Só há ${qs.length} perguntas nos blocos escolhidos; o quiz terá ${qs.length}.`);
     if (!/^[\w-]{1,20}$/.test(turma.value)) return toast("Turma: use letras, números e hífen.", "erro");
     const limiteMs = Number(tempo.value) * 1000;
-    const codigo = await fb.criarSala({ turma: turma.value, modulo: "uvvis", limiteMs, total: qs.length, porRodada: Number(porRodada.value), modo: modo.value });
+    const codigo = await fb.criarSala({ turma: turma.value, modulo: mod, limiteMs, total: qs.length, porRodada: Number(porRodada.value), modo: modo.value });
     await fb.salvarBanco(`sala-${codigo}`, qs); // gabarito desta sala, só o professor lê
     location.hash = `#sala/${codigo}`;
   };
   if (slides && !sequencia.length) toast("A sequência dos slides não está carregada: vá à aba Perguntas e carregue o arquivo do quiz.", "erro");
-  limpar(el, h("h1", {}, slides && sequencia.length ? "🏆 Quiz dos slides" : "🏆 Novo quiz"),
+  limpar(el, seletor, h("h1", {}, `${slides && sequencia.length ? "🏆 Quiz dos slides" : "🏆 Novo quiz"} — ${MODULOS[mod].titulo}`),
     slides && sequencia.length ? h("p", { class: "ajuda" }, `As ${sequencia.length} perguntas dos slides, na mesma ordem: confira o modo e o tempo e toque em Criar sala.`) : null,
     h("form", { class: "cartao", onsubmit: criar },
       h("h3", {}, "Blocos"),
@@ -72,6 +77,8 @@ export async function telaSala(el, codigo) {
   parar();
   const qs = await fb.lerBanco(`sala-${codigo}`);
   let sala = await fb.lerSala(codigo);
+  const IMG = MODULOS[sala?.modulo ?? "uvvis"]?.base ?? MODULOS.uvvis.base;
+  const compostos = sala?.modulo === "iv" ? (await carregarJSON(IMG + "compostos.json")).compostos : null;
   if (!sala || !qs) return limpar(el, h("p", { class: "aviso" }, `Sala ${codigo} não encontrada.`), h("a", { class: "btn", href: "#comp" }, "Novo quiz"));
   const emEquipe = sala.modo === "equipe";
   const rotJog = (n) => emEquipe ? `${n} ${n === 1 ? "equipe" : "equipes"}` : `${n} ${n === 1 ? "jogador" : "jogadores"}`;
@@ -101,7 +108,7 @@ export async function telaSala(el, codigo) {
 
   const urlAluno = () => {
     const base = location.href.split("#")[0].replace(/professor\.html.*$/, "");
-    return `${base}index.html?t=${encodeURIComponent(sala.turma)}#quiz/${codigo}`;
+    return `${base}index.html?t=${encodeURIComponent(sala.turma)}${sala.modulo === "iv" ? "&m=iv" : ""}#quiz/${codigo}`;
   };
   const qrSvg = (txt) => { const q = window.qrcode(0, "M"); q.addData(txt); q.make(); return q.createSvgTag({ cellSize: 8, margin: 2, scalable: true }); };
   const rotulo = (j) => `${j.avatar ? j.avatar + " " : ""}${String(j.nome ?? "?")}`;
@@ -154,6 +161,7 @@ export async function telaSala(el, codigo) {
 
   const cartaoPergunta = (q, revelar, dist) => h("div", {},
     h("div", { class: "enunciado-tela", html: q.enunciado }),
+    q.espectro && compostos?.[q.espectro] ? (() => { const d = h("div", { class: "espectro-tela" }); desenharEspectroIV(d, compostos[q.espectro].bandas, { altura: 200 }); return d; })() : null,
     q.figura ? h("div", { class: "centro" }, h("img", { class: "figura", src: IMG + q.figura, alt: "" })) : null,
     revelar && q.figuraResposta ? h("div", { class: "centro" }, h("img", { class: "figura", src: IMG + q.figuraResposta, alt: "" })) : null,
     dist ? h("div", { class: "barras" }, q.alternativas.map((_, k) => {
@@ -162,7 +170,7 @@ export async function telaSala(el, codigo) {
     })) : null,
     h("div", { class: "t-alts" }, q.alternativas.map((a, k) => h("div", {
       class: `t-alt k${k} ${revelar ? (k === q.correta ? "certa" : "apagada") : ""}` },
-      h("span", {}, FORMAS[k]), h("span", { html: a })))));
+      h("span", {}, FORMAS[k]), alternativa(a, IMG)))));
 
   const top = (n) => ranking(Object.fromEntries(Object.entries(nomesPlacar).filter(([u]) => u))).slice(0, n);
   let nomesPlacar = {};

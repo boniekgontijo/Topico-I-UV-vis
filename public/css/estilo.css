@@ -130,7 +130,8 @@ input[type=range] { width: 100%; min-height: 36px; padding: 0; border: 0; accent
 .k-alt:active { transform: translateY(2px); box-shadow: none; }
 .k-alt:disabled { opacity: .35; }
 .k-alt.escolhida { opacity: 1; outline: 4px solid #1B1B1F; }
-.k0 { background: var(--k0); } .k1 { background: var(--k1); } .k2 { background: var(--k2); } .k3 { background: var(--k3); }
+.k0 { background: var(--k0); } .k1 { background: var(--k1); } .k2 { background: var(--k2); } .k3 { background: var(--k3); } .k4 { background: #7B2FBE; }
+.k-alts > :nth-child(5):last-child, .t-alts > :nth-child(5):last-child { grid-column: 1 / -1; } /* 5ª opção ocupa a linha */
 .status-grande { text-align: center; padding: 28px 12px; }
 .status-grande .grande { font-size: 3.2rem; }
 .barra-tempo { height: 10px; background: #E4E7F0; border-radius: 99px; overflow: hidden; }

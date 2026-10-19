@@ -17,7 +17,7 @@
 .nomes { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
 .nomes span { background: #fff; border: 2px solid var(--borda); border-radius: 99px; padding: 6px 14px; font-weight: 700; font-size: 1.1rem; }
 .relogio { font-size: 4rem; font-weight: 900; color: var(--bato); text-align: center; font-variant-numeric: tabular-nums; }
-.barras { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; align-items: end; height: 220px; margin: 16px 0; }
+.barras { display: grid; grid-template-columns: repeat(auto-fit, minmax(0, 1fr)); gap: 16px; align-items: end; height: 220px; margin: 16px 0; }
 .barras div { border-radius: 10px 10px 0 0; color: #fff; font-weight: 900; text-align: center; padding-top: 6px; min-height: 36px; font-size: 1.4rem; }
 .ranking { list-style: none; padding: 0; margin: 0; font-size: 1.4rem; }
 .ranking li { display: flex; justify-content: space-between; padding: 10px 16px; background: #fff; border-radius: 10px; margin: 6px 0; box-shadow: var(--sombra); }
@@ -48,3 +48,5 @@ table.tab { width: 100%; border-collapse: collapse; background: #fff; border-rad
   .p1 { height: 170px; } .p2 { height: 130px; } .p3 { height: 100px; }
   .linha-acoes .btn { flex: 1 1 100%; min-height: 56px; font-size: 1.1rem; }
 }
+.espectro-tela { max-width: 900px; margin: 0 auto 14px; }
+.t-alt .estrutura { max-height: 120px; background: #fff; border-radius: 10px; padding: 4px; }

@@ -1,7 +1,7 @@
 // Preparação da competição ao vivo (puro: sem DOM nem Firebase).
 import { embaralharQuestao } from "./embaralhar.js";
 
-const mcValida = (x) => x?.tipo === "mc" && Array.isArray(x.alternativas) && x.alternativas.length >= 2 && x.alternativas.length <= 4
+const mcValida = (x) => x?.tipo === "mc" && Array.isArray(x.alternativas) && x.alternativas.length >= 2 && x.alternativas.length <= 5
   && Number.isInteger(x.correta) && x.correta >= 0 && x.correta < x.alternativas.length && !!x.enunciado && Number.isInteger(x.bloco);
 
 // "sequencia" (opcional): perguntas já sorteadas, na ordem e com as alternativas na posição dos slides
@@ -29,9 +29,16 @@ export function prepararCompeticao(questoes, { blocos, n, rnd = Math.random }) {
 }
 
 // O que vai para o documento da sala (os alunos leem): sem gabarito
-export function perguntaPublica({ enunciado, alternativas, figura, bloco }) {
-  return figura ? { enunciado, alternativas, figura, bloco } : { enunciado, alternativas, bloco };
+export function perguntaPublica({ enunciado, alternativas, figura, bloco, espectro }) {
+  const p = { enunciado, alternativas, bloco };
+  if (figura) p.figura = figura;
+  if (espectro) p.espectro = espectro; // IV: id do composto cujo espectro é mostrado
+  return p;
 }
+
+// formas e cores das alternativas (iguais no celular, no telão e nos slides); a 5ª é do IV
+export const FORMAS_QUIZ = ["▲", "◆", "●", "■", "★"];
+export const CORES_QUIZ = ["#E21B3C", "#1368CE", "#D89E00", "#26890C", "#7B2FBE"];
 
 // Fechamento da rodada em duas etapas ("pergunta" → "fechando" → "revelada"):
 // impede pontuar duas vezes (duas abas, clique repetido, falha de rede no meio).

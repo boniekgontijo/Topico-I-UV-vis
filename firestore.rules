@@ -106,6 +106,7 @@ service cloud.firestore {
           && soCampos(["uid", "indice", "alternativa", "quando"])
           && request.resource.data.uid == request.auth.uid
           && request.resource.data.alternativa is int
+          && request.resource.data.alternativa >= 0 && request.resource.data.alternativa <= 4
           && sala().estado == "pergunta"
           && request.resource.data.indice == sala().indice
           // prazo pelo relógio do servidor: abertura + tempo da pergunta + 1,5 s de tolerância
