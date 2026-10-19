@@ -16,13 +16,21 @@ export async function telaCompeticao(el, aluno, codigo) {
     h("p", {}, "Sem conexão com o servidor. Verifique a internet e recarregue a página."),
     h("button", { class: "btn", onclick: () => location.reload() }, "Recarregar")));
   const fb = api();
-  try { await fb.entrarSala(codigo, aluno); } catch (e) { console.warn(e); }
+  const s0 = await fb.lerSala(codigo).catch(() => null);
+  if (s0?.modo === "equipe") {
+    const eq = ls.get(`equipe:${codigo}`);
+    if (!eq) return formEquipe(el, aluno, codigo);
+    try { await fb.entrarSala(codigo, { nome: eq.nome, matricula: aluno.matricula, membros: eq.membros }); } catch (e) { console.warn(e); }
+  } else {
+    try { await fb.entrarSala(codigo, aluno); } catch (e) { console.warn(e); }
+  }
+  const equipe = s0?.modo === "equipe" ? ls.get(`equipe:${codigo}`) : null;
 
   const minhas = ls.get(`comp:${codigo}`, {}); // índice → alternativa escolhida
   let sala = null, placar = {}, tic = null;
   desligar.push(() => clearInterval(tic));
   const corpo = h("div");
-  limpar(el, topo(aluno, "#menu"), corpo);
+  limpar(el, topo(aluno, "#menu"), equipe ? h("p", { class: "ajuda centro" }, `👥 Equipe ${equipe.nome} · ${equipe.membros.map((m) => m.nome.split(" ")[0]).join(", ")}`) : null, corpo);
 
   const meuPlacar = () => {
     const lista = Object.entries(placar).sort((a, b) => b[1].pontos - a[1].pontos || a[1].somaDtAcertos - b[1].somaDtAcertos);
@@ -38,7 +46,8 @@ export async function telaCompeticao(el, aluno, codigo) {
     const cab = h("div", { class: "ajuda centro" }, `Sala ${codigo}`, sala.indice >= 0 ? ` · pergunta ${sala.indice + 1} de ${sala.total}` : "", ` · ${p.pontos} pts`);
 
     if (sala.estado === "lobby") return limpar(corpo, cab, h("div", { class: "cartao status-grande" },
-      h("div", { class: "grande" }, "✅"), h("h2", {}, "Você está dentro!"), h("p", {}, `${aluno.nome}, aguarde o professor começar.`),
+      h("div", { class: "grande" }, "✅"), h("h2", {}, equipe ? "Equipe dentro!" : "Você está dentro!"),
+      h("p", {}, equipe ? `${equipe.nome}: discutam juntos e enviem UMA resposta por pergunta.` : `${aluno.nome}, aguarde o professor começar.`),
       h("p", { class: "ajuda" }, "Olhe para o telão: a pergunta aparece lá e aqui.")));
 
     if (sala.estado === "pergunta") {
@@ -78,18 +87,53 @@ export async function telaCompeticao(el, aluno, codigo) {
         h("h2", {}, escolhida == null ? "O tempo voou! Na próxima você responde." : incentivo(acertou)),
         h("p", {}, "Resposta: ", h("b", { html: `${FORMAS[sala.correta]} ${sala.pergunta.alternativas[sala.correta]}` })),
         h("p", { class: "grande", style: { fontSize: "1.6rem" } }, `${p.pontos} pts`),
-        p.pos ? h("p", {}, `Você está em ${p.pos}º de ${p.total}`) : null));
+        p.pos ? h("p", {}, `${equipe ? "Sua equipe está" : "Você está"} em ${p.pos}º de ${p.total}`) : null));
     }
 
     if (sala.estado === "fim") return limpar(corpo, cab, h("div", { class: "cartao status-grande" },
       h("div", { class: "grande" }, p.pos === 1 ? "🥇" : p.pos === 2 ? "🥈" : p.pos === 3 ? "🥉" : "🏁"),
       h("h2", {}, "Fim de jogo!"), h("p", { class: "grande", style: { fontSize: "1.6rem" } }, `${p.pontos} pts`),
       p.pos ? h("p", {}, `Posição final: ${p.pos}º de ${p.total}`) : null,
-      p.pos && p.pos <= 3 ? h("p", {}, "🍫 Vá buscar seu prêmio com o professor!") : null));
+      p.pos && p.pos <= 3 ? h("p", {}, equipe ? "🍫 Venham buscar o prêmio com o professor!" : "🍫 Vá buscar seu prêmio com o professor!") : null));
   };
 
   desligar.push(fb.ouvirSala(codigo, (s) => { sala = s; render(); }));
   desligar.push(fb.ouvirPlacar(codigo, (pl) => { placar = pl; if (sala?.estado !== "pergunta") render(); }));
+}
+
+function formEquipe(el, aluno, codigo) {
+  const salvo = ls.get("equipe", { nome: "", membros: [] });
+  const nome = h("input", { maxlength: 40, value: salvo.nome, placeholder: "Ex.: Os Batocrômicos", "aria-label": "Nome da equipe" });
+  const linhas = [0, 1, 2, 3].map((i) => {
+    const m = salvo.membros?.[i] ?? {};
+    return { nome: h("input", { placeholder: `Colega ${i + 1} — nome`, maxlength: 80, value: m.nome ?? "" }),
+             mat: h("input", { placeholder: "matrícula", inputmode: "numeric", maxlength: 12, value: m.matricula ?? "" }) };
+  });
+  const erro = h("p", { class: "ajuda", style: { color: "var(--erro)" } });
+  const entrar = (e) => {
+    e.preventDefault();
+    const n = nome.value.trim();
+    if (!n) return (erro.textContent = "Dê um nome para a equipe.");
+    const colegas = [];
+    for (const l of linhas) {
+      const nn = l.nome.value.trim(), mm = l.mat.value.replace(/\D/g, "");
+      if (!nn && !mm) continue;
+      if (!nn || !/^\d{6,12}$/.test(mm)) return (erro.textContent = "Cada colega precisa de nome e matrícula (6 a 12 dígitos).");
+      colegas.push({ nome: nn, matricula: mm });
+    }
+    const eq = { nome: n, membros: [{ nome: aluno.nome, matricula: aluno.matricula }, ...colegas] };
+    ls.set(`equipe:${codigo}`, eq);
+    ls.set("equipe", { nome: n, membros: colegas });
+    telaCompeticao(el, aluno, codigo);
+  };
+  limpar(el, topo(aluno, "#menu"), h("h1", {}, "👥 Quiz em equipes"),
+    h("form", { class: "cartao", onsubmit: entrar },
+      h("p", {}, "Um celular por equipe. Pensem juntos e enviem a resposta!"),
+      h("label", {}, "Nome da equipe"), nome,
+      h("label", {}, "Integrantes (você já está incluído)"),
+      h("p", { class: "ajuda" }, `1. ${aluno.nome} (${aluno.matricula})`),
+      linhas.map((l) => h("div", { class: "linha-num", style: { margin: "6px 0" } }, l.nome, l.mat)),
+      erro, h("button", { class: "btn largo", type: "submit" }, "Entrar com a equipe")));
 }
 
 function pedirCodigo(el, aluno) {

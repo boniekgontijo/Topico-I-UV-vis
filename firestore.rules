@@ -63,8 +63,11 @@ service cloud.firestore {
 
       match /jogadores/{uid} {
         allow read: if logado();
+        // no quiz em equipes, "nome" é o nome da equipe e "membros" lista os integrantes
         allow create: if logado() && uid == request.auth.uid
-          && soCampos(["nome", "matricula", "entrouEm"])
+          && soCampos(["nome", "matricula", "membros", "entrouEm"])
+          && (!("membros" in request.resource.data)
+              || (request.resource.data.membros is list && request.resource.data.membros.size() <= 6))
           && agora("entrouEm");
         allow write: if isProf();
       }

@@ -60,9 +60,11 @@ const msDe = (t) => (t?.toMillis ? t.toMillis() : null);
 const salaDe = (s) => s.exists() ? { codigo: s.id, ...s.data(), abertaEmMs: msDe(s.data().abertaEm), fechaEmMs: msDe(s.data().fechaEm) } : null;
 
 export const ouvirSala = (codigo, cb) => onSnapshot(doc(db, "salas", codigo), (s) => cb(salaDe(s)), () => cb(null));
-export async function entrarSala(codigo, { nome, matricula }) {
+export async function entrarSala(codigo, { nome, matricula, membros }) {
   const u = await eu();
-  return setDoc(doc(db, "salas", codigo, "jogadores", u), { nome, matricula, entrouEm: serverTimestamp() }).catch((e) => {
+  const j = { nome, matricula, entrouEm: serverTimestamp() };
+  if (membros) j.membros = membros; // quiz em equipes
+  return setDoc(doc(db, "salas", codigo, "jogadores", u), j).catch((e) => {
     if (e.code !== "permission-denied") throw e; // já tinha entrado
   });
 }
@@ -89,12 +91,12 @@ export async function entrarProfessor() {
   return { email: u.email };
 }
 
-export async function criarSala({ turma, modulo, limiteMs, total }) {
+export async function criarSala({ turma, modulo, limiteMs, total, modo = "individual" }) {
   for (;;) {
     const codigo = String(Math.floor(100000 + Math.random() * 900000));
     const ref = doc(db, "salas", codigo);
     if ((await getDoc(ref)).exists()) continue;
-    await setDoc(ref, { turma, modulo, estado: "lobby", indice: -1, total, limiteMs, pergunta: null,
+    await setDoc(ref, { turma, modulo, modo, estado: "lobby", indice: -1, total, limiteMs, pergunta: null,
       abertaEm: null, fechaEm: null, correta: null, criadaEm: serverTimestamp() });
     return codigo;
   }

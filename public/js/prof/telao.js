@@ -22,7 +22,15 @@ export async function telaNova(el) {
   const conta = (n) => banco.filter((q) => q.bloco === n).length;
   const caixas = blocos.map((b) => ({ n: b.n, el: h("input", { type: "checkbox", checked: true }) }));
   const nPerg = h("input", { type: "number", min: 1, max: banco.length, value: Math.min(10, banco.length) });
-  const tempo = h("select", {}, [10, 20, 30].map((s) => h("option", { value: s, selected: s === 20 }, `${s} s`)));
+  const tempo = h("select", {});
+  const modo = h("select", {}, h("option", { value: "individual" }, "Individual (cada um no seu celular)"), h("option", { value: "equipe" }, "Em equipes (um celular por equipe)"));
+  const opcoesTempo = () => {
+    const ops = modo.value === "equipe" ? [45, 60, 90] : [10, 20, 30];
+    const padrao = modo.value === "equipe" ? 60 : 20;
+    tempo.replaceChildren(...ops.map((s) => h("option", { value: s, selected: s === padrao }, `${s} s`)));
+  };
+  modo.addEventListener("change", opcoesTempo);
+  opcoesTempo();
   const turma = h("input", { value: TURMA_PADRAO, maxlength: 20 });
   const criar = async (e) => {
     e.preventDefault();
@@ -31,7 +39,7 @@ export async function telaNova(el) {
     const qs = prepararCompeticao(banco, { blocos: sel, n: Number(nPerg.value) || 10 });
     if (!/^[\w-]{1,20}$/.test(turma.value)) return toast("Turma: use letras, números e hífen.", "erro");
     const limiteMs = Number(tempo.value) * 1000;
-    const codigo = await fb.criarSala({ turma: turma.value, modulo: "uvvis", limiteMs, total: qs.length });
+    const codigo = await fb.criarSala({ turma: turma.value, modulo: "uvvis", limiteMs, total: qs.length, modo: modo.value });
     await fb.salvarBanco(`sala-${codigo}`, qs); // gabarito desta sala, só o professor lê
     location.hash = `#sala/${codigo}`;
   };
@@ -39,6 +47,7 @@ export async function telaNova(el) {
     h("form", { class: "cartao", onsubmit: criar },
       h("h3", {}, "Blocos"),
       h("div", { class: "blocos-sel" }, blocos.map((b, i) => h("label", {}, caixas[i].el, `${b.n}. ${b.titulo} (${conta(b.n)})`))),
+      h("label", {}, "Modo"), modo,
       h("div", { class: "grade", style: { gridTemplateColumns: "repeat(3, 1fr)" } },
         h("div", {}, h("label", {}, "Nº de perguntas"), nPerg),
         h("div", {}, h("label", {}, "Tempo por pergunta"), tempo),
@@ -52,6 +61,8 @@ export async function telaSala(el, codigo) {
   const qs = await fb.lerBanco(`sala-${codigo}`);
   let sala = await fb.lerSala(codigo);
   if (!sala || !qs) return limpar(el, h("p", { class: "aviso" }, `Sala ${codigo} não encontrada.`), h("a", { class: "btn", href: "#comp" }, "Novo quiz"));
+  const emEquipe = sala.modo === "equipe";
+  const rotJog = (n) => emEquipe ? `${n} ${n === 1 ? "equipe" : "equipes"}` : `${n} ${n === 1 ? "jogador" : "jogadores"}`;
   let jogadores = [], nResp = 0, fechando = false, tic = null, cancelarNResp = null;
   const area = h("div", { class: "telao" });
   limpar(el, area);
@@ -114,7 +125,8 @@ export async function telaSala(el, codigo) {
     const cab = h("div", { class: "abas", style: { fontSize: "1rem" } },
       h("b", {}, `Sala ${codigo}`), h("span", {}, `turma ${sala.turma}`),
       sala.indice >= 0 ? h("span", {}, `pergunta ${sala.indice + 1}/${qs.length}`) : null,
-      h("span", { class: "quem" }, `${jogadores.length} jogadores`));
+      emEquipe ? h("span", {}, "👥 em equipes") : null,
+      h("span", { class: "quem" }, rotJog(jogadores.length)));
 
     if (sala.estado === "lobby") {
       return limpar(area, cab, h("div", { class: "lobby" },
@@ -123,7 +135,8 @@ export async function telaSala(el, codigo) {
           h("p", {}, "Leia o QR code ou entre no site e digite o código:"),
           h("div", { class: "codigo-grande" }, codigo),
           h("p", { class: "ajuda", style: { fontSize: ".9rem", wordBreak: "break-all" } }, urlAluno()),
-          h("div", { class: "nomes" }, jogadores.map((j) => h("span", {}, j.nome))),
+          emEquipe ? h("p", { class: "ajuda" }, "Um celular por equipe: discutam e enviem uma resposta.") : null,
+          h("div", { class: "nomes" }, jogadores.map((j) => h("span", {}, j.membros ? `👥 ${j.nome} (${j.membros.length})` : j.nome))),
           h("div", { class: "linha-acoes", style: { justifyContent: "flex-start" } },
             h("button", { class: "btn", onclick: () => abrir(0), disabled: !jogadores.length }, `Começar (${qs.length} perguntas)`)))));
     }
@@ -141,7 +154,7 @@ export async function telaSala(el, codigo) {
       tick();
       tic = setInterval(tick, 250);
       cancelarNResp = fb.ouvirNumRespostas(codigo, sala.indice, (n) => {
-        nResp = n; contagem.textContent = `${n}/${jogadores.length} responderam`;
+        nResp = n; contagem.textContent = `${n}/${rotJog(jogadores.length)} responderam`;
         if (jogadores.length && n >= jogadores.length) fechar();
       });
       return limpar(area, cab, relogio, cartaoPergunta(q, false, null),
@@ -164,7 +177,9 @@ export async function telaSala(el, codigo) {
     if (sala.estado === "fim") {
       nomesPlacar = await fb.lerPlacar(codigo);
       const r = top(1000);
-      const deg = (p, cls, med) => p ? h("div", {}, h("div", { class: "nome" }, `${med} ${p.nome}`), h("div", { class: `deg ${cls}` }, `${p.pontos} pts`, h("br"), plural(p.acertos, "acerto", "acertos"))) : h("div");
+      const membrosDe = (uid) => jogadores.find((j) => j.uid === uid)?.membros?.map((m) => m.nome.split(" ")[0]).join(", ");
+      const deg = (p, cls, med) => p ? h("div", {}, h("div", { class: "nome" }, `${med} ${p.nome}`),
+        membrosDe(p.uid) ? h("div", { class: "ajuda", style: { fontSize: "1rem" } }, membrosDe(p.uid)) : null, h("div", { class: `deg ${cls}` }, `${p.pontos} pts`, h("br"), plural(p.acertos, "acerto", "acertos"))) : h("div");
       const lista = h("ol", { class: "ranking oculto" }, r.map((p) => h("li", {}, h("span", {}, `${p.posicao}º ${p.nome}`), h("b", {}, `${p.pontos} · ${p.acertos} ✓`))));
       return limpar(area, cab, h("h1", { class: "centro" }, "🏆 Pódio — hora do chocolate! 🍫"),
         h("div", { class: "podio" }, deg(r[1], "p2", "🥈"), deg(r[0], "p1", "🥇"), deg(r[2], "p3", "🥉")),

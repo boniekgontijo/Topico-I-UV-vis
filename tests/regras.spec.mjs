@@ -118,3 +118,13 @@ test("conta Google sem e-mail verificado não é professor", async () => {
   const db = env.authenticatedContext("y", { email: "boniek@ufg.br", email_verified: false }).firestore();
   await assertFails(getDoc(doc(db, "bancos/uvvis")));
 });
+
+test("quiz em equipes: o celular da equipe entra com nome da equipe e integrantes", async () => {
+  await salaEmPergunta();
+  const membros = [{ nome: "Ana", matricula: "123" }, { nome: "Bia", matricula: "456" }];
+  await assertSucceeds(setDoc(doc(aluno("e1"), "salas/111111/jogadores/e1"),
+    { nome: "Os Batocrômicos", matricula: "123", membros, entrouEm: serverTimestamp() }));
+  const muitos = Array.from({ length: 7 }, (_, i) => ({ nome: `X${i}`, matricula: `${i}` }));
+  await assertFails(setDoc(doc(aluno("e2"), "salas/111111/jogadores/e2"),
+    { nome: "Lotada", matricula: "9", membros: muitos, entrouEm: serverTimestamp() }));
+});
