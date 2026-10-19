@@ -61,10 +61,27 @@ export const concentracaoDaCurva = (A, a, b) => (A - b) / a;
 export const lod = (s, a) => (3.3 * s) / a;
 export const loq = (s, a) => (10 * s) / a;
 
-// Woodward-Fieser (slides 61–65): λ = base + Σ incrementos
-const WF_BASE = { "dieno-hetero": 214, "dieno-homo": 253, enona: 215 };
-const WF_INC = { extensao: 30, alquila: 5, exociclica: 5, alfa: 10, beta: 12, gamaDelta: 18 };
+// Woodward-Fieser (slides 61–64): λ = base + Σ incrementos
+const WF_BASE = {
+  "dieno-hetero": 214, "dieno-homo": 253,          // slide 61
+  enona: 215, "enona-anel5": 202, aldeido: 210, "acido-ester": 195, // slide 64
+};
+const WF_INC = {
+  extensao: 30, exociclica: 5, homoanular: 39,
+  alquila: 5, OR: 6, SR: 30, Cl: 5, Br: 5, NR2: 60, OCOR: 0, // dienos
+  alfa: 10, beta: 12, gamaDelta: 18,                          // enonas: alquila/resíduo de anel
+};
 export function woodwardFieser(tipo, inc = {}) {
   if (!(tipo in WF_BASE)) throw new Error(`tipo desconhecido: ${tipo}`);
-  return Object.entries(inc).reduce((s, [k, n]) => s + (WF_INC[k] ?? 0) * n, WF_BASE[tipo]);
+  return Object.entries(inc).reduce((s, [k, n]) => {
+    if (!(k in WF_INC)) throw new Error(`incremento desconhecido: ${k}`);
+    return s + WF_INC[k] * n;
+  }, WF_BASE[tipo]);
 }
+
+// Auxiliares das contas dos exercícios
+export const inclinacao2p = (x1, y1, x2, y2) => (y2 - y1) / (x2 - x1);
+export const diferenca = (a, b) => a - b;
+export const lambdaDeEnergiaKJmol = (kJ) => (H * C * NA) / (kJ * 1000) * 1e9;
+export const absortividade = (A, b, c) => A / (b * c);
+export const diluicaoV1 = (C1, C2, V2) => (C2 * V2) / C1; // C₁V₁ = C₂V₂

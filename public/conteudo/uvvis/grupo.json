@@ -1,0 +1,137 @@
+{
+  "modulo": "uvvis",
+  "estacoes": [
+    {
+      "id": "A", "titulo": "Lei de Beer-Lambert", "subtitulo": "Fundamentos e contas rápidas",
+      "questoes": [
+        { "id": "gA-1", "bloco": 4, "tipo": "mc", "enunciado": "Em A = εbc, qual é a unidade usual de ε?",
+          "alternativas": ["L mol⁻¹ cm⁻¹", "mol L⁻¹", "cm", "adimensional"], "correta": 0,
+          "explicacao": "ε é a absortividade molar: A (adimensional) dividido por b (cm) e c (mol L⁻¹) dá L mol⁻¹ cm⁻¹." },
+        { "id": "gA-2", "bloco": 3, "tipo": "mc", "enunciado": "Por que A é adimensional enquanto ε tem unidades?",
+          "alternativas": ["A é o log de uma razão de intensidades (I₀/I); as unidades se cancelam", "Porque ε já é adimensional", "Porque b e c têm a mesma unidade", "Porque A é sempre menor que 1"], "correta": 0,
+          "explicacao": "A = log(I₀/I): razão de duas intensidades. As unidades de ε são as que cancelam as de b·c." },
+        { "id": "gA-3", "bloco": 4, "tipo": "num", "enunciado": "Um corante em 245 nm tem ε = 12 000 L mol⁻¹ cm⁻¹. Para c = 2,50×10⁻⁵ mol L⁻¹ e b = 1,00 cm, calcule A.",
+          "resposta": 0.300, "tol": 0.02, "unidade": "", "calc": { "fn": "absorbancia", "args": [12000, 1.0, 2.5e-5] },
+          "explicacao": "A = εbc = 12 000 × 1,00 × 2,50×10⁻⁵ = 0,300." },
+        { "id": "gA-4", "bloco": 4, "tipo": "mc", "enunciado": "Se o caminho óptico dobrar para b = 2,00 cm (mesmos c e ε), o que acontece com A?",
+          "alternativas": ["Dobra: A = 0,600", "Cai pela metade: A = 0,150", "Não muda: A = 0,300", "Aumenta 10 vezes"], "correta": 0,
+          "explicacao": "A é proporcional a b: dobrar o caminho dobra a absorbância." },
+        { "id": "gA-5", "bloco": 3, "tipo": "num", "enunciado": "Converta A = 0,523 em transmitância T (fração, entre 0 e 1).",
+          "resposta": 0.300, "tol": 0.02, "unidade": "", "calc": { "fn": "transmitancia", "args": [0.523] },
+          "explicacao": "T = 10⁻ᴬ = 10⁻⁰·⁵²³ ≈ 0,300." },
+        { "id": "gA-6", "bloco": 3, "tipo": "num", "enunciado": "E em %T, para A = 0,523?",
+          "resposta": 30.0, "tol": 0.02, "unidade": "%", "calc": { "fn": "percentT", "args": [0.523] },
+          "explicacao": "%T = 100 · 10⁻ᴬ ≈ 30,0 %." },
+        { "id": "gA-7", "bloco": 4, "tipo": "num", "enunciado": "Dado A = 0,210, ε = 8 400 L mol⁻¹ cm⁻¹ e b = 1,00 cm, determine c (mol L⁻¹).",
+          "resposta": 2.5e-5, "tol": 0.02, "unidade": "mol L⁻¹", "calc": { "fn": "concentracao", "args": [0.210, 8400, 1.0] },
+          "explicacao": "c = A / (εb) = 0,210 / 8 400 = 2,50×10⁻⁵ mol L⁻¹." }
+      ]
+    },
+    {
+      "id": "B", "titulo": "Calibração e incógnitas", "subtitulo": "Padrões (µM): 5 → A 0,095 · 10 → A 0,198 · 15 → A 0,292. Amostra: Aₓ = 0,250. Reta pela origem.",
+      "questoes": [
+        { "id": "gB-1", "bloco": 6, "tipo": "num", "enunciado": "Estime a inclinação a (A por µM) usando os padrões de 10 e 15 µM.",
+          "resposta": 0.0188, "tol": 0.02, "unidade": "µM⁻¹", "calc": { "fn": "inclinacao2p", "args": [10, 0.198, 15, 0.292] },
+          "explicacao": "a = (0,292 − 0,198) / (15 − 10) = 0,0188 por µM." },
+        { "id": "gB-2", "bloco": 6, "tipo": "num", "enunciado": "Com essa inclinação e reta pela origem, estime cₓ (µM) para Aₓ = 0,250.",
+          "resposta": 13.3, "tol": 0.02, "unidade": "µM", "calc": { "fn": "concentracaoDaCurva", "args": [0.250, 0.0188, 0] },
+          "explicacao": "c = A / a = 0,250 / 0,0188 ≈ 13,3 µM — dentro da faixa dos padrões (5–15 µM)." },
+        { "id": "gB-3", "bloco": 6, "tipo": "num", "enunciado": "O branco dá A = 0,032 e a amostra bruta dá A = 0,462. Qual é a absorbância corrigida?",
+          "resposta": 0.430, "tol": 0.01, "unidade": "", "calc": { "fn": "diferenca", "args": [0.462, 0.032] },
+          "explicacao": "A corrigida = A amostra − A branco = 0,462 − 0,032 = 0,430." },
+        { "id": "gB-4", "bloco": 5, "tipo": "mc", "enunciado": "Qual par explica a perda de linearidade da curva, mesmo com química simples?",
+          "alternativas": ["Concentração alta e luz espúria", "Cubeta de quartzo e medida no λmáx", "Zerar com o branco e usar 5 padrões", "Solução diluída e luz monocromática"], "correta": 0,
+          "explicacao": "Desvio real (c alta, ε muda) e instrumental (luz espúria pesa em A alta) curvam a reta para baixo." },
+        { "id": "gB-5", "bloco": 6, "tipo": "mc", "enunciado": "Em que faixa de absorbância é melhor trabalhar?",
+          "alternativas": ["A ≈ 0,1 a 1,0", "A ≈ 1,5 a 3,0", "A < 0,01", "Qualquer A, desde que R² ≥ 0,99"], "correta": 0,
+          "explicacao": "Faixa de trabalho da aula: A ≈ 0,1 a 1,0. Acima disso a luz espúria e o ruído pesam." },
+        { "id": "gB-6", "bloco": 6, "tipo": "mc", "enunciado": "A amostra dá A = 0,85, mas o padrão mais alto tem A = 0,29. O que fazer?",
+          "alternativas": ["Diluir a amostra para cair dentro da faixa dos padrões", "Extrapolar a reta", "Usar só o padrão mais alto", "Aumentar o caminho óptico"], "correta": 0,
+          "explicacao": "Não extrapolar: a amostra deve estar dentro da faixa dos padrões." }
+      ]
+    },
+    {
+      "id": "C", "titulo": "Instrumentação e escolhas de método", "subtitulo": "Fontes, cubetas, duplo feixe, luz espúria, aquisição rápida",
+      "questoes": [
+        { "id": "gC-1", "bloco": 7, "tipo": "mc", "enunciado": "Qual fonte usar para medir em 210 nm?",
+          "alternativas": ["Lâmpada de deutério (D₂)", "Tungstênio-halogênio", "LED branco", "Laser vermelho"], "correta": 0,
+          "explicacao": "D₂ cobre o UV (190–350 nm); W-halogênio cobre o visível (350–1100 nm)." },
+        { "id": "gC-2", "bloco": 7, "tipo": "mc", "enunciado": "E para medir em 520 nm?",
+          "alternativas": ["Tungstênio-halogênio", "Deutério (D₂)", "Lâmpada de mercúrio", "Nenhuma: 520 nm é IV"], "correta": 0,
+          "explicacao": "520 nm é visível: W-halogênio (350–1100 nm). A troca automática ocorre perto de 350 nm." },
+        { "id": "gC-3", "bloco": 7, "tipo": "mc", "enunciado": "Qual cubeta usar em 210 nm?", "figura": "img/H_solventes_cubetas.png",
+          "alternativas": ["Quartzo", "Vidro", "Plástico (PS)", "Qualquer uma"], "correta": 0,
+          "explicacao": "Vidro absorve abaixo de ~350 nm e plástico abaixo de ~380 nm. UV exige quartzo." },
+        { "id": "gC-4", "bloco": 7, "tipo": "mc", "enunciado": "E em 520 nm?",
+          "alternativas": ["Vidro ou plástico servem (o quartzo também)", "Só quartzo", "Só plástico", "Nenhuma cubeta serve"], "correta": 0,
+          "explicacao": "No visível, vidro e plástico são transparentes e mais baratos." },
+        { "id": "gC-5", "bloco": 7, "tipo": "mc", "enunciado": "Qual é a vantagem do duplo feixe sobre o feixe simples?",
+          "alternativas": ["Compensa a deriva da fonte (referência e amostra medidas quase juntas)", "Dispensa o branco", "Mede no infravermelho", "Elimina a necessidade de cubeta"], "correta": 0,
+          "explicacao": "O espelho rotatório alterna referência e amostra várias vezes por segundo: A = log(I_R/I_A) compensa a deriva." },
+        { "id": "gC-6", "bloco": 7, "tipo": "mc", "enunciado": "Luz espúria: qual a causa e a consequência?",
+          "alternativas": ["Reflexões/imperfeições ópticas → A medida menor que a real, com platô em A alta", "Lâmpada fraca → A maior que a real", "Cubeta de quartzo → ruído no visível", "Solvente polar → deslocamento batocrômico"], "correta": 0,
+          "explicacao": "Luz que chega ao detector sem passar pela absorção pesa quando I é pequeno: a medida tende a um platô." },
+        { "id": "gC-7", "bloco": 7, "tipo": "mc", "enunciado": "Você precisa varrer 200–800 nm repetidamente e rápido (cinética). Qual instrumento?",
+          "alternativas": ["Arranjo de diodos (DAD)", "Feixe simples com rede girando", "Duplo feixe com espelho rotatório", "Fotômetro de filtro"], "correta": 0,
+          "explicacao": "No DAD, a luz branca passa pela amostra e centenas de diodos leem o espectro inteiro em ~1 s, sem partes móveis." }
+      ]
+    },
+    {
+      "id": "D", "titulo": "Interpretação espectral", "subtitulo": "Atribuições (n→π*, π→π*), auxocromia e conjugação",
+      "questoes": [
+        { "id": "gD-1", "bloco": 2, "tipo": "mc", "enunciado": "Um carbonilado mostra banda fraca em ~290–320 nm e banda forte em ~190–220 nm. Atribua.",
+          "alternativas": ["Fraca = n→π*; forte = π→π*", "Fraca = π→π*; forte = n→π*", "Ambas σ→σ*", "Fraca = n→σ*; forte = σ→σ*"], "correta": 0,
+          "explicacao": "n→π* é 'proibida' (ε 10–100) e cai em λ maior; π→π* é permitida (ε 10³–10⁵)." },
+        { "id": "gD-2", "bloco": 8, "tipo": "mc", "enunciado": "Um auxocromo doador (–OH, –NR₂) é ligado na posição β de uma enona. Efeito em λmáx e ε?",
+          "alternativas": ["Batocrômico e hipercrômico: o par livre entra no sistema π (+M)", "Hipsocrômico e hipocrômico", "Nenhum efeito", "Só hipocrômico"], "correta": 0,
+          "explicacao": "Ressonância (+M) estende a conjugação: π→π* vai para λ maior e fica mais intensa (ex.: –NR₂ em β: +95 nm)." },
+        { "id": "gD-3", "bloco": 8, "tipo": "mc", "enunciado": "Num polieno, aumentar a conjugação faz o quê?", "figura": "img/I_conjugacao_lambda.png",
+          "alternativas": ["λmáx aumenta e ε aumenta", "λmáx diminui e ε aumenta", "λmáx aumenta e ε diminui", "Nada muda"], "correta": 0,
+          "explicacao": "Mais C=C conjugadas → gap HOMO-LUMO menor → λmáx maior, e a banda fica mais intensa." },
+        { "id": "gD-4", "bloco": 2, "tipo": "mc", "enunciado": "Por que bandas moleculares no UV são largas, e não linhas como nos átomos?", "figura": "img/C_niveis_vibracionais.png",
+          "alternativas": ["Subníveis vibracionais/rotacionais + solvente geram muitas transições próximas", "O detector tem baixa resolução", "A cubeta espalha a luz", "A lâmpada é policromática"], "correta": 0,
+          "explicacao": "Cada nível eletrônico tem subníveis vibracionais e rotacionais; com o solvente, vira uma banda caracterizada pelo λmáx." }
+      ]
+    },
+    {
+      "id": "E", "titulo": "Troubleshooting e preparo de amostra", "subtitulo": "A muito alta, corte do solvente, cubetas, deriva",
+      "questoes": [
+        { "id": "gE-1", "bloco": 5, "tipo": "mc", "enunciado": "Sua amostra tem A ≈ 2,3 no λmáx. Como melhorar a exatidão sem mudar a química?",
+          "alternativas": ["Diluir a amostra ou usar cubeta de caminho menor", "Aumentar a concentração", "Trocar para cubeta de vidro", "Medir fora do λmáx"], "correta": 0,
+          "explicacao": "A = 2,3 → só 0,5 % da luz passa e a luz espúria domina. Leve A para 0,1–1,0." },
+        { "id": "gE-2", "bloco": 7, "tipo": "mc", "enunciado": "Medindo em etanol em 205–230 nm, a linha de base fica ruidosa. Causa e remédio?", "figura": "img/H_solventes_cubetas.png",
+          "alternativas": ["Etanol tem corte em ~210 nm; trocar por água ou acetonitrila", "A cubeta é de quartzo; trocar por vidro", "A lâmpada de W está fraca; trocar a lâmpada", "Amostra diluída demais; concentrar"], "correta": 0,
+          "explicacao": "O solvente não pode absorver onde a amostra absorve. Água e acetonitrila vão até ~190 nm." },
+        { "id": "gE-3", "bloco": 5, "tipo": "mc", "enunciado": "A mesma solução dá A = 0,48 numa cubeta e 0,42 em outra. O que verificar?",
+          "alternativas": ["Cubetas desemparelhadas, sujas ou riscadas, e orientação na posição", "O valor de ε na literatura", "A temperatura do laboratório", "A cor da tampa da cubeta"], "correta": 0,
+          "explicacao": "Cubetas sujas/desemparelhadas são desvio instrumental; use cubetas pareadas e limpas, sempre na mesma orientação." },
+        { "id": "gE-4", "bloco": 5, "tipo": "mc", "enunciado": "Numa varredura longa, A sobe num λ onde o analito não absorve. Causa provável?",
+          "alternativas": ["Deriva da lâmpada (instrumental) ou turbidez/precipitação (química)", "A lei de Beer deixou de valer", "O ε do analito mudou", "O branco estava correto"], "correta": 0,
+          "explicacao": "Feixe simples é sensível à deriva da fonte; partículas espalham luz e parecem absorção." }
+      ]
+    },
+    {
+      "id": "P", "titulo": "Desafio Plenário — Woodward-Fieser", "subtitulo": "Calcule o λmáx (nm). Dienos: base 214 (hetero/acíclico) ou 253 (homo); +5 por alquila/resíduo de anel; +5 por dupla exocíclica; +30 por C=C extra. Enonas: base 215; α +10, β +12, γ/δ +18.",
+      "questoes": [
+        { "id": "gP-1", "bloco": 9, "tipo": "num", "enunciado": "2,5-dimetil-2,4-hexadieno: λmáx calculado?", "figura": "img/wf_dieno_ex1.png",
+          "resposta": 234, "tol": 0.005, "unidade": "nm", "calc": { "fn": "woodwardFieser", "args": ["dieno-hetero", { "alquila": 4 }] },
+          "explicacao": "Acíclico: 214 + 4 alquilas × 5 = 234 nm (obs. 241 nm)." },
+        { "id": "gP-2", "bloco": 9, "tipo": "num", "enunciado": "Dieno heteroanular (destacado): λmáx calculado?", "figura": "img/wf_dieno_hetero.png",
+          "resposta": 234, "tol": 0.005, "unidade": "nm", "calc": { "fn": "woodwardFieser", "args": ["dieno-hetero", { "alquila": 3, "exociclica": 1 }] },
+          "explicacao": "214 + 3 resíduos de anel × 5 + 1 dupla exocíclica × 5 = 234 nm." },
+        { "id": "gP-3", "bloco": 9, "tipo": "num", "enunciado": "Dieno homoanular (destacado): λmáx calculado?", "figura": "img/wf_dieno_homo.png",
+          "resposta": 273, "tol": 0.005, "unidade": "nm", "calc": { "fn": "woodwardFieser", "args": ["dieno-homo", { "alquila": 3, "exociclica": 1 }] },
+          "explicacao": "253 + 3 resíduos × 5 + 1 exocíclica × 5 = 273 nm." },
+        { "id": "gP-4", "bloco": 9, "tipo": "num", "enunciado": "3-metilciclo-hex-2-enona: λmáx calculado?", "figura": "img/wf_enona_ex.png",
+          "resposta": 239, "tol": 0.005, "unidade": "nm", "calc": { "fn": "woodwardFieser", "args": ["enona", { "beta": 2 }] },
+          "explicacao": "215 + 2 substituintes β (metila e resíduo de anel) × 12 = 239 nm (obs. 234)." },
+        { "id": "gP-5", "bloco": 9, "tipo": "num", "enunciado": "Octalona (destacada): λmáx calculado?", "figura": "img/wf_enona_ex2.png",
+          "resposta": 244, "tol": 0.005, "unidade": "nm", "calc": { "fn": "woodwardFieser", "args": ["enona", { "beta": 2, "exociclica": 1 }] },
+          "explicacao": "215 + 2 resíduos β × 12 + 1 exocíclica × 5 = 244 nm (obs. 241)." },
+        { "id": "gP-6", "bloco": 9, "tipo": "num", "enunciado": "Ciclo-hex-2-enona: λmáx calculado?", "figura": "img/wf_enona_ciclohexenona.png",
+          "resposta": 227, "tol": 0.005, "unidade": "nm", "calc": { "fn": "woodwardFieser", "args": ["enona", { "beta": 1 }] },
+          "explicacao": "215 + 1 resíduo de anel β × 12 = 227 nm (obs. 225)." }
+      ]
+    }
+  ]
+}

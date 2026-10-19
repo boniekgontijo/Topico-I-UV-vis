@@ -1,0 +1,12 @@
+[
+  { "n": 1, "titulo": "Luz e espectro eletromagnético" },
+  { "n": 2, "titulo": "O que acontece na molécula" },
+  { "n": 3, "titulo": "O que o instrumento mede" },
+  { "n": 4, "titulo": "Lei de Beer" },
+  { "n": 5, "titulo": "Desvios da lei de Beer" },
+  { "n": 6, "titulo": "Curva analítica (calibração)" },
+  { "n": 7, "titulo": "Instrumentação" },
+  { "n": 8, "titulo": "Cromóforos, conjugação, efeitos" },
+  { "n": 9, "titulo": "Previsão do λmáx (Woodward-Fieser)" },
+  { "n": 10, "titulo": "Aplicações" }
+]

@@ -59,3 +59,28 @@ test("Woodward-Fieser: exemplos dos slides 62 e 65", () => {
   assert.equal(uv.woodwardFieser("enona", { beta: 2 }), 239);
   assert.equal(uv.woodwardFieser("enona", { beta: 2, exociclica: 1 }), 244);
 });
+
+test("auxiliares das contas do Workshop", () => {
+  perto(uv.inclinacao2p(10, 0.198, 15, 0.292), 0.0188, 1e-9);
+  perto(uv.concentracaoDaCurva(0.250, 0.0188, 0), 13.298, 1e-3);
+  perto(uv.concentracaoDaCurva(0.47, 0.0817, -0.0031), 5.79, 0.01);
+  perto(uv.diferenca(0.462, 0.032), 0.430, 1e-12);
+  perto(uv.lambdaDeEnergiaKJmol(398.8), 300, 0.5);
+});
+
+test("Woodward-Fieser: tabelas completas dos slides 61, 63 e 64", () => {
+  assert.equal(uv.woodwardFieser("dieno-homo", { alquila: 3, exociclica: 1 }), 273);
+  assert.equal(uv.woodwardFieser("dieno-hetero", { OR: 1, alquila: 2 }), 230);
+  assert.equal(uv.woodwardFieser("dieno-hetero", { NR2: 1 }), 274);
+  assert.equal(uv.woodwardFieser("dieno-hetero", { SR: 1, Cl: 1, OCOR: 1 }), 249);
+  assert.equal(uv.woodwardFieser("enona-anel5", { beta: 1 }), 214);
+  assert.equal(uv.woodwardFieser("aldeido", { alfa: 1 }), 220);
+  assert.equal(uv.woodwardFieser("acido-ester", { beta: 2 }), 219);
+  assert.equal(uv.woodwardFieser("enona", { extensao: 1, homoanular: 1, gamaDelta: 1 }), 302);
+  assert.throws(() => uv.woodwardFieser("enona", { inexistente: 1 }));
+});
+
+test("absortividade a partir de A e diluição C₁V₁ = C₂V₂", () => {
+  perto(uv.absortividade(0.62, 1.0, 5e-5), 12400, 1e-6);
+  perto(uv.diluicaoV1(100, 5, 50), 2.5, 1e-12);
+});
