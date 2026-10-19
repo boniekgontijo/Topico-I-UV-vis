@@ -42,3 +42,13 @@ test("múltipla escolha e verdadeiro/falso", () => {
   assert.deepEqual(corrigir({ tipo: "vf", correta: false }, false), { valida: true, correta: true });
   assert.deepEqual(corrigir({ tipo: "vf", correta: true }, false), { valida: true, correta: false });
 });
+
+import { formatarNumeroBR } from "../public/js/core/correcao.js";
+test("formata números para exibição em português", () => {
+  assert.equal(formatarNumeroBR(3.0e-5), "3,0×10⁻⁵");
+  assert.equal(formatarNumeroBR(0.0808), "0,0808");
+  assert.equal(formatarNumeroBR(35.5), "35,5");
+  assert.equal(formatarNumeroBR(12400), "12 400");
+  assert.equal(formatarNumeroBR(234), "234");
+  assert.equal(formatarNumeroBR(0.3), "0,3");
+});

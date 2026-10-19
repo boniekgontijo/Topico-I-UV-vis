@@ -23,3 +23,15 @@ export function corrigir(questao, resposta) {
   }
   return { valida: true, correta: resposta === questao.correta };
 }
+
+// Exibição: notação científica abaixo de 0,001; senão até 4 algarismos significativos.
+const SUP = { "-": "⁻", 0: "⁰", 1: "¹", 2: "²", 3: "³", 4: "⁴", 5: "⁵", 6: "⁶", 7: "⁷", 8: "⁸", 9: "⁹" };
+export function formatarNumeroBR(x) {
+  if (x !== 0 && Math.abs(x) < 1e-3) {
+    const [m, e] = x.toExponential(1).split("e");
+    return `${m.replace(".", ",")}×10${String(Number(e)).replace(/./g, (c) => SUP[c])}`;
+  }
+  const s = Number(x.toPrecision(4)).toString().split(".");
+  const inteira = s[0].replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+  return s[1] ? `${inteira},${s[1]}` : inteira;
+}
