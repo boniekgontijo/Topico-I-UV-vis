@@ -12,8 +12,10 @@ try:
 except OSError:
     sys.exit(f"A porta {porta} já está em uso: o site provavelmente já está rodando em outro terminal.\n"
              f"Abra http://localhost:{porta} ou feche o outro terminal antes de rodar de novo.")
-try:
-    ip = socket.gethostbyname(socket.gethostname())
+try:  # IP do Mac na rede local (nenhum pacote é enviado)
+    with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
+        s.connect(("8.8.8.8", 80))
+        ip = s.getsockname()[0]
 except OSError:
     ip = "IP-do-Mac"
 print(f"Site no ar:\n  neste Mac:   http://localhost:{porta}\n  celulares:   http://{ip}:{porta}  (mesmo Wi-Fi)\n"
