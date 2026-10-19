@@ -3,6 +3,7 @@ import { h, limpar, ls, toast } from "../ui/dom.js";
 import { topo } from "./menu.js";
 import { api, online } from "./dados.js";
 import { incentivo } from "../core/mensagens.js";
+import { infoRodada, AVATARES } from "../core/competicao.js";
 
 export const FORMAS = ["▲", "◆", "●", "■"];
 let desligar = [];
@@ -34,16 +35,20 @@ export async function telaCompeticao(el, aluno, codigo) {
     h("p", {}, `Sala ${codigo} não encontrada.`), h("a", { class: "btn", href: "#quiz" }, "Digitar outro código")));
   const equipe = s0.modo === "equipe" ? ls.get(`equipe:${codigo}`) : null;
   if (s0.modo === "equipe" && !equipe) return formEquipe(el, aluno, codigo);
+  const avatar = ls.get(`avatar:${codigo}`);
+  if (!avatar) return escolherAvatar(el, aluno, codigo, equipe);
   // não espera: se a rede cair, o Firestore envia quando voltar
   let erroEntrada = null;
-  fb.entrarSala(codigo, equipe ? { nome: equipe.nome, matricula: aluno.matricula, membros: equipe.membros } : aluno)
+  fb.entrarSala(codigo, equipe ? { nome: equipe.nome, matricula: aluno.matricula, membros: equipe.membros, avatar } : { ...aluno, avatar })
     .catch((e) => { console.error(e); erroEntrada = e.code ?? e.message; render(); });
 
   const minhas = ls.get(`comp:${codigo}`, {}); // índice → alternativa escolhida
   let sala = null, placar = {}, tic = null;
   desligar.push(() => clearInterval(tic));
   const corpo = h("div");
-  limpar(el, topo(aluno, "#menu"), equipe ? h("p", { class: "ajuda centro" }, `👥 Equipe ${equipe.nome} · ${equipe.membros.map((m) => String(m.nome).split(" ")[0]).join(", ")}`) : null, corpo);
+  limpar(el, topo(aluno, "#menu"),
+    h("p", { class: "centro", style: { fontSize: "1.05rem" } }, h("span", { style: { fontSize: "1.8rem", verticalAlign: "middle" } }, avatar), " ",
+      equipe ? `Equipe ${equipe.nome} · ${equipe.membros.map((m) => String(m.nome).split(" ")[0]).join(", ")}` : aluno.nome), corpo);
 
   const meuPlacar = () => {
     const lista = Object.entries(placar).sort((a, b) => b[1].pontos - a[1].pontos || a[1].somaDtAcertos - b[1].somaDtAcertos);
@@ -56,7 +61,10 @@ export async function telaCompeticao(el, aluno, codigo) {
     if (!sala) return limpar(corpo, h("div", { class: "cartao status-grande" }, h("div", { class: "grande" }, "📶"),
       h("p", {}, "Conexão perdida com a sala."), h("button", { class: "btn", onclick: () => telaCompeticao(el, aluno, codigo) }, "Reconectar")));
     const p = meuPlacar();
-    const cab = h("div", { class: "ajuda centro" }, `Sala ${codigo}`, sala.indice >= 0 ? ` · pergunta ${sala.indice + 1} de ${sala.total}` : "", ` · ${p.pontos} pts`);
+    const ri = sala.indice >= 0 ? infoRodada(sala.indice, sala.porRodada, sala.total) : null;
+    const cab = h("div", { class: "ajuda centro" }, `Sala ${codigo}`,
+      ri ? (ri.totalRodadas > 1 ? ` · rodada ${ri.rodada}/${ri.totalRodadas} · pergunta ${ri.posNaRodada}` : ` · pergunta ${sala.indice + 1} de ${sala.total}`) : "",
+      ` · ${p.pontos} pts`);
 
     if (erroEntrada) return limpar(corpo, cab, h("div", { class: "cartao status-grande" }, h("div", { class: "grande" }, "⚠️"),
       h("p", {}, "Não consegui registrar você na sala."), h("p", { class: "ajuda" }, `Erro: ${erroEntrada}. Mostre esta mensagem ao professor.`),
@@ -109,7 +117,9 @@ export async function telaCompeticao(el, aluno, codigo) {
         h("h2", {}, escolhida == null ? "O tempo voou! Na próxima você responde." : incentivo(acertou)),
         h("p", {}, "Resposta: ", h("b", { html: `${FORMAS[sala.correta]} ${sala.pergunta.alternativas[sala.correta]}` })),
         h("p", { class: "grande", style: { fontSize: "1.6rem" } }, `${p.pontos} pts`),
-        p.pos ? h("p", {}, `${equipe ? "Sua equipe está" : "Você está"} em ${p.pos}º de ${p.total}`) : null));
+        p.pos ? h("p", {}, `${equipe ? "Sua equipe está" : "Você está"} em ${p.pos}º de ${p.total}`) : null,
+        ri?.fimDaRodada && !ri.ultima ? h("p", { class: "cartao", style: { background: "#FFF6E0" } },
+          h("b", {}, `🏁 Fim da rodada ${ri.rodada}!`), " Os pontos continuam valendo na próxima rodada.") : null));
     }
 
     if (sala.estado === "fim") return limpar(corpo, cab, h("div", { class: "cartao status-grande" },
@@ -121,6 +131,13 @@ export async function telaCompeticao(el, aluno, codigo) {
 
   desligar.push(fb.ouvirSala(codigo, (s) => { sala = s; render(); }));
   desligar.push(fb.ouvirPlacar(codigo, (pl) => { placar = pl; if (sala?.estado !== "pergunta") render(); }));
+}
+
+function escolherAvatar(el, aluno, codigo, equipe) {
+  limpar(el, topo(aluno, "#menu"), h("h1", {}, equipe ? `Escolha o símbolo da equipe` : "Escolha seu avatar"),
+    h("p", { class: "ajuda" }, "Ele aparece no telão, no ranking e no pódio."),
+    h("div", { class: "avatares" }, AVATARES.map((a) => h("button", { class: "avatar", "aria-label": a.nome, title: a.nome,
+      onclick: () => { ls.set(`avatar:${codigo}`, a.emoji); telaCompeticao(el, aluno, codigo); } }, a.emoji))));
 }
 
 function formEquipe(el, aluno, codigo) {

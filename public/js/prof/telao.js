@@ -1,6 +1,6 @@
 // Competição ao vivo — telão do professor (projetado em sala).
 import { h, limpar, toast, carregarJSON } from "../ui/dom.js";
-import { prepararCompeticao, perguntaPublica } from "../core/competicao.js";
+import { prepararCompeticao, perguntaPublica, infoRodada } from "../core/competicao.js";
 import { aplicarRodada, ranking } from "../core/pontuacao.js";
 import * as fb from "../fb.js";
 import { TURMA_PADRAO } from "../config.js";
@@ -21,7 +21,8 @@ export async function telaNova(el) {
     h("a", { class: "btn", href: "#perguntas" }, "Ir para Perguntas")));
   const conta = (n) => banco.filter((q) => q.bloco === n).length;
   const caixas = blocos.map((b) => ({ n: b.n, el: h("input", { type: "checkbox", checked: true }) }));
-  const nPerg = h("input", { type: "number", min: 1, max: banco.length, value: Math.min(10, banco.length) });
+  const nRodadas = h("select", {}, [1, 2, 3].map((n) => h("option", { value: n, selected: n === 2 }, `${n}`)));
+  const porRodada = h("select", {}, [5, 10].map((n) => h("option", { value: n, selected: n === 10 }, `${n}`)));
   const tempo = h("select", {});
   const modo = h("select", {}, h("option", { value: "individual" }, "Individual (cada um no seu celular)"), h("option", { value: "equipe" }, "Em equipes (um celular por equipe)"));
   const opcoesTempo = () => {
@@ -36,10 +37,12 @@ export async function telaNova(el) {
     e.preventDefault();
     const sel = caixas.filter((c) => c.el.checked).map((c) => c.n);
     if (!sel.length) return toast("Escolha ao menos um bloco.", "erro");
-    const qs = prepararCompeticao(banco, { blocos: sel, n: Number(nPerg.value) || 10 });
+    const n = Number(nRodadas.value) * Number(porRodada.value);
+    const qs = prepararCompeticao(banco, { blocos: sel, n });
+    if (qs.length < n) toast(`Só há ${qs.length} perguntas nos blocos escolhidos; o quiz terá ${qs.length}.`);
     if (!/^[\w-]{1,20}$/.test(turma.value)) return toast("Turma: use letras, números e hífen.", "erro");
     const limiteMs = Number(tempo.value) * 1000;
-    const codigo = await fb.criarSala({ turma: turma.value, modulo: "uvvis", limiteMs, total: qs.length, modo: modo.value });
+    const codigo = await fb.criarSala({ turma: turma.value, modulo: "uvvis", limiteMs, total: qs.length, porRodada: Number(porRodada.value), modo: modo.value });
     await fb.salvarBanco(`sala-${codigo}`, qs); // gabarito desta sala, só o professor lê
     location.hash = `#sala/${codigo}`;
   };
@@ -48,8 +51,9 @@ export async function telaNova(el) {
       h("h3", {}, "Blocos"),
       h("div", { class: "blocos-sel" }, blocos.map((b, i) => h("label", {}, caixas[i].el, `${b.n}. ${b.titulo} (${conta(b.n)})`))),
       h("label", {}, "Modo"), modo,
-      h("div", { class: "grade", style: { gridTemplateColumns: "repeat(3, 1fr)" } },
-        h("div", {}, h("label", {}, "Nº de perguntas"), nPerg),
+      h("div", { class: "grade", style: { gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))" } },
+        h("div", {}, h("label", {}, "Rodadas"), nRodadas),
+        h("div", {}, h("label", {}, "Perguntas por rodada"), porRodada),
         h("div", {}, h("label", {}, "Tempo por pergunta"), tempo),
         h("div", {}, h("label", {}, "Turma"), turma)),
       h("p", {}, h("button", { class: "btn", type: "submit" }, "Criar sala"))));
@@ -92,7 +96,8 @@ export async function telaSala(el, codigo) {
     return `${base}index.html?t=${encodeURIComponent(sala.turma)}#quiz/${codigo}`;
   };
   const qrSvg = (txt) => { const q = window.qrcode(0, "M"); q.addData(txt); q.make(); return q.createSvgTag({ cellSize: 8, margin: 2, scalable: true }); };
-  const nomes = () => Object.fromEntries(jogadores.map((j) => [j.uid, String(j.nome ?? "?")]));
+  const rotulo = (j) => `${j.avatar ? j.avatar + " " : ""}${String(j.nome ?? "?")}`;
+  const nomes = () => Object.fromEntries(jogadores.map((j) => [j.uid, rotulo(j)]));
 
   // impede clique duplo em Começar/Próxima/Encerrar
   const umaVez = (fn) => async (...a) => {
@@ -122,7 +127,7 @@ export async function telaSala(el, codigo) {
       const decisao = await fb.iniciarFechamento(codigo, i);
       if (decisao !== "ignorar") {
         const [s, resp, atual] = await Promise.all([fb.lerSala(codigo), fb.respostasDaRodada(codigo, i), fb.lerPlacar(codigo)]);
-        const base = Object.fromEntries(jogadores.map((j) => [j.uid, atual[j.uid] ?? { nome: String(j.nome ?? "?"), pontos: 0, somaDtAcertos: 0, acertos: 0 }]));
+        const base = Object.fromEntries(jogadores.map((j) => [j.uid, atual[j.uid] ?? { nome: rotulo(j), pontos: 0, somaDtAcertos: 0, acertos: 0 }]));
         const rodada = resp.map((r) => ({ uid: r.uid, alternativa: r.alternativa, dtMs: (r.quandoMs ?? s.abertaEmMs + s.limiteMs) - s.abertaEmMs }));
         const novo = aplicarRodada({ ...atual, ...base }, rodada, qs[i].correta, s.limiteMs, nomes());
         await fb.revelar(codigo, i, qs[i].correta, novo);
@@ -162,7 +167,8 @@ export async function telaSala(el, codigo) {
     cancelarNResp?.(); cancelarNResp = null;
     const cab = h("div", { class: "abas", style: { fontSize: "1rem" } },
       h("b", {}, `Sala ${codigo}`), h("span", {}, `turma ${sala.turma}`),
-      sala.indice >= 0 ? h("span", {}, `pergunta ${sala.indice + 1}/${qs.length}`) : null,
+      sala.indice >= 0 ? (() => { const ri = infoRodada(sala.indice, sala.porRodada, qs.length);
+        return h("span", {}, ri.totalRodadas > 1 ? `rodada ${ri.rodada}/${ri.totalRodadas} · pergunta ${ri.posNaRodada}` : `pergunta ${sala.indice + 1}/${qs.length}`); })() : null,
       emEquipe ? h("span", {}, "👥 em equipes") : null,
       h("span", { class: "quem" }, rotJog(jogadores.length)));
 
@@ -174,7 +180,7 @@ export async function telaSala(el, codigo) {
           h("div", { class: "codigo-grande" }, codigo),
           h("p", { class: "ajuda", style: { fontSize: ".9rem", wordBreak: "break-all" } }, urlAluno()),
           emEquipe ? h("p", { class: "ajuda" }, "Um celular por equipe: discutam e enviem uma resposta.") : null,
-          h("div", { class: "nomes" }, jogadores.map((j) => h("span", {}, j.membros ? `👥 ${String(j.nome)} (${j.membros.length})` : String(j.nome)))),
+          h("div", { class: "nomes" }, jogadores.map((j) => h("span", {}, j.membros ? `${rotulo(j)} (${j.membros.length})` : rotulo(j)))),
           h("div", { class: "linha-acoes", style: { justifyContent: "flex-start" } },
             h("button", { class: "btn", onclick: () => abrir(0) }, `▶ Começar (${qs.length} perguntas)`)),
           erroJogadores ? h("p", { class: "aviso" }, erroJogadores, " Recarregue a página; se continuar, me mande esta mensagem.") : null)));
@@ -210,29 +216,38 @@ export async function telaSala(el, codigo) {
       const resp = await fb.respostasDaRodada(codigo, sala.indice);
       const dist = q.alternativas.map((_, k) => resp.filter((r) => r.alternativa === k).length);
       nomesPlacar = await fb.lerPlacar(codigo);
-      const ultima = sala.indice + 1 >= qs.length;
+      const ri = infoRodada(sala.indice, sala.porRodada, qs.length);
+      const botao = ri.ultima ? h("button", { class: "btn", onclick: proxima }, "🏁 Ver pódio final")
+        : ri.fimDaRodada ? h("button", { class: "btn", onclick: () => mostrarPodio(`🏁 Fim da rodada ${ri.rodada} — pódio parcial`,
+            h("button", { class: "btn", onclick: proxima }, `▶ Começar rodada ${ri.rodada + 1}`)) }, `🏆 Pódio da rodada ${ri.rodada}`)
+        : h("button", { class: "btn", onclick: proxima }, "Próxima pergunta →");
       return limpar(area, cab, cartaoPergunta(q, true, dist),
         h("div", { class: "cartao", style: { fontSize: "1.2rem" } }, h("b", {}, "Por quê? "), h("span", { html: q.explicacao })),
         h("h2", {}, "Top 5"),
         h("ol", { class: "ranking" }, top(5).map((p) => h("li", {}, h("span", {}, `${p.posicao}º ${p.nome}`), h("b", {}, `${p.pontos}`)))),
-        h("div", { class: "linha-acoes" }, h("button", { class: "btn", onclick: proxima }, ultima ? "🏁 Ver pódio" : "Próxima pergunta →")));
+        h("div", { class: "linha-acoes" }, botao));
     }
 
     if (sala.estado === "fim") {
       nomesPlacar = await fb.lerPlacar(codigo);
-      const r = top(1000);
-      const membrosDe = (uid) => jogadores.find((j) => j.uid === uid)?.membros?.map((m) => String(m?.nome ?? "").split(" ")[0]).join(", ");
-      const deg = (p, cls, med) => p ? h("div", {}, h("div", { class: "nome" }, `${med} ${p.nome}`),
-        membrosDe(p.uid) ? h("div", { class: "ajuda", style: { fontSize: "1rem" } }, membrosDe(p.uid)) : null, h("div", { class: `deg ${cls}` }, `${p.pontos} pts`, h("br"), plural(p.acertos, "acerto", "acertos"))) : h("div");
-      const lista = h("ol", { class: "ranking oculto" }, r.map((p) => h("li", {}, h("span", {}, `${p.posicao}º ${p.nome}`), h("b", {}, `${p.pontos} · ${p.acertos} ✓`))));
-      return limpar(area, cab, h("h1", { class: "centro" }, "🏆 Pódio — hora do chocolate! 🍫"),
-        h("div", { class: "podio" }, deg(r[1], "p2", "🥈"), deg(r[0], "p1", "🥇"), deg(r[2], "p3", "🥉")),
-        h("div", { class: "linha-acoes" },
-          h("button", { class: "btn sec", onclick: () => lista.classList.toggle("oculto") }, "Mostrar ranking completo"),
-          h("a", { class: "btn", href: "#comp" }, "Novo quiz")),
-        lista);
+      return mostrarPodio("🏆 Pódio final — hora do chocolate! 🍫", h("a", { class: "btn", href: "#comp" }, "Novo quiz"));
     }
   };
+
+  // pódio (parcial entre rodadas ou final); a pontuação é acumulada
+  function mostrarPodio(titulo, acao) {
+    const r = top(1000);
+    const membrosDe = (uid) => jogadores.find((j) => j.uid === uid)?.membros?.map((m) => String(m?.nome ?? "").split(" ")[0]).join(", ");
+    const deg = (p, cls, med) => p ? h("div", {}, h("div", { class: "nome" }, `${med} ${p.nome}`),
+      membrosDe(p.uid) ? h("div", { class: "ajuda", style: { fontSize: "1rem" } }, membrosDe(p.uid)) : null,
+      h("div", { class: `deg ${cls}` }, `${p.pontos} pts`, h("br"), plural(p.acertos, "acerto", "acertos"))) : h("div");
+    const lista = h("ol", { class: "ranking oculto" }, r.map((p) => h("li", {}, h("span", {}, `${p.posicao}º ${p.nome}`), h("b", {}, `${p.pontos} · ${p.acertos} ✓`))));
+    limpar(area, h("h1", { class: "centro" }, titulo),
+      h("div", { class: "podio" }, deg(r[1], "p2", "🥈"), deg(r[0], "p1", "🥇"), deg(r[2], "p3", "🥉")),
+      h("div", { class: "linha-acoes" },
+        h("button", { class: "btn sec", onclick: () => lista.classList.toggle("oculto") }, "Mostrar ranking completo"), acao),
+      lista);
+  }
 
   render();
 }

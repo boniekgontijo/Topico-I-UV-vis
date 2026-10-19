@@ -1,7 +1,7 @@
 // Toda a comunicação com o Firebase (Auth + Firestore) passa por aqui.
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
 import {
-  initializeAuth, browserLocalPersistence, browserPopupRedirectResolver, connectAuthEmulator, signInAnonymously, signInWithPopup, signInWithCredential, GoogleAuthProvider, onAuthStateChanged, signOut,
+  initializeAuth, browserLocalPersistence, browserPopupRedirectResolver, connectAuthEmulator, signInAnonymously, signInWithPopup, signInWithCredential, signInWithRedirect, getRedirectResult, GoogleAuthProvider, onAuthStateChanged, signOut,
   browserSessionPersistence,
 } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
 import {
@@ -62,12 +62,13 @@ const msDe = (t) => (t?.toMillis ? t.toMillis() : null);
 const salaDe = (s) => s.exists() ? { codigo: s.id, ...s.data(), abertaEmMs: msDe(s.data().abertaEm) } : null;
 
 export const ouvirSala = (codigo, cb) => onSnapshot(doc(db, "salas", codigo), (s) => cb(salaDe(s)), () => cb(null));
-export async function entrarSala(codigo, { nome, matricula, membros }) {
+export async function entrarSala(codigo, { nome, matricula, membros, avatar }) {
   const u = await eu();
   const ref = doc(db, "salas", codigo, "jogadores", u);
   if ((await getDoc(ref)).exists()) return; // já tinha entrado (o próprio registro pode ser lido)
   const j = { nome: String(nome).slice(0, 80), matricula: String(matricula), entrouEm: serverTimestamp() };
   if (membros) j.membros = membros; // quiz em equipes
+  if (avatar) j.avatar = avatar;
   return setDoc(ref, j);
 }
 export async function responder(codigo, indice, alternativa) {
@@ -79,6 +80,7 @@ export const ouvirPlacar = (codigo, cb) =>
 
 // ---------- professor ----------
 export async function professorLogado() {
+  try { await getRedirectResult(auth); } catch (e) { console.warn(e); } // volta do login por redirecionamento (celular)
   const u = await usuarioAtual();
   return u && !u.isAnonymous && u.email === PROFESSOR_EMAIL ? u.email : null;
 }
@@ -87,18 +89,24 @@ export async function entrarProfessor() {
   if (!u || u.isAnonymous) {
     u = USAR_EMULADOR // no emulador, login Google simulado com o e-mail do professor
       ? (await signInWithCredential(auth, GoogleAuthProvider.credential(JSON.stringify({ sub: "prof-local", email: PROFESSOR_EMAIL, email_verified: true })))).user
-      : (await signInWithPopup(auth, new GoogleAuthProvider())).user;
+      : await signInWithPopup(auth, new GoogleAuthProvider()).then((r) => r.user).catch(async (e) => {
+          // celular que bloqueia a janela de login: entra por redirecionamento
+          if (["auth/popup-blocked", "auth/operation-not-supported-in-this-environment"].includes(e.code)) {
+            await signInWithRedirect(auth, new GoogleAuthProvider());
+          }
+          throw e;
+        });
   }
   if (u.email !== PROFESSOR_EMAIL) { await signOut(auth); throw new Error("acesso restrito"); }
   return { email: u.email };
 }
 
-export async function criarSala({ turma, modulo, limiteMs, total, modo = "individual" }) {
+export async function criarSala({ turma, modulo, limiteMs, total, porRodada = null, modo = "individual" }) {
   for (;;) {
     const codigo = String(Math.floor(100000 + Math.random() * 900000));
     const ref = doc(db, "salas", codigo);
     if ((await getDoc(ref)).exists()) continue;
-    await setDoc(ref, { turma, modulo, modo, estado: "lobby", indice: -1, total, limiteMs, pergunta: null,
+    await setDoc(ref, { turma, modulo, modo, porRodada, estado: "lobby", indice: -1, total, limiteMs, pergunta: null,
       abertaEm: null, correta: null, criadaEm: serverTimestamp() });
     return codigo;
   }

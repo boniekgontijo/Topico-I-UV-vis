@@ -73,8 +73,9 @@ service cloud.firestore {
         allow read: if isProf() || (logado() && request.auth.uid == uid);
         // no quiz em equipes, "nome" é o nome da equipe e "membros" lista os integrantes
         allow create: if logado() && uid == request.auth.uid
-          && soCampos(["nome", "matricula", "membros", "entrouEm"])
+          && soCampos(["nome", "matricula", "membros", "avatar", "entrouEm"])
           && texto(request.resource.data.nome, 80) && texto(request.resource.data.matricula, 12)
+          && (!("avatar" in request.resource.data) || texto(request.resource.data.avatar, 8))
           && (!("membros" in request.resource.data) || membrosOk(request.resource.data.membros))
           && agora("entrouEm");
         allow write: if isProf();

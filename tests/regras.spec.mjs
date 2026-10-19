@@ -154,3 +154,10 @@ test("jogadores e respostas: nomes e integrantes com tipo e tamanho válidos", a
     membros: [{ nome: "Ana", matricula: "123" }, 7], uid: "u1", quando: serverTimestamp() };
   await assertFails(setDoc(doc(aluno("u1"), "respostas/rx"), r));
 });
+
+test("jogador pode escolher um avatar curto", async () => {
+  await salaEmPergunta();
+  const base = { nome: "Ana", matricula: "123", entrouEm: serverTimestamp() };
+  await assertSucceeds(setDoc(doc(aluno("v1"), "salas/111111/jogadores/v1"), { ...base, avatar: "🦊" }));
+  await assertFails(setDoc(doc(aluno("v2"), "salas/111111/jogadores/v2"), { ...base, avatar: "x".repeat(20) }));
+});

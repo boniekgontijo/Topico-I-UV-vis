@@ -38,3 +38,21 @@ export function decidirFechamento(sala, indice) {
   return "ignorar";
 }
 export const podeRevelar = (sala, indice) => sala?.estado === "fechando" && sala.indice === indice;
+
+// Rodadas: a pontuação acumula; ao fim de cada rodada aparece o pódio (parcial ou final).
+export function infoRodada(indice, porRodada, total) {
+  const n = porRodada || total;
+  const totalRodadas = Math.ceil(total / n);
+  const rodada = Math.floor(indice / n) + 1;
+  const posNaRodada = (indice % n) + 1;
+  const ultima = indice + 1 >= total;
+  return { rodada, totalRodadas, posNaRodada, fimDaRodada: posNaRodada === n || ultima, ultima };
+}
+
+// Avatares que o aluno escolhe ao entrar no quiz
+export const AVATARES = [
+  ["🦊", "raposa"], ["🐼", "panda"], ["🦉", "coruja"], ["🐙", "polvo"], ["🦁", "leão"], ["🐸", "sapo"],
+  ["🐧", "pinguim"], ["🦄", "unicórnio"], ["🐢", "tartaruga"], ["🐝", "abelha"], ["🦖", "dinossauro"], ["🐬", "golfinho"],
+  ["🦜", "papagaio"], ["🐨", "coala"], ["🦦", "lontra"], ["🐞", "joaninha"], ["⚗️", "balão"], ["🔬", "microscópio"],
+  ["🧪", "tubo de ensaio"], ["🌈", "arco-íris"], ["💡", "lâmpada"], ["🚀", "foguete"], ["⭐", "estrela"], ["🔥", "fogo"],
+].map(([emoji, nome]) => ({ emoji, nome }));

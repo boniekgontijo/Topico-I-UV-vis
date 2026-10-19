@@ -40,3 +40,19 @@ test("fechamento da rodada acontece uma vez só", () => {
   assert.equal(podeRevelar({ estado: "fechando", indice: 2 }, 2), true);
   assert.equal(podeRevelar({ estado: "revelada", indice: 2 }, 2), false);
 });
+
+import { infoRodada, AVATARES } from "../public/js/core/competicao.js";
+test("rodadas: 2 × 10 perguntas", () => {
+  assert.deepEqual(infoRodada(0, 10, 20), { rodada: 1, totalRodadas: 2, posNaRodada: 1, fimDaRodada: false, ultima: false });
+  assert.deepEqual(infoRodada(9, 10, 20), { rodada: 1, totalRodadas: 2, posNaRodada: 10, fimDaRodada: true, ultima: false });
+  assert.deepEqual(infoRodada(10, 10, 20), { rodada: 2, totalRodadas: 2, posNaRodada: 1, fimDaRodada: false, ultima: false });
+  assert.deepEqual(infoRodada(19, 10, 20), { rodada: 2, totalRodadas: 2, posNaRodada: 10, fimDaRodada: true, ultima: true });
+});
+test("rodadas: sala antiga sem porRodada vira uma rodada só", () => {
+  assert.deepEqual(infoRodada(2, undefined, 3), { rodada: 1, totalRodadas: 1, posNaRodada: 3, fimDaRodada: true, ultima: true });
+});
+test("avatares: ao menos 16, sem repetição, curtos", () => {
+  assert.ok(AVATARES.length >= 16);
+  assert.equal(new Set(AVATARES.map((a) => a.emoji)).size, AVATARES.length);
+  AVATARES.forEach((a) => { assert.ok(a.emoji.length <= 8); assert.ok(a.nome); });
+});
