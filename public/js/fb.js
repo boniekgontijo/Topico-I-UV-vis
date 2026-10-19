@@ -135,3 +135,17 @@ const porTurma = async (col, turma) =>
 export const lerAlunos = (turma) => porTurma("alunos", turma);
 export const lerAcessos = (turma) => porTurma("acessos", turma);
 export const lerRespostas = (turma) => porTurma("respostas", turma);
+
+// Quizzes da turma com jogadores e placar (para o painel)
+export async function lerQuizzes(turma) {
+  const salas = await porTurma("salas", turma);
+  return Promise.all(salas.map(async (s) => {
+    const [js, pl] = await Promise.all([
+      getDocs(collection(db, "salas", s.id, "jogadores")),
+      getDocs(collection(db, "salas", s.id, "placar")),
+    ]);
+    return { codigo: s.id, modo: s.modo ?? "individual", estado: s.estado, criadaEmMs: msDe(s.criadaEm), total: s.total,
+      jogadores: js.docs.map((d) => ({ uid: d.id, ...d.data() })),
+      placar: Object.fromEntries(pl.docs.map((d) => [d.id, d.data()])) };
+  }));
+}
