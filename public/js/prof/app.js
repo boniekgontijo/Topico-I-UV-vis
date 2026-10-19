@@ -38,7 +38,7 @@ function iniciarRotas() {
   iniciado = true;
   rotas({
     "": aba("#comp", async (a) => (await import("./telao.js")).telaNova(a)),
-    comp: aba("#comp", async (a) => (await import("./telao.js")).telaNova(a)),
+    comp: aba("#comp", async (a, [pre]) => (await import("./telao.js")).telaNova(a, { slides: pre === "slides" })),
     sala: aba("#comp", async (a, [c]) => (await import("./telao.js")).telaSala(a, c)),
     painel: aba("#painel", async (a) => (await import("./painel.js")).telaPainel(a)),
     perguntas: aba("#perguntas", async (a) => (await import("./banco.js")).telaBanco(a)),

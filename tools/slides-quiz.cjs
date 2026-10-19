@@ -88,7 +88,7 @@ const POR_RODADA = 10;
   r.addText("🏆 Até 1000 pts por acerto rápido · 2 rodadas · pódio final = 🍫", {
     x: 5.5, y: 6.6, w: 7.3, h: 0.6, fontSize: 15, bold: true, color: "000000", valign: "middle", margin: 0, isTextBox: true });
   r.addText(LINK.replace("https://", ""), { x: 0.6, y: 6.8, w: 4.3, h: 0.35, fontSize: 10, color: GRAY, align: "center", margin: 0, isTextBox: true });
-  r.addNotes(`Professor: abra ${SITE}professor.html no celular, aba Quiz → "Sequência dos slides" → Criar sala. ` +
+  r.addNotes(`Professor: abra ${SITE}professor.html#comp/slides no celular (já vem com as perguntas destes slides) → Criar sala. ` +
     `Os alunos que leram este QR entram sozinhos na sala. Quando todos aparecerem, toque em ▶ Começar.`);
 
   // ---------- rodadas ----------

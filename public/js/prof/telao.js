@@ -13,7 +13,8 @@ const parar = () => { desligar.forEach((f) => f()); desligar = []; };
 window.addEventListener("hashchange", () => { if (!location.hash.startsWith("#sala")) parar(); });
 
 // ---------- criar ----------
-export async function telaNova(el) {
+// telaNova(el, { slides: true }) = link direto professor.html#comp/slides (sequência dos slides já escolhida)
+export async function telaNova(el, { slides = false } = {}) {
   parar();
   const [blocos, bancoDoc] = await Promise.all([carregarJSON(IMG + "blocos.json"), fb.lerBancoCompleto("uvvis")]);
   const banco = bancoDoc?.questoes, sequencia = bancoDoc?.sequencia ?? [];
@@ -22,7 +23,7 @@ export async function telaNova(el) {
     h("a", { class: "btn", href: "#perguntas" }, "Ir para Perguntas")));
   const conta = (n) => banco.filter((q) => q.bloco === n).length;
   const caixas = blocos.map((b) => ({ n: b.n, el: h("input", { type: "checkbox", checked: true }) }));
-  const ordem = h("select", {},
+  const ordem = h("select", { onchange: () => { if (ordem.value === "slides") { nRodadas.value = "2"; porRodada.value = "10"; } } },
     sequencia.length ? h("option", { value: "slides" }, `Sequência dos slides (${sequencia.length} perguntas, ordem fixa)`) : null,
     h("option", { value: "sorteio" }, "Sortear perguntas agora"));
   const nRodadas = h("select", {}, [1, 2, 3].map((n) => h("option", { value: n, selected: n === 2 }, `${n}`)));
@@ -50,7 +51,9 @@ export async function telaNova(el) {
     await fb.salvarBanco(`sala-${codigo}`, qs); // gabarito desta sala, só o professor lê
     location.hash = `#sala/${codigo}`;
   };
-  limpar(el, h("h1", {}, "🏆 Novo quiz"),
+  if (slides && !sequencia.length) toast("A sequência dos slides não está carregada: vá à aba Perguntas e carregue o arquivo do quiz.", "erro");
+  limpar(el, h("h1", {}, slides && sequencia.length ? "🏆 Quiz dos slides" : "🏆 Novo quiz"),
+    slides && sequencia.length ? h("p", { class: "ajuda" }, `As ${sequencia.length} perguntas dos slides, na mesma ordem: confira o modo e o tempo e toque em Criar sala.`) : null,
     h("form", { class: "cartao", onsubmit: criar },
       h("h3", {}, "Blocos"),
       h("div", { class: "blocos-sel" }, blocos.map((b, i) => h("label", {}, caixas[i].el, `${b.n}. ${b.titulo} (${conta(b.n)})`))),
