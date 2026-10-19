@@ -137,6 +137,8 @@ input[type=range] { width: 100%; min-height: 36px; padding: 0; border: 0; accent
 .barra-tempo > div { height: 100%; background: var(--bato); transition: width .25s linear; }
 .codigo-input { font-size: 2rem; letter-spacing: .3em; text-align: center; font-weight: 800; }
 
-.avatares { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 12px; }
-.avatar { font-size: 2.2rem; min-height: 72px; border-radius: 14px; border: 2px solid var(--borda); background: #fff; cursor: pointer; }
+.avatares { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-top: 10px; }
+.avatar { font-size: 1.9rem; min-height: 58px; border-radius: 14px; border: 2px solid var(--borda); background: #fff; cursor: pointer; }
 .avatar:active { transform: scale(.95); border-color: var(--hipso); }
+.avatar.escolhida { border-color: var(--hipso); background: #E6F1FB; box-shadow: 0 0 0 3px var(--hipso); }
+.avatar:disabled { opacity: .25; cursor: default; filter: grayscale(1); }

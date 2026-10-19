@@ -51,10 +51,11 @@ test("rodadas: 2 × 10 perguntas", () => {
 test("rodadas: sala antiga sem porRodada vira uma rodada só", () => {
   assert.deepEqual(infoRodada(2, undefined, 3), { rodada: 1, totalRodadas: 1, posNaRodada: 3, fimDaRodada: true, ultima: true });
 });
-test("avatares: ao menos 16, sem repetição, curtos", () => {
-  assert.ok(AVATARES.length >= 16);
+test("avatares: ao menos 36 (turma de 25 com folga), sem repetição, com id estável", () => {
+  assert.ok(AVATARES.length >= 36);
   assert.equal(new Set(AVATARES.map((a) => a.emoji)).size, AVATARES.length);
-  AVATARES.forEach((a) => { assert.ok(a.emoji.length <= 8); assert.ok(a.nome); });
+  assert.equal(new Set(AVATARES.map((a) => a.id)).size, AVATARES.length);
+  AVATARES.forEach((a) => { assert.ok(a.emoji.length <= 8); assert.ok(a.nome); assert.match(a.id, /^a\d{2}$/); });
 });
 
 test("banco com sequência fixa dos slides é validado", () => {

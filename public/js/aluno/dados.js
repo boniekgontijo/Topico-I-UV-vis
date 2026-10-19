@@ -2,8 +2,11 @@
 // os exercícios continuam funcionando e só o registro é perdido.
 let fb = null;
 let falhou = false;
+let promessa = null;
 
-export async function conectar() {
+// pode ser chamada várias vezes: conecta uma vez só
+export const conectar = () => (promessa ??= conectarAgora());
+async function conectarAgora() {
   try {
     const m = await import("../fb.js");
     await m.iniciar();

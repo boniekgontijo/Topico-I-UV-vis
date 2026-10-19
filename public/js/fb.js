@@ -6,7 +6,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
 import {
   initializeFirestore, connectFirestoreEmulator, doc, getDoc, getDocs, setDoc, updateDoc, addDoc, collection,
-  query, where, onSnapshot, serverTimestamp, runTransaction,
+  query, where, onSnapshot, serverTimestamp, runTransaction, deleteDoc,
 } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 import { firebaseConfig, PROFESSOR_EMAIL, USAR_EMULADOR } from "./config.js";
 import { decidirFechamento, podeRevelar } from "./core/competicao.js";
@@ -38,13 +38,30 @@ export const uid = () => auth.currentUser?.uid;
 const eu = async () => auth.currentUser?.uid ?? (await signInAnonymously(auth)).user.uid;
 export const sairProfessor = () => signOut(auth);
 
-export async function salvarAluno({ nome, matricula, turma }) {
+export async function salvarAluno({ nome, matricula, turma, avatar }) {
   const ref = doc(db, "alunos", `${turma}_${matricula}`);
+  const extra = avatar ? { avatar } : {};
   try {
-    await updateDoc(ref, { nome, ultimoAcesso: serverTimestamp() });
+    await updateDoc(ref, { nome, ...extra, ultimoAcesso: serverTimestamp() });
   } catch {
-    await setDoc(ref, { nome, matricula, turma, primeiroAcesso: serverTimestamp(), ultimoAcesso: serverTimestamp() });
+    await setDoc(ref, { nome, matricula, turma, ...extra, primeiroAcesso: serverTimestamp(), ultimoAcesso: serverTimestamp() });
   }
+}
+
+// ---------- personagem da turma (um dono por símbolo) ----------
+// "dono" = código derivado de turma+matrícula: identifica o aluno sem expor a matrícula
+export async function donoDe(turma, matricula) {
+  const b = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(`${turma}:${matricula}`));
+  return [...new Uint8Array(b)].slice(0, 16).map((x) => x.toString(16).padStart(2, "0")).join("");
+}
+export const ouvirAvatares = (turma, cb) =>
+  onSnapshot(collection(db, "turmas", turma, "avatares"), (q) => cb(Object.fromEntries(q.docs.map((d) => [d.id, d.data().dono]))), () => cb(null));
+export async function reservarAvatar(turma, id, dono) {
+  await setDoc(doc(db, "turmas", turma, "avatares", id), { dono, uid: await eu() });
+}
+export async function liberarAvatar(turma, id) {
+  await eu();
+  await deleteDoc(doc(db, "turmas", turma, "avatares", id)).catch(() => {});
 }
 
 export async function registrarAcesso({ turma, matricula, pagina }) {

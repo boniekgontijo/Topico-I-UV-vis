@@ -2,7 +2,7 @@
 import { test, before, after, beforeEach } from "node:test";
 import { readFileSync } from "node:fs";
 import { initializeTestEnvironment, assertSucceeds, assertFails } from "@firebase/rules-unit-testing";
-import { doc, getDoc, getDocs, setDoc, updateDoc, addDoc, collection, serverTimestamp, Timestamp } from "firebase/firestore";
+import { doc, getDoc, getDocs, setDoc, updateDoc, addDoc, deleteDoc, collection, serverTimestamp, Timestamp } from "firebase/firestore";
 
 let env;
 before(async () => {
@@ -168,4 +168,19 @@ test("turma: aluno lê a sala atual da turma; só o professor define", async () 
   await assertFails(setDoc(doc(aluno(), "turmas/2026-2"), { salaAtual: "999999" }));
   await assertSucceeds(setDoc(doc(prof(), "turmas/2026-2"), { salaAtual: "222222" }));
   await assertFails(getDocs(collection(aluno(), "turmas")));
+});
+
+test("personagem da turma: um dono por símbolo; o dono pode trocar de celular e liberar", async () => {
+  const ref = (db) => doc(db, "turmas/2026-2/avatares/a01");
+  await assertSucceeds(setDoc(ref(aluno("u1")), { dono: "h-ana", uid: "u1" }));
+  await assertFails(setDoc(ref(aluno("u2")), { dono: "h-bia", uid: "u2" }));          // já escolhido
+  await assertSucceeds(setDoc(ref(aluno("u3")), { dono: "h-ana", uid: "u3" }));       // Ana em outro celular
+  await assertFails(deleteDoc(ref(aluno("u2"))));                                     // Bia não libera o da Ana
+  await assertSucceeds(getDocs(collection(aluno("u2"), "turmas/2026-2/avatares")));   // todos veem quais estão ocupados
+  await assertFails(setDoc(doc(aluno("u4"), "turmas/2026-2/avatares/a02"), { dono: "h", uid: "outro" })); // uid de outro
+  await assertSucceeds(deleteDoc(ref(aluno("u3"))));
+});
+
+test("registro do aluno guarda o símbolo", async () => {
+  await assertSucceeds(setDoc(doc(aluno(), "alunos/2026-2_123"), { ...dadosAluno, avatar: "🦊" }));
 });

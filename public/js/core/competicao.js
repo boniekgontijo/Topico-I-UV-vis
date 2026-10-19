@@ -53,10 +53,13 @@ export function infoRodada(indice, porRodada, total) {
   return { rodada, totalRodadas, posNaRodada, fimDaRodada: posNaRodada === n || ultima, ultima };
 }
 
-// Avatares que o aluno escolhe ao entrar no quiz
+// Personagens: cada aluno escolhe um no registro; na turma, cada personagem tem um só dono.
 export const AVATARES = [
   ["🦊", "raposa"], ["🐼", "panda"], ["🦉", "coruja"], ["🐙", "polvo"], ["🦁", "leão"], ["🐸", "sapo"],
   ["🐧", "pinguim"], ["🦄", "unicórnio"], ["🐢", "tartaruga"], ["🐝", "abelha"], ["🦖", "dinossauro"], ["🐬", "golfinho"],
-  ["🦜", "papagaio"], ["🐨", "coala"], ["🦦", "lontra"], ["🐞", "joaninha"], ["⚗️", "balão"], ["🔬", "microscópio"],
-  ["🧪", "tubo de ensaio"], ["🌈", "arco-íris"], ["💡", "lâmpada"], ["🚀", "foguete"], ["⭐", "estrela"], ["🔥", "fogo"],
-].map(([emoji, nome]) => ({ emoji, nome }));
+  ["🦜", "papagaio"], ["🐨", "coala"], ["🦦", "lontra"], ["🐞", "joaninha"], ["🐯", "tigre"], ["🐺", "lobo"],
+  ["🦒", "girafa"], ["🦓", "zebra"], ["🐘", "elefante"], ["🦩", "flamingo"], ["🦋", "borboleta"], ["🐳", "baleia"],
+  ["🦀", "caranguejo"], ["🦔", "ouriço"], ["🐿️", "esquilo"], ["🦥", "bicho-preguiça"],
+  ["⚗️", "balão"], ["🔬", "microscópio"], ["🧪", "tubo de ensaio"], ["🌈", "arco-íris"], ["💡", "lâmpada"],
+  ["🚀", "foguete"], ["⭐", "estrela"], ["🔥", "fogo"], ["🧲", "ímã"], ["💎", "diamante"], ["🌋", "vulcão"], ["☄️", "cometa"],
+].map(([emoji, nome], i) => ({ id: `a${String(i + 1).padStart(2, "0")}`, emoji, nome }));

@@ -3,7 +3,7 @@ import { h, limpar } from "../ui/dom.js";
 export function topo(aluno, voltar) {
   return h("header", { class: "topo" },
     h("div", {}, h("div", { class: "marca" }, "UV-", h("b", {}, "vis")),
-      h("div", { class: "quem" }, `${aluno.nome} · ${aluno.turma}`)),
+      h("div", { class: "quem" }, `${aluno.avatar ?? ""} ${aluno.nome} · ${aluno.turma}`.trim())),
     voltar ? h("a", { class: "btn sec voltar", href: voltar }, "← Voltar") : null);
 }
 
@@ -18,5 +18,5 @@ export function telaMenu(el, aluno, aoSair) {
       tile("#casa", "t-casa", "🏠", "Para casa", "Exercícios por tema"),
       tile("#sim", "t-sim", "📈", "Simuladores", "Mexa no espectro")),
     h("p", { class: "ajuda centro" }, "Não é você? ",
-      h("a", { href: "#", onclick: (e) => { e.preventDefault(); aoSair(); } }, "Trocar de aluno")));
+      h("a", { href: "#", onclick: (e) => { e.preventDefault(); aoSair(); } }, "Trocar de aluno / personagem")));
 }

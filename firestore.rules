@@ -26,12 +26,12 @@ service cloud.firestore {
       allow read: if isProf();
       allow create: if logado()
         && id == request.resource.data.turma + "_" + request.resource.data.matricula
-        && soCampos(["nome", "matricula", "turma", "primeiroAcesso", "ultimoAcesso"])
+        && soCampos(["nome", "matricula", "turma", "avatar", "primeiroAcesso", "ultimoAcesso"])
         && request.resource.data.nome is string && request.resource.data.nome.size() <= 80
         && agora("primeiroAcesso") && agora("ultimoAcesso");
       // troca de celular: outro uid pode atualizar nome e último acesso
       allow update: if logado()
-        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(["nome", "ultimoAcesso"])
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(["nome", "avatar", "ultimoAcesso"])
         && request.resource.data.nome is string && request.resource.data.nome.size() <= 80
         && agora("ultimoAcesso");
       allow write: if isProf();
@@ -61,6 +61,17 @@ service cloud.firestore {
     match /turmas/{turma} {
       allow get: if logado();
       allow write: if isProf();
+
+      // personagem escolhido no registro: um dono por símbolo na turma.
+      // "dono" é um código derivado da matrícula (não a matrícula): o mesmo aluno pode reassumir de outro celular.
+      match /avatares/{id} {
+        allow read: if logado();
+        allow create: if logado() && soCampos(["dono", "uid"]) && texto(request.resource.data.dono, 64)
+          && request.resource.data.uid == request.auth.uid;
+        allow update: if logado() && soCampos(["dono", "uid"]) && request.resource.data.dono == resource.data.dono
+          && request.resource.data.uid == request.auth.uid;
+        allow delete: if isProf() || (logado() && resource.data.uid == request.auth.uid);
+      }
     }
 
     // gabarito da competição: só o professor

@@ -35,7 +35,8 @@ export async function telaCompeticao(el, aluno, codigo) {
     h("p", {}, `Sala ${codigo} não encontrada.`), h("a", { class: "btn", href: "#quiz" }, "Digitar outro código")));
   const equipe = s0.modo === "equipe" ? ls.get(`equipe:${codigo}`) : null;
   if (s0.modo === "equipe" && !equipe) return formEquipe(el, aluno, codigo);
-  const avatar = ls.get(`avatar:${codigo}`);
+  // individual: o personagem do registro; equipe: o símbolo que a equipe escolhe nesta sala
+  const avatar = equipe ? ls.get(`avatar:${codigo}`) : aluno.avatar;
   if (!avatar) return escolherAvatar(el, aluno, codigo, equipe);
   // não espera: se a rede cair, o Firestore envia quando voltar
   let erroEntrada = null;

@@ -73,8 +73,8 @@ const POR_RODADA = 10;
   r.addImage({ data: qr, x: 0.6, y: 2.45, w: 4.3, h: 4.3, altText: "QR code de entrada no quiz" });
   const passos = [
     ["1", "Aponte a câmera para o QR code", "funciona no 4G ou no Wi-Fi"],
-    ["2", "Digite seu nome e matrícula", "só na primeira vez — sem senha"],
-    ["3", "Escolha seu avatar 🦊🐼🦉", "ele aparece no ranking e no pódio"],
+    ["2", "Digite nome e matrícula", "só na primeira vez — sem senha"],
+    ["3", "Escolha seu personagem 🦊🐼🦉", "cada um tem um só dono na turma"],
     ["4", "Aguarde a pergunta no celular", "toque na resposta antes do tempo acabar"],
   ];
   passos.forEach(([n, t, sub], i) => {
