@@ -84,3 +84,15 @@ test("absortividade a partir de A e diluição C₁V₁ = C₂V₂", () => {
   perto(uv.absortividade(0.62, 1.0, 5e-5), 12400, 1e-6);
   perto(uv.diluicaoV1(100, 5, 50), 2.5, 1e-12);
 });
+
+test("padrões simulados da curva analítica", () => {
+  const p = uv.padroesCurva({ niveis: [2, 4, 6, 8, 10], a: 0.0817, b: -0.0031, sigma: 0 });
+  assert.equal(p.length, 5);
+  p.forEach(({ c, A }) => perto(A, 0.0817 * c - 0.0031, 1e-12));
+  const curvo = uv.padroesCurva({ niveis: [2, 20], a: 0.0817, b: 0, sigma: 0, curvatura: 0.02 });
+  perto(curvo[0].A, 0.0817 * 2 / (1 + 0.02 * 2), 1e-12);
+  assert.ok(curvo[1].A < 0.0817 * 20);
+  let i = 0; const fixo = () => [0.9, 0.1][i++ % 2];
+  const r = uv.padroesCurva({ niveis: [5], a: 0.1, b: 0, sigma: 0.005, rnd: fixo });
+  assert.ok(Math.abs(r[0].A - 0.5) < 0.03);
+});

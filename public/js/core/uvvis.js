@@ -85,3 +85,12 @@ export const diferenca = (a, b) => a - b;
 export const lambdaDeEnergiaKJmol = (kJ) => (H * C * NA) / (kJ * 1000) * 1e9;
 export const absortividade = (A, b, c) => A / (b * c);
 export const diluicaoV1 = (C1, C2, V2) => (C2 * V2) / C1; // C₁V₁ = C₂V₂
+
+// Padrões simulados para o simulador de curva: A = a·c/(1 + k·c) + b + ruído gaussiano (Box-Muller)
+export function padroesCurva({ niveis, a, b, sigma = 0.005, curvatura = 0, rnd = Math.random }) {
+  const ruido = () => {
+    const u = Math.max(rnd(), 1e-12), v = rnd();
+    return sigma * Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+  };
+  return niveis.map((c) => ({ c, A: (a * c) / (1 + curvatura * c) + b + (sigma ? ruido() : 0) }));
+}
