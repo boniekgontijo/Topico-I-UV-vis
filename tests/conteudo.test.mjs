@@ -10,8 +10,10 @@ const PRIV = new URL("../privado/uvvis-competicao.json", import.meta.url);
 const blocos = ler(new URL("blocos.json", BASE));
 const casa = ler(new URL("casa.json", BASE)).questoes;
 const grupo = ler(new URL("grupo.json", BASE)).estacoes;
-assert.ok(existsSync(PRIV), "crie privado/uvvis-competicao.json");
-const comp = ler(PRIV).questoes;
+// No GitHub (SEM_PRIVADO=1) o banco do quiz não existe: ele fica só no computador do professor.
+const semPrivado = process.env.SEM_PRIVADO === "1";
+assert.ok(semPrivado || existsSync(PRIV), "crie privado/uvvis-competicao.json");
+const comp = semPrivado ? [] : ler(PRIV).questoes;
 const todasGrupo = grupo.flatMap((e) => e.questoes);
 const todas = [...casa, ...todasGrupo, ...comp];
 
@@ -51,7 +53,7 @@ test("casa: ≥ 8 questões por bloco", () => {
   for (let b = 1; b <= 10; b++) assert.ok(casa.filter((q) => q.bloco === b).length >= 8, `bloco ${b}`);
 });
 
-test("competição: só múltipla escolha, ≥ 40, ≥ 4 por bloco, textos curtos", () => {
+test("quiz: só múltipla escolha, ≥ 40, ≥ 4 por bloco, textos curtos", { skip: semPrivado }, () => {
   assert.ok(comp.length >= 40);
   for (const q of comp) {
     assert.equal(q.tipo, "mc", q.id);
