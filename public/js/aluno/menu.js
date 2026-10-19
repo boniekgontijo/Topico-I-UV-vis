@@ -13,7 +13,7 @@ export function telaMenu(el, aluno, aoSair) {
   limpar(el,
     topo(aluno),
     h("div", { class: "grade" },
-      tile("#competicao", "t-comp", "🏆", "Competição", "Ao vivo, em sala"),
+      tile("#quiz", "t-comp", "🏆", "Quiz", "Ao vivo, em sala"),
       tile("#grupo", "t-grupo", "👥", "Em grupo", "Estações do Workshop"),
       tile("#casa", "t-casa", "🏠", "Para casa", "Exercícios por tema"),
       tile("#sim", "t-sim", "📈", "Simuladores", "Mexa no espectro")),

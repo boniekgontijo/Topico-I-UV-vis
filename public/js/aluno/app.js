@@ -19,7 +19,8 @@ const protegido = (fn) => async (params, nome) => {
     location.hash = location.hash && location.hash !== "#" ? location.hash : "#menu";
     window.dispatchEvent(new HashChangeEvent("hashchange"));
   });
-  conexao.then(() => registrarAcesso({ turma: aluno.turma, matricula: aluno.matricula, pagina: `#${[nome, ...params].join("/")}` }));
+  await conexao;
+  registrarAcesso({ turma: aluno.turma, matricula: aluno.matricula, pagina: `#${[nome, ...params].join("/")}` });
   try { await fn(params); } catch (e) {
     console.error(e);
     limpar(el, h("div", { class: "cartao" }, h("p", {}, "Algo deu errado ao abrir esta tela."), h("a", { class: "btn", href: "#menu" }, "Voltar ao menu")));
@@ -37,5 +38,6 @@ rotas({
   casa: protegido(([n]) => (n ? telaCasaBloco(el, aluno, n) : telaCasaLista(el, aluno))),
   grupo: protegido(([id]) => (id ? telaGrupoEstacao(el, aluno, id) : telaGrupoLista(el, aluno))),
   sim: protegido(sim),
-  competicao: protegido(competicao),
+  quiz: protegido(competicao),
+  competicao: protegido(competicao), // endereço antigo
 });

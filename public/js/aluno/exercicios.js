@@ -5,6 +5,7 @@ import { embaralharQuestao } from "../core/embaralhar.js";
 import { topo } from "./menu.js";
 import { salvarResposta } from "./dados.js";
 import { matriculaValida } from "./identificacao.js";
+import { incentivo } from "../core/mensagens.js";
 
 const BASE = "conteudo/uvvis/";
 let cache = {};
@@ -127,7 +128,7 @@ function executar(el, aluno, cfg) {
       }
       const certoTxt = q.tipo === "num" ? ` Resposta: ${formatarNumeroBR(q.resposta)} ${q.unidade ?? ""}` : "";
       limpar(fb, h("div", { class: `feedback ${r.correta ? "ok" : "nao"}` },
-        h("b", {}, r.correta ? "✓ Certo!" : "✗ Ainda não."),
+        h("b", {}, r.correta ? `✓ ${incentivo(true)}` : `💡 ${incentivo(false)}`),
         h("p", { html: q.explicacao + (r.correta ? certoTxt : "") }),
         h("div", { class: "acoes" },
           !r.correta ? h("button", { class: "btn sec", onclick: () => mostrar() }, "Tentar de novo") : null,
@@ -163,7 +164,8 @@ function executar(el, aluno, cfg) {
     limpar(el, topo(aluno, cfg.voltar), h("h2", {}, cfg.titulo),
       h("div", { class: "cartao centro" },
         h("div", { class: "grande" }, certas === qs.length ? "🏅" : certas >= qs.length / 2 ? "👏" : "💪"),
-        h("p", {}, h("b", {}, `${certas} de ${qs.length}`), " certas na primeira tentativa"),
+        h("p", {}, h("b", {}, `${certas} de ${qs.length}`), " na primeira tentativa"),
+        h("p", { class: "ajuda" }, certas === qs.length ? "Perfeito! Você domina este tema." : "Cada revisão fixa um pouco mais. Que tal refazer?"),
         h("div", { class: "acoes", style: { display: "flex", gap: "8px", justifyContent: "center" } },
           h("button", { class: "btn sec", onclick: () => { i = 0; mostrar(); } }, "Refazer"),
           h("a", { class: "btn", href: cfg.voltar }, "Voltar"))));

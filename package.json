@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "test": "node --test \"tests/*.test.mjs\"",
-    "servir": "python3 -m http.server 8080 -d public",
+    "servir": "python3 tools/servir.py 8080",
     "test:regras": "firebase emulators:exec --only firestore --project demo-uvvis \"node --test tests/regras.spec.mjs\"",
     "emulador": "firebase emulators:start --only firestore,auth --project demo-uvvis"
   },

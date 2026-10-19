@@ -1,0 +1,36 @@
+/* Área do professor e telão (projetor) */
+.app-prof { max-width: 1200px; margin: 0 auto; padding: 16px 24px 48px; }
+.abas { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 12px; }
+.abas a { padding: 10px 16px; border-radius: 10px; text-decoration: none; color: var(--texto); background: #EEF1F8; font-weight: 700; }
+.abas a.ativa { background: var(--hipso); color: #fff; }
+.abas .quem { margin-left: auto; }
+.telao { font-size: 1.4rem; }
+.telao .enunciado-tela { font-size: 2.2rem; font-weight: 800; text-align: center; margin: 12px 0 18px; line-height: 1.25; }
+.telao .figura { max-height: 32vh; width: auto; }
+.t-alts { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.t-alt { color: #fff; border-radius: 14px; padding: 18px 22px; font-size: 1.6rem; font-weight: 700; display: flex; gap: 14px; align-items: center; min-height: 90px; }
+.t-alt.apagada { opacity: .25; }
+.t-alt.certa { outline: 6px solid #1B1B1F; }
+.lobby { display: grid; grid-template-columns: auto 1fr; gap: 32px; align-items: start; }
+.lobby .qr svg { width: min(42vh, 380px); height: auto; background: #fff; border-radius: 12px; }
+.codigo-grande { font-size: 4.5rem; font-weight: 900; letter-spacing: .12em; color: var(--azul-escuro); line-height: 1; }
+.nomes { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.nomes span { background: #fff; border: 2px solid var(--borda); border-radius: 99px; padding: 6px 14px; font-weight: 700; font-size: 1.1rem; }
+.relogio { font-size: 4rem; font-weight: 900; color: var(--bato); text-align: center; font-variant-numeric: tabular-nums; }
+.barras { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; align-items: end; height: 220px; margin: 16px 0; }
+.barras div { border-radius: 10px 10px 0 0; color: #fff; font-weight: 900; text-align: center; padding-top: 6px; min-height: 36px; font-size: 1.4rem; }
+.ranking { list-style: none; padding: 0; margin: 0; font-size: 1.4rem; }
+.ranking li { display: flex; justify-content: space-between; padding: 10px 16px; background: #fff; border-radius: 10px; margin: 6px 0; box-shadow: var(--sombra); }
+.podio { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; align-items: end; text-align: center; margin: 24px 0; }
+.podio .deg { border-radius: 14px 14px 0 0; color: #fff; font-weight: 900; padding: 16px 8px; }
+.podio .nome { font-size: 1.8rem; font-weight: 800; margin-bottom: 8px; }
+.p1 { background: linear-gradient(#FFD54F, #D4A017); height: 260px; } .p2 { background: linear-gradient(#CFD8DC, #90A4AE); height: 190px; } .p3 { background: linear-gradient(#FFAB91, #BF6A3D); height: 140px; }
+.linha-acoes { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 16px; }
+table.tab { width: 100%; border-collapse: collapse; background: #fff; border-radius: 12px; overflow: hidden; font-size: .95rem; }
+.tab th, .tab td { padding: 8px 10px; border-bottom: 1px solid var(--borda); text-align: left; white-space: nowrap; }
+.tab th { background: #F2F4FA; cursor: pointer; position: sticky; top: 0; }
+.rolar { overflow-x: auto; }
+.blocos-sel { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 6px; }
+.blocos-sel label { font-weight: 400; display: flex; gap: 8px; align-items: center; margin: 0; }
+.blocos-sel input { width: auto; min-height: 0; }
+@media (max-width: 800px) { .lobby { grid-template-columns: 1fr; } .telao .enunciado-tela { font-size: 1.5rem; } .t-alt { font-size: 1.1rem; } }

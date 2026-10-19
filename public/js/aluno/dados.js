@@ -5,8 +5,9 @@ let falhou = false;
 
 export async function conectar() {
   try {
-    fb = await import("../fb.js");
-    await fb.iniciar();
+    const m = await import("../fb.js");
+    await m.iniciar();
+    fb = m; // só fica "online" depois do login anônimo
     return true;
   } catch (e) {
     console.warn("Firebase indisponível:", e);

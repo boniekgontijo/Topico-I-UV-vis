@@ -113,3 +113,8 @@ test("professor cria sala, grava placar e lê respostas", async () => {
   await semRegras((db) => setDoc(doc(db, "salas/111111/respostas/2_u1"), { uid: "u1" }));
   await assertSucceeds(getDoc(doc(prof(), "salas/111111/respostas/2_u1")));
 });
+
+test("conta Google sem e-mail verificado não é professor", async () => {
+  const db = env.authenticatedContext("y", { email: "boniek@ufg.br", email_verified: false }).firestore();
+  await assertFails(getDoc(doc(db, "bancos/uvvis")));
+});

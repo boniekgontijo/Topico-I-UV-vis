@@ -83,13 +83,13 @@ input:focus, select:focus { outline: none; border-color: var(--hipso); }
   border: 2px solid var(--borda); background: #fff; color: var(--texto);
 }
 .alt.certa { border-color: var(--nota); background: #E3F7EC; }
-.alt.errada { border-color: var(--erro); background: #FDE7E7; }
+.alt.errada { border-color: #F0A500; background: #FFF6E0; }
 .linha-num { display: flex; gap: 8px; align-items: center; }
 .linha-num input { flex: 1; }
 .unidade { color: var(--suave); white-space: nowrap; }
 .feedback { margin-top: 14px; padding: 14px; border-radius: 12px; border-left: 6px solid; }
 .feedback.ok { background: #E3F7EC; border-color: var(--nota); }
-.feedback.nao { background: #FDE7E7; border-color: var(--erro); }
+.feedback.nao { background: #FFF6E0; border-color: #F0A500; }
 .feedback .acoes { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
 .eq { display: inline-block; background: var(--eq); border: 2px solid #B38F00; border-radius: 8px; padding: 4px 10px; font-weight: 700; }
 
@@ -118,3 +118,21 @@ input[type=range] { width: 100%; min-height: 36px; padding: 0; border: 0; accent
 .contador { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--borda); }
 .contador .n { min-width: 2ch; text-align: center; font-weight: 800; font-size: 1.1rem; }
 .contador button { width: 44px; height: 44px; border-radius: 10px; border: 1px solid var(--borda); background: #fff; font-size: 1.3rem; cursor: pointer; }
+
+/* competição */
+.k-alts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+.k-alt {
+  min-height: 110px; border: 0; border-radius: 14px; color: #fff; font: inherit; font-weight: 700; padding: 10px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; cursor: pointer; text-align: center;
+  box-shadow: 0 4px 0 rgba(0,0,0,.18);
+}
+.k-alt .forma { font-size: 1.8rem; line-height: 1; }
+.k-alt:active { transform: translateY(2px); box-shadow: none; }
+.k-alt:disabled { opacity: .35; }
+.k-alt.escolhida { opacity: 1; outline: 4px solid #1B1B1F; }
+.k0 { background: var(--k0); } .k1 { background: var(--k1); } .k2 { background: var(--k2); } .k3 { background: var(--k3); }
+.status-grande { text-align: center; padding: 28px 12px; }
+.status-grande .grande { font-size: 3.2rem; }
+.barra-tempo { height: 10px; background: #E4E7F0; border-radius: 99px; overflow: hidden; }
+.barra-tempo > div { height: 100%; background: var(--bato); transition: width .25s linear; }
+.codigo-input { font-size: 2rem; letter-spacing: .3em; text-align: center; font-weight: 800; }

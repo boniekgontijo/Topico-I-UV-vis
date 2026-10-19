@@ -8,8 +8,8 @@ service cloud.firestore {
     function logado() { return request.auth != null; }
     function isProf() {
       return logado()
-        && request.auth.token.email == "boniek@ufg.br"
-        && request.auth.token.email_verified == true;
+        && request.auth.token.get("email", "") == "boniek@ufg.br"
+        && request.auth.token.get("email_verified", false) == true;
     }
     function agora(campo) { return request.resource.data[campo] == request.time; }
     function soCampos(lista) { return request.resource.data.keys().hasOnly(lista); }

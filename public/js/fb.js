@@ -1,7 +1,8 @@
 // Toda a comunicação com o Firebase (Auth + Firestore) passa por aqui.
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
 import {
-  getAuth, connectAuthEmulator, signInAnonymously, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut,
+  initializeAuth, browserLocalPersistence, browserPopupRedirectResolver, connectAuthEmulator, signInAnonymously, signInWithPopup, signInWithCredential, GoogleAuthProvider, onAuthStateChanged, signOut,
+  browserSessionPersistence,
 } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
 import {
   initializeFirestore, connectFirestoreEmulator, doc, getDoc, getDocs, setDoc, updateDoc, addDoc, collection,
@@ -10,7 +11,12 @@ import {
 import { firebaseConfig, PROFESSOR_EMAIL, USAR_EMULADOR } from "./config.js";
 
 const app = initializeApp(USAR_EMULADOR ? { apiKey: "demo", projectId: "demo-uvvis", authDomain: "localhost" } : firebaseConfig);
-const auth = getAuth(app);
+// Professor: sessão só da aba (não interfere na sessão anônima de aluno no mesmo navegador).
+const ehProfessor = /professor\.html$/.test(location.pathname);
+const auth = initializeAuth(app, {
+  persistence: ehProfessor ? browserSessionPersistence : browserLocalPersistence,
+  popupRedirectResolver: browserPopupRedirectResolver,
+});
 // long polling automático: mais estável em redes móveis/proxies
 const db = initializeFirestore(app, { experimentalAutoDetectLongPolling: true });
 if (USAR_EMULADOR) {
@@ -26,6 +32,9 @@ export async function iniciar() {
   return { uid: u.uid };
 }
 export const uid = () => auth.currentUser?.uid;
+// se a sessão anônima cair (ex.: dados do navegador limpos), entra de novo antes de escrever
+const eu = async () => auth.currentUser?.uid ?? (await signInAnonymously(auth)).user.uid;
+export const sairProfessor = () => signOut(auth);
 
 export async function salvarAluno({ nome, matricula, turma }) {
   const ref = doc(db, "alunos", `${turma}_${matricula}`);
@@ -36,12 +45,12 @@ export async function salvarAluno({ nome, matricula, turma }) {
   }
 }
 
-export function registrarAcesso({ turma, matricula, pagina }) {
-  return addDoc(collection(db, "acessos"), { turma, matricula, pagina, uid: uid(), quando: serverTimestamp() }).catch(() => {});
+export async function registrarAcesso({ turma, matricula, pagina }) {
+  return addDoc(collection(db, "acessos"), { turma, matricula, pagina, uid: await eu(), quando: serverTimestamp() }).catch(() => {});
 }
 
-export function salvarResposta({ tipo, turma, atividade, questaoId, bloco, correta, tentativa, equipe, membros }) {
-  const r = { tipo, turma, atividade, questaoId, bloco, correta, tentativa, membros, uid: uid(), quando: serverTimestamp() };
+export async function salvarResposta({ tipo, turma, atividade, questaoId, bloco, correta, tentativa, equipe, membros }) {
+  const r = { tipo, turma, atividade, questaoId, bloco, correta, tentativa, membros, uid: await eu(), quando: serverTimestamp() };
   if (equipe) r.equipe = equipe;
   return addDoc(collection(db, "respostas"), r);
 }
@@ -51,19 +60,31 @@ const msDe = (t) => (t?.toMillis ? t.toMillis() : null);
 const salaDe = (s) => s.exists() ? { codigo: s.id, ...s.data(), abertaEmMs: msDe(s.data().abertaEm), fechaEmMs: msDe(s.data().fechaEm) } : null;
 
 export const ouvirSala = (codigo, cb) => onSnapshot(doc(db, "salas", codigo), (s) => cb(salaDe(s)), () => cb(null));
-export const entrarSala = (codigo, { nome, matricula }) =>
-  setDoc(doc(db, "salas", codigo, "jogadores", uid()), { nome, matricula, entrouEm: serverTimestamp() }).catch((e) => {
+export async function entrarSala(codigo, { nome, matricula }) {
+  const u = await eu();
+  return setDoc(doc(db, "salas", codigo, "jogadores", u), { nome, matricula, entrouEm: serverTimestamp() }).catch((e) => {
     if (e.code !== "permission-denied") throw e; // já tinha entrado
   });
-export const responder = (codigo, indice, alternativa) =>
-  setDoc(doc(db, "salas", codigo, "respostas", `${indice}_${uid()}`), { uid: uid(), indice, alternativa, quando: serverTimestamp() });
+}
+export async function responder(codigo, indice, alternativa) {
+  const u = await eu();
+  return setDoc(doc(db, "salas", codigo, "respostas", `${indice}_${u}`), { uid: u, indice, alternativa, quando: serverTimestamp() });
+}
 export const ouvirPlacar = (codigo, cb) =>
   onSnapshot(collection(db, "salas", codigo, "placar"), (q) => cb(Object.fromEntries(q.docs.map((d) => [d.id, d.data()]))));
 
 // ---------- professor ----------
+export async function professorLogado() {
+  const u = await usuarioAtual();
+  return u && !u.isAnonymous && u.email === PROFESSOR_EMAIL ? u.email : null;
+}
 export async function entrarProfessor() {
   let u = await usuarioAtual();
-  if (!u || u.isAnonymous) u = (await signInWithPopup(auth, new GoogleAuthProvider())).user;
+  if (!u || u.isAnonymous) {
+    u = USAR_EMULADOR // no emulador, login Google simulado com o e-mail do professor
+      ? (await signInWithCredential(auth, GoogleAuthProvider.credential(JSON.stringify({ sub: "prof-local", email: PROFESSOR_EMAIL, email_verified: true })))).user
+      : (await signInWithPopup(auth, new GoogleAuthProvider())).user;
+  }
   if (u.email !== PROFESSOR_EMAIL) { await signOut(auth); throw new Error("acesso restrito"); }
   return { email: u.email };
 }
