@@ -1,11 +1,13 @@
-"""Gera o conteúdo de IV a partir de biblioteca.py:
-- public/conteudo/iv/compostos.json  (bandas já com a impressão digital, fórmula, nº de C, insaturações)
-- public/conteudo/iv/estruturas/<id>.png  (preto, sem destaque, sem nome)
+"""Gera o conteúdo de IV a partir de biblioteca.py, SEM entregar respostas no que é público:
+- public/conteudo/iv/espectros.json   {s<hash>: bandas}            (só bandas; id opaco)
+- public/conteudo/iv/estruturas/e<hash>.png                         (preto, sem destaque, nome opaco)
+- privado/iv-compostos.json           nomes, funções, fórmulas, ids opacos, bandas e bandasSala
+  (bandasSala = mesmas bandas principais com outra impressão digital: o quiz de sala não casa com o espectro de casa)
 - ../Aula_IV/quiz_figs/espectro_<id>.png  (para os slides)
 - tests/fixtures/iv-amostra.json  (valores de %T para conferir o desenho em JavaScript)
 Uso: python3 tools/iv/gerar.py
 """
-import json, pathlib, sys
+import hashlib, json, pathlib, shutil, sys
 import numpy as np
 from rdkit import Chem
 from rdkit.Chem import rdMolDescriptors
@@ -19,6 +21,11 @@ from biblioteca import COMPOSTOS, CANDIDATOS_EXTRA  # noqa: E402
 SAIDA = RAIZ / "public/conteudo/iv"
 EST = SAIDA / "estruturas"
 FIGS = RAIZ.parent / "Aula_IV/quiz_figs"
+
+
+SAL = "imia-iv-2026"  # muda os ids opacos se precisar
+def opaco(prefixo, i):
+    return prefixo + hashlib.sha256(f"{SAL}:{prefixo}:{i}".encode()).hexdigest()[:10]
 
 
 def ruido_digital(seed, n=14, lo=1450, hi=650, amp=0.12):
@@ -79,29 +86,39 @@ def figura_espectro(bandas, arq):
 
 
 def main():
-    EST.mkdir(parents=True, exist_ok=True)
+    if EST.exists():
+        shutil.rmtree(EST)  # remove PNGs antigos (com nome legível)
+    EST.mkdir(parents=True)
     FIGS.mkdir(parents=True, exist_ok=True)
-    saida = {}
+    (SAIDA / "compostos.json").unlink(missing_ok=True)
+    meta, espectros = {}, {}
+    arred = lambda bs: [[round(v, 2) if isinstance(v, float) else v for v in b] for b in bs]
     for i, c in COMPOSTOS.items():
-        bandas = [list(b) for b in c["bandas"]] + [list(b) for b in ruido_digital(c["seed"])]
+        bandas = arred([list(b) for b in c["bandas"]] + [list(b) for b in ruido_digital(c["seed"])])
+        bandas_sala = arred([list(b) for b in c["bandas"]] + [list(b) for b in ruido_digital(c["seed"] + 1000)])
         formula, nC, ins = dados(c["smiles"])
-        saida[i] = dict(id=i, nome=c["nome"], funcao=c["funcao"], familia=c["familia"], formula=formula, nC=nC,
-                        insaturacoes=ins, grupo=bool(c["grupo"]), diagnostico=c["diagnostico"],
-                        estrutura=f"estruturas/{i}.png", bandas=[[round(v, 2) if isinstance(v, float) else v for v in b] for b in bandas])
-        estrutura(c["smiles"], EST / f"{i}.png")
-        figura_espectro(saida[i]["bandas"], FIGS / f"espectro_{i}.png")
+        est_id, esp_id = opaco("e", i), opaco("s", i)
+        meta[i] = dict(id=i, nome=c["nome"], funcao=c["funcao"], familia=c["familia"], formula=formula, nC=nC, insaturacoes=ins,
+                       grupo=bool(c["grupo"]), diagnostico=c["diagnostico"], estId=est_id, espId=esp_id, bandas=bandas, bandasSala=bandas_sala)
+        espectros[esp_id] = bandas
+        estrutura(c["smiles"], EST / f"{est_id}.png")
+        figura_espectro(bandas, FIGS / f"espectro_{i}.png")
+        figura_espectro(bandas_sala, FIGS / f"espectro_sala_{i}.png")  # o mesmo que o celular mostra no quiz
     extras = {}
     for i, smi in CANDIDATOS_EXTRA.items():
         formula, nC, ins = dados(smi)
-        extras[i] = dict(id=i, formula=formula, nC=nC, insaturacoes=ins, estrutura=f"estruturas/{i}.png")
-        estrutura(smi, EST / f"{i}.png")
-    (SAIDA / "compostos.json").write_text(json.dumps({"compostos": saida, "extras": extras}, ensure_ascii=False))
+        extras[i] = dict(id=i, formula=formula, nC=nC, insaturacoes=ins, estId=opaco("e", i))
+        estrutura(smi, EST / f"{extras[i]['estId']}.png")
+    (SAIDA / "espectros.json").write_text(json.dumps(dict(sorted(espectros.items()))))
+    (RAIZ / "privado").mkdir(exist_ok=True)
+    (RAIZ / "privado/iv-compostos.json").write_text(json.dumps({"compostos": meta, "extras": extras}, ensure_ascii=False))
     xs = np.linspace(3900, 500, 20)
-    amostra = {i: [[round(float(x), 2), round(float(t), 4)] for x, t in zip(xs, transm(xs, saida[i]["bandas"]))]
+    amostra = {meta[i]["espId"]: [[round(float(x), 2), round(float(t), 4)] for x, t in zip(xs, transm(xs, meta[i]["bandas"]))]
                for i in ("2-pentanona", "butironitrila")}
     (RAIZ / "tests/fixtures").mkdir(parents=True, exist_ok=True)
-    (RAIZ / "tests/fixtures/iv-amostra.json").write_text(json.dumps(amostra))
-    print(f"{len(saida)} compostos, {len(extras)} extras → {SAIDA}")
+    (RAIZ / "tests/fixtures/iv-amostra.json").write_text(json.dumps({"ids": {"2-pentanona": meta["2-pentanona"]["espId"],
+        "butironitrila": meta["butironitrila"]["espId"]}, "pontos": amostra}))
+    print(f"{len(meta)} compostos, {len(extras)} extras → {SAIDA} (público opaco) + privado/iv-compostos.json")
 
 
 if __name__ == "__main__":

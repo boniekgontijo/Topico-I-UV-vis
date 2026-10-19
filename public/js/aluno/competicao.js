@@ -9,9 +9,7 @@ import { FORMAS_QUIZ as FORMAS } from "../core/competicao.js";
 import { MODULOS } from "../core/modulo.js";
 import { alternativa } from "../ui/alternativa.js";
 import { desenharEspectroIV } from "../ui/espectro-iv.js";
-import { carregarJSON } from "../ui/dom.js";
 export { FORMAS };
-const compostosIV = {}; // cache do compostos.json do IV
 let desligar = [];
 let geracao = 0; // muda a cada navegação: telas antigas param depois de um await
 const parar = () => { geracao++; desligar.forEach((f) => f()); desligar = []; };
@@ -47,16 +45,15 @@ export async function telaCompeticao(el, aluno, codigo) {
   // não espera: se a rede cair, o Firestore envia quando voltar
   let erroEntrada = null;
   fb.entrarSala(codigo, equipe ? { nome: equipe.nome, matricula: aluno.matricula, membros: equipe.membros, avatar } : { ...aluno, avatar })
-    .catch((e) => { console.error(e); erroEntrada = e.code ?? e.message; render(); });
+    .catch((e) => { console.error(e); erroEntrada = e.code ?? e.message; setTimeout(() => render(), 0); });
 
   const minhas = ls.get(`comp:${codigo}`, {}); // índice → alternativa escolhida
   let sala = null, placar = {}, tic = null;
   const baseSala = () => MODULOS[sala?.modulo ?? "uvvis"]?.base ?? MODULOS.uvvis.base;
-  if (s0.modulo === "iv") compostosIV.dados ??= (await carregarJSON(MODULOS.iv.base + "compostos.json")).compostos;
   const espectroDaPergunta = (q) => {
-    if (!q.espectro || !compostosIV.dados?.[q.espectro]) return null;
+    if (!q.bandas) return null;
     const d = h("div", { style: { margin: "6px 0 4px" } });
-    desenharEspectroIV(d, compostosIV.dados[q.espectro].bandas, { altura: 170 });
+    desenharEspectroIV(d, q.bandas, { altura: 170 });
     return d;
   };
   desligar.push(() => clearInterval(tic));
@@ -119,7 +116,7 @@ export async function telaCompeticao(el, aluno, codigo) {
             : escolhida != null ? h("p", { class: "centro" }, h("b", {}, "Resposta enviada! "), "Aguarde o fim do tempo.") : null,
           h("div", { class: "k-alts" }, q.alternativas.map((a, k) => h("button", {
             class: `k-alt k${k} ${escolhida === k ? "escolhida" : ""}`, disabled: escolhida != null,
-            onclick: () => responder(k) }, h("span", { class: "forma", "aria-hidden": "true" }, FORMAS[k]), alternativa(a, baseSala()))))));
+            onclick: () => responder(k) }, h("span", { class: "forma", "aria-hidden": "true" }, FORMAS[k]), alternativa(a, baseSala(), k))))));
     }
 
     if (sala.estado === "fechando") return limpar(corpo, cab, h("div", { class: "cartao status-grande" },

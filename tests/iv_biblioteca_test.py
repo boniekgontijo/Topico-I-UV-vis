@@ -133,30 +133,36 @@ class Gerador(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         subprocess.run([sys.executable, str(RAIZ / "tools" / "iv" / "gerar.py")], check=True, capture_output=True)
-        cls.j = json.loads((RAIZ / "public/conteudo/iv/compostos.json").read_text())["compostos"]
+        priv = json.loads((RAIZ / "privado/iv-compostos.json").read_text())
+        cls.j, cls.x = priv["compostos"], priv["extras"]
+        cls.esp = json.loads((RAIZ / "public/conteudo/iv/espectros.json").read_text())
 
     def test_formula_e_png(self):
         self.assertEqual(self.j["2-pentanona"]["formula"], "C5H10O")
         self.assertEqual(self.j["2-pentanona"]["nC"], 5)
         self.assertEqual(self.j["2-pentanona"]["insaturacoes"], 1)
-        for i in list(self.j) + list(CANDIDATOS_EXTRA):
-            self.assertTrue((RAIZ / f"public/conteudo/iv/estruturas/{i}.png").exists(), i)
+        for c in list(self.j.values()) + list(self.x.values()):
+            self.assertTrue((RAIZ / f"public/conteudo/iv/estruturas/{c['estId']}.png").exists(), c["id"])
+        self.assertFalse((RAIZ / "public/conteudo/iv/compostos.json").exists())
+        self.assertFalse((RAIZ / "public/conteudo/iv/estruturas/2-pentanona.png").exists())
 
     def test_bandas_incluem_impressao_digital(self):
         self.assertGreater(len(self.j["2-pentanona"]["bandas"]), len(COMPOSTOS["2-pentanona"]["bandas"]))
+        self.assertEqual(self.esp[self.j["2-pentanona"]["espId"]], self.j["2-pentanona"]["bandas"])
+        self.assertNotEqual(self.j["2-pentanona"]["bandasSala"], self.j["2-pentanona"]["bandas"])
 
     def test_estruturas_sem_cor(self):
         from PIL import Image
         for i in ["2-pentanona", "acido_butanoico", "propanamida", "nitrobenzeno"]:
-            im = Image.open(RAIZ / f"public/conteudo/iv/estruturas/{i}.png").convert("RGB")
+            im = Image.open(RAIZ / f"public/conteudo/iv/estruturas/{self.j[i]['estId']}.png").convert("RGB")
             for r, g, b in im.getdata():
                 if r < 245 or g < 245 or b < 245:
                     self.assertLessEqual(max(abs(r - g), abs(g - b)), 10, f"{i} tem cor")
 
     def test_fixture_para_o_js(self):
         f = json.loads((RAIZ / "tests/fixtures/iv-amostra.json").read_text())
-        self.assertEqual(set(f), {"2-pentanona", "butironitrila"})
-        self.assertEqual(len(f["2-pentanona"]), 20)
+        self.assertEqual(set(f["ids"]), {"2-pentanona", "butironitrila"})
+        self.assertEqual(len(f["pontos"][f["ids"]["2-pentanona"]]), 20)
 
 
 if __name__ == "__main__":

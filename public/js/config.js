@@ -19,4 +19,4 @@ export const USAR_EMULADOR = ["localhost", "127.0.0.1"].includes(location.hostna
   || /^(192\.168|10)\.\d+\.\d+(\.\d+)?$|^172\.(1[6-9]|2\d|3[01])\.\d+\.\d+$/.test(location.hostname);
 
 // Data de corte da nota de prática de cada módulo ("AAAA-MM-DD"; null = a definir)
-export const CORTE_PRATICA = { uvvis: "2026-11-09", iv: null };
+export const CORTE_PRATICA = { uvvis: "2026-11-09", iv: "2026-11-09" };

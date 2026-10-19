@@ -40,7 +40,7 @@ export async function telaCasaBloco(el, aluno, n) {
   if (!bloco) return (location.hash = "#casa");
   executar(el, aluno, {
     titulo: `${bloco.n}. ${bloco.titulo}`, voltar: "#casa", tipo: "casa", atividade: `${prefixo()}casa-${bloco.n}`,
-    compostos: moduloAtual() === "iv" ? (await conteudo("compostos.json")).compostos : null,
+    espectros: moduloAtual() === "iv" ? await conteudo("espectros.json") : null,
     questoes: casa.questoes.filter((q) => q.bloco === bloco.n),
     membros: [{ nome: aluno.nome, matricula: aluno.matricula }],
   });
@@ -110,7 +110,7 @@ function executar(el, aluno, cfg) {
     ls.set(tentKey, tentativas);
     if (!(q.id in prog)) { prog[q.id] = correta; gravarProg(cfg.atividade, aluno, prog); }
     // só o IV envia "modulo": o UV-vis continua aceito pelas regras antigas enquanto as novas não forem publicadas
-    salvarResposta({ tipo: cfg.tipo, modulo: moduloAtual() === "iv" ? "iv" : undefined, turma: aluno.turma, atividade: cfg.atividade, questaoId: q.id, bloco: q.bloco,
+    salvarResposta({ tipo: cfg.tipo, modulo: undefined, // o painel deduz o módulo pela atividade ("iv-casa-N"): funciona mesmo com as regras antigas turma: aluno.turma, atividade: cfg.atividade, questaoId: q.id, bloco: q.bloco,
       correta, tentativa: tentativas[q.id], equipe: cfg.equipe, membros: cfg.membros });
   };
 
@@ -144,7 +144,7 @@ function executar(el, aluno, cfg) {
     let entrada;
     if (q.tipo === "mc") {
       entrada = h("div", { class: "alts" }, q.alternativas.map((a, k) =>
-        h("button", { class: `alt ${q.subtipo === "espectro" ? "alt-est" : ""}`, "data-v": k, onclick: (e) => responder(k, e.currentTarget) }, alternativa(a, baseAtual()))));
+        h("button", { class: `alt ${q.subtipo === "espectro" ? "alt-est" : ""}`, "data-v": k, onclick: (e) => responder(k, e.currentTarget) }, alternativa(a, baseAtual(), k))));
     } else if (q.tipo === "vf") {
       entrada = h("div", { class: "alts" }, [[true, "Verdadeiro"], [false, "Falso"]].map(([v, t]) =>
         h("button", { class: "alt", "data-v": String(v), onclick: (e) => responder(v, e.currentTarget) }, t)));
@@ -158,7 +158,7 @@ function executar(el, aluno, cfg) {
       h("div", { class: "ajuda" }, `Questão ${i + 1} de ${qs.length}`),
       h("div", { class: "progresso" }, h("div", { style: { width: `${(100 * i) / qs.length}%` } })),
       h("p", { class: "enunciado", html: q.enunciado }),
-      q.espectro && cfg.compostos?.[q.espectro] ? (() => { const d = h("div", { style: { margin: "8px 0" } }); desenharEspectroIV(d, cfg.compostos[q.espectro].bandas); return d; })() : null,
+      q.espectro && cfg.espectros?.[q.espectro] ? (() => { const d = h("div", { style: { margin: "8px 0" } }); desenharEspectroIV(d, cfg.espectros[q.espectro]); return d; })() : null,
       q.figura ? h("a", { href: baseAtual() + q.figura, target: "_blank", rel: "noopener" },
         h("img", { class: "figura", src: baseAtual() + q.figura, alt: "Figura da questão (toque para ampliar)", loading: "lazy" })) : null,
       entrada, fb);

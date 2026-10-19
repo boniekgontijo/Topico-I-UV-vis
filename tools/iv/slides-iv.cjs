@@ -24,7 +24,7 @@ const corteTxt = CORTE_IV ? CORTE_IV.split("-").reverse().join("/") : "a definir
 const ler = (p) => JSON.parse(fs.readFileSync(path.join(RAIZ, p), "utf8"));
 const banco = ler("privado/iv-competicao.json"), seq = banco.sequencia;
 const grupoPub = ler("public/conteudo/iv/grupo.json").problemas, grupoPriv = ler("privado/iv-grupo.json").problemas;
-const { compostos } = ler("public/conteudo/iv/compostos.json");
+const { compostos } = ler("privado/iv-compostos.json"); // nomes só no arquivo privado
 const sub = (f) => f.replace(/(\d+)/g, (d) => d.split("").map((x) => "₀₁₂₃₄₅₆₇₈₉"[x]).join(""));
 const est = (a) => (a.startsWith("@est:") ? a.slice(5) : null);
 const POR_RODADA = 10;
@@ -52,7 +52,7 @@ const POR_RODADA = 10;
     s.addImage({ data: img, x: 11.75, y: 0.2, w: 1.3, h: 1.3, altText: "QR code" });
     s.addText(txt, { x: 11.45, y: 1.5, w: 1.9, h: 0.3, fontSize: 11, color: GRAY, align: "center", margin: 0, isTextBox: true });
   };
-  const espectro = (s, id, x, y, w) => s.addImage({ path: path.join(FIGS, `espectro_${id}.png`), x, y, w, h: w * 0.34, altText: "espectro de infravermelho" });
+  const espectro = (s, id, x, y, w, sala = false) => s.addImage({ path: path.join(FIGS, `espectro_${sala ? "sala_" : ""}${id}.png`), x, y, w, h: w * 0.34, altText: "espectro de infravermelho" });
   // caixa de alternativa: estrutura (fundo branco, borda colorida) ou texto (fundo colorido)
   function caixa(s, a, k, x, y, w, h, { apagada = false, certa = false, letras = false } = {}) {
     const id = est(a);
@@ -118,14 +118,14 @@ const POR_RODADA = 10;
       s.addText(`${tit} · Pergunta ${i + 1} de ${qs.length}${espec ? ` · ${q.alternativas.length} opções` : ""}`, { placeholder: "secao" });
       s.addText(q.enunciado, { placeholder: "title" });
       qrCanto(s, QR_QUIZ);
-      if (espec) { espectro(s, q.espectro, 1.6, 1.55, 9.0); linhaAlternativas(s, q.alternativas, 4.75, 2.45); }
+      if (espec) { espectro(s, q.alvo, 1.6, 1.55, 9.0, true); linhaAlternativas(s, q.alternativas, 4.75, 2.45); }
       else linhaAlternativas(s, q.alternativas, 2.1, 4.6);
-      s.addNotes(`Resposta: ${ALT[q.correta].forma} ${espec ? compostos[q.espectro].nome : q.alternativas[q.correta]}.\nNo celular: ${i === 0 ? "▶ Começar" : "Próxima pergunta"}. Depois, veja quantos marcaram cada opção e discuta antes do slide da resposta.`);
+      s.addNotes(`Resposta: ${ALT[q.correta].forma} ${espec ? compostos[q.alvo].nome : q.alternativas[q.correta]}.\nNo celular: ${i === 0 ? "▶ Começar" : "Próxima pergunta"}. Depois, veja quantos marcaram cada opção e discuta antes do slide da resposta.`);
 
       const t = pres.addSlide({ masterName: "PERGUNTA", sectionTitle: tit });
       t.addText(`${tit} · Resposta ${i + 1} de ${qs.length}`, { placeholder: "secao" });
-      t.addText(espec ? `É ${compostos[q.espectro].nome}` : q.enunciado, { placeholder: "title" });
-      if (espec) { espectro(t, q.espectro, 0.4, 1.6, 5.6); linhaAlternativas(t, q.alternativas, 3.65, 1.75, (k) => ({ apagada: k !== q.correta, certa: k === q.correta })); }
+      t.addText(espec ? `É ${compostos[q.alvo].nome}` : q.enunciado, { placeholder: "title" });
+      if (espec) { espectro(t, q.alvo, 0.4, 1.6, 5.6, true); linhaAlternativas(t, q.alternativas, 3.65, 1.75, (k) => ({ apagada: k !== q.correta, certa: k === q.correta })); }
       else linhaAlternativas(t, q.alternativas, 1.7, 3.0, (k) => ({ apagada: k !== q.correta, certa: k === q.correta }));
       const yE = espec ? 5.55 : 4.9;
       t.addShape(pres.ShapeType.roundRect, { x: espec ? 0.4 : 0.4, y: yE, w: 12.5, h: 7.2 - yE, rectRadius: 0.1, fill: { color: "FFF6CC" }, line: { color: YELLOW, width: 1.5 }, objectName: "por que" });
@@ -166,11 +166,12 @@ const POR_RODADA = 10;
     s.addText(`Problema ${p.n}`, { placeholder: "secao" });
     s.addText(`Fórmula: ${sub(p.formula)}`, { placeholder: "title" });
     qrCanto(s, QR_GRUPO, "atividade em grupo");
-    espectro(s, p.espectro, 0.4, 1.55, 8.6);
+    const alvoG = grupoPriv.find((x) => x.n === p.n).alvo;
+    espectro(s, alvoG, 0.4, 1.55, 8.6);
     s.addShape(pres.ShapeType.roundRect, { x: 9.2, y: 2.0, w: 3.7, h: 2.0, rectRadius: 0.1, fill: { color: "FFF6CC" }, line: { color: YELLOW, width: 1.5 }, objectName: "pista" });
     s.addText([{ text: "Pista: ", options: { bold: true, color: RED } }, { text: p.pista, options: { color: "000000" } }], { x: 9.35, y: 2.0, w: 3.45, h: 2.0, fontSize: 15, valign: "middle", margin: 0, isTextBox: true });
     linhaAlternativas(s, p.candidatas, 4.7, 2.5, () => ({ letras: true }));
-    s.addNotes(`Resposta (não mostrar antes da hora): ${compostos[p.espectro].nome}. Ver slide de revelação no fim.`);
+    s.addNotes(`Resposta (não mostrar antes da hora): ${compostos[alvoG].nome}. Ver slide de revelação no fim.`);
   }
 
   // ---------- para casa ----------
@@ -200,7 +201,7 @@ const POR_RODADA = 10;
     const pr = grupoPriv.find((x) => x.n === p.n);
     const s = pres.addSlide({ masterName: "PERGUNTA", sectionTitle: "Revelações (professor)" });
     s.addText(`Problema ${p.n} — revelação`, { placeholder: "secao" });
-    s.addText(`${sub(p.formula)} é ${compostos[p.espectro].nome}`, { placeholder: "title" });
+    s.addText(`${sub(p.formula)} é ${compostos[pr.alvo].nome}`, { placeholder: "title" });
     linhaAlternativas(s, p.candidatas, 1.65, 2.0, (k) => ({ apagada: k !== pr.correta, certa: k === pr.correta, letras: true }));
     s.addShape(pres.ShapeType.roundRect, { x: 0.4, y: 3.95, w: 12.5, h: 3.25, rectRadius: 0.1, fill: { color: "E6F4EA" }, line: { color: GREEN, width: 1.5 }, objectName: "resolução" });
     s.addText([{ text: "Bandas-chave: ", options: { bold: true, color: RED, breakLine: true } },

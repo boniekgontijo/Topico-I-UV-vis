@@ -78,7 +78,6 @@ export async function telaSala(el, codigo) {
   const qs = await fb.lerBanco(`sala-${codigo}`);
   let sala = await fb.lerSala(codigo);
   const IMG = MODULOS[sala?.modulo ?? "uvvis"]?.base ?? MODULOS.uvvis.base;
-  const compostos = sala?.modulo === "iv" ? (await carregarJSON(IMG + "compostos.json")).compostos : null;
   if (!sala || !qs) return limpar(el, h("p", { class: "aviso" }, `Sala ${codigo} não encontrada.`), h("a", { class: "btn", href: "#comp" }, "Novo quiz"));
   const emEquipe = sala.modo === "equipe";
   const rotJog = (n) => emEquipe ? `${n} ${n === 1 ? "equipe" : "equipes"}` : `${n} ${n === 1 ? "jogador" : "jogadores"}`;
@@ -161,7 +160,7 @@ export async function telaSala(el, codigo) {
 
   const cartaoPergunta = (q, revelar, dist) => h("div", {},
     h("div", { class: "enunciado-tela", html: q.enunciado }),
-    q.espectro && compostos?.[q.espectro] ? (() => { const d = h("div", { class: "espectro-tela" }); desenharEspectroIV(d, compostos[q.espectro].bandas, { altura: 200 }); return d; })() : null,
+    q.bandas ? (() => { const d = h("div", { class: "espectro-tela" }); desenharEspectroIV(d, q.bandas, { altura: 200 }); return d; })() : null,
     q.figura ? h("div", { class: "centro" }, h("img", { class: "figura", src: IMG + q.figura, alt: "" })) : null,
     revelar && q.figuraResposta ? h("div", { class: "centro" }, h("img", { class: "figura", src: IMG + q.figuraResposta, alt: "" })) : null,
     dist ? h("div", { class: "barras" }, q.alternativas.map((_, k) => {
@@ -170,7 +169,7 @@ export async function telaSala(el, codigo) {
     })) : null,
     h("div", { class: "t-alts" }, q.alternativas.map((a, k) => h("div", {
       class: `t-alt k${k} ${revelar ? (k === q.correta ? "certa" : "apagada") : ""}` },
-      h("span", {}, FORMAS[k]), alternativa(a, IMG)))));
+      h("span", {}, FORMAS[k]), alternativa(a, IMG, k)))));
 
   const top = (n) => ranking(Object.fromEntries(Object.entries(nomesPlacar).filter(([u]) => u))).slice(0, n);
   let nomesPlacar = {};

@@ -218,3 +218,12 @@ test("atividade em grupo do IV: entrega por grupo (cria/atualiza), só o profess
   await semRegras((db) => setDoc(doc(db, "atividades/777777"), { estado: "fechada" }, { merge: true }));
   await assertFails(setDoc(doc(aluno("g4"), "atividades/777777/entregas/4"), e("g4", { grupo: 4 })));         // fechada
 });
+
+test("grupo do IV: depois da revelação o grupo não troca a resposta; problema e escolha conferidos", async () => {
+  await semRegras((db) => setDoc(doc(db, "atividades/888888"), { turma: "2026-2", modulo: "iv", estado: "aberta", problemas: [3, 1, 4, 2, 6, 5], revelados: { "1": { correta: 2 } } }));
+  const e = (uid, extra) => ({ grupo: 1, problema: 3, escolha: 1, justificativa: "1715 cm⁻¹ = C=O", membros: [], uid, quando: serverTimestamp(), ...extra });
+  await assertSucceeds(setDoc(doc(aluno("h1"), "atividades/888888/entregas/1"), e("h1")));
+  await assertFails(setDoc(doc(aluno("h1"), "atividades/888888/entregas/1"), e("h1", { problema: 4 })));          // problema de outro grupo
+  await assertFails(setDoc(doc(aluno("h1"), "atividades/888888/entregas/1"), e("h1", { escolha: 9 })));            // fora das candidatas
+  await assertFails(setDoc(doc(aluno("h2"), "atividades/888888/entregas/2"), e("h2", { grupo: 2, problema: 1 }))); // problema 1 já revelado
+});

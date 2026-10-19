@@ -24,7 +24,7 @@ export function montarLinhas(alunos, acessos, respostas, quizzes = [], { totais 
     for (const m of r.membros ?? []) {
       if (r.tipo === "casa") {
         const p = (primeira[m.matricula] ??= {});
-        const mod = r.modulo ?? "uvvis", k = `${mod}:${r.questaoId}`;
+        const mod = r.modulo ?? (String(r.atividade ?? "").startsWith("iv-") ? "iv" : "uvvis"), k = `${mod}:${r.questaoId}`;
         if (!p[k] || t < p[k].t) p[k] = { modulo: mod, bloco: r.bloco, correta: r.correta, t };
       }
       if (r.tipo === "grupo") (grupo[m.matricula] ??= new Set()).add(r.atividade);

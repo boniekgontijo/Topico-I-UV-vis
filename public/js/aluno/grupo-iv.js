@@ -25,7 +25,7 @@ export async function telaGrupoIV(el, aluno, codigo) {
     }));
     return;
   }
-  const [grupoJ, { compostos, extras }] = await Promise.all([carregarJSON(BASE + "grupo.json"), carregarJSON(BASE + "compostos.json")]);
+  const [grupoJ, espectros] = await Promise.all([carregarJSON(BASE + "grupo.json"), carregarJSON(BASE + "espectros.json")]);
   const corpo = h("div");
   limpar(el, topo(aluno, "#menu"), corpo);
   let ativ = null;
@@ -35,15 +35,15 @@ export async function telaGrupoIV(el, aluno, codigo) {
     if (!ativ) return limpar(corpo, h("div", { class: "cartao" }, h("p", {}, `Atividade ${codigo} não encontrada.`)));
     const meuGrupo = ls.get(`grupoIV:${codigo}`);
     if (!meuGrupo) return limpar(corpo, h("h1", {}, "👥 Em grupo — IV"),
-      h("p", {}, "Qual é o número do seu grupo? (o professor diz)"),
+      h("p", {}, "Qual é o número do seu grupo? (o professor diz) Só um celular por grupo envia."),
       h("div", { class: "avatares", style: { gridTemplateColumns: "repeat(3, 1fr)" } }, [1, 2, 3, 4, 5, 6].map((g) =>
         h("button", { class: "avatar", style: { fontSize: "1.6rem", fontWeight: 800 }, onclick: () => { ls.set(`grupoIV:${codigo}`, g); desenhar(); } }, `Grupo ${g}`))));
     const n = ativ.problemas[meuGrupo - 1];
     const prob = grupoJ.problemas.find((p) => p.n === n);
     const rasc = ls.get(`grupoIVr:${codigo}`, { escolha: null, justificativa: "", membros: [] });
     const revelado = ativ.revelados?.[n];
-    const aberta = ativ.estado === "aberta";
-    const espectro = h("div"); desenharEspectroIV(espectro, compostos[prob.espectro].bandas, { altura: 190 });
+    const aberta = ativ.estado === "aberta" && !revelado; // depois da revelação, o grupo não troca a resposta
+    const espectro = h("div"); desenharEspectroIV(espectro, espectros[prob.espectro], { altura: 190 });
     const just = h("textarea", { rows: 6, maxlength: 1500, placeholder: "Ex.: I = 1. 1715 cm⁻¹ = C=O de cetona; sem O–H em 3300; …",
       style: { width: "100%", font: "inherit", padding: "10px", borderRadius: "10px", border: "2px solid var(--borda)" }, disabled: !aberta }, rasc.justificativa);
     const colegas = [0, 1, 2, 3, 4].map((i) => ({ nome: h("input", { placeholder: `Colega ${i + 1} — nome`, maxlength: 80, value: rasc.membros[i]?.nome ?? "", disabled: !aberta }),
@@ -52,7 +52,7 @@ export async function telaGrupoIV(el, aluno, codigo) {
     const cands = h("div", { class: "alts" });
     const desenharCands = () => limpar(cands, prob.candidatas.map((c, k) => h("button", { type: "button",
       class: `alt alt-est ${escolha === k ? "escolhida" : ""} ${revelado && revelado.correta === k ? "certa" : ""}`, disabled: !aberta,
-      onclick: () => { escolha = k; salvarRasc(); desenharCands(); } }, alternativa(c, BASE))));
+      onclick: () => { escolha = k; salvarRasc(); desenharCands(); } }, alternativa(c, BASE, k))));
     const salvarRasc = () => ls.set(`grupoIVr:${codigo}`, { escolha, justificativa: just.value, membros: lerColegas(false) });
     just.addEventListener("input", salvarRasc);
     const lerColegas = (validar) => {
@@ -86,7 +86,8 @@ export async function telaGrupoIV(el, aluno, codigo) {
       h("h3", {}, "Justificativa (bandas)"), just,
       h("h3", {}, "Integrantes"), h("p", { class: "ajuda" }, `1. ${aluno.nome} (${aluno.matricula})`),
       colegas.map((c) => h("div", { class: "linha-num", style: { margin: "6px 0" } }, c.nome, c.mat)),
-      aberta ? h("button", { class: "btn largo", style: { marginTop: "12px" }, onclick: enviar }, "Enviar para o professor") : h("p", { class: "ajuda centro" }, "Atividade encerrada."),
+      aberta ? h("button", { class: "btn largo", style: { marginTop: "12px" }, onclick: enviar }, "Enviar para o professor")
+        : h("p", { class: "ajuda centro" }, revelado ? "Resposta revelada: envios encerrados para este problema." : "Atividade encerrada."),
       h("p", { class: "ajuda centro" }, h("a", { href: "#", onclick: (e) => { e.preventDefault(); ls.set(`grupoIV:${codigo}`, null); desenhar(); } }, "Trocar de grupo")));
   };
 }

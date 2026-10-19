@@ -29,10 +29,10 @@ export function prepararCompeticao(questoes, { blocos, n, rnd = Math.random }) {
 }
 
 // O que vai para o documento da sala (os alunos leem): sem gabarito
-export function perguntaPublica({ enunciado, alternativas, figura, bloco, espectro }) {
+export function perguntaPublica({ enunciado, alternativas, figura, bloco, bandas }) {
   const p = { enunciado, alternativas, bloco };
   if (figura) p.figura = figura;
-  if (espectro) p.espectro = espectro; // IV: id do composto cujo espectro é mostrado
+  if (bandas) p.bandas = bandas; // IV: bandas do espectro, sem nenhum id que aponte para a estrutura certa
   return p;
 }
 

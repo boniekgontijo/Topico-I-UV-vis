@@ -7,9 +7,10 @@
 // compostos de grupo nunca entram; nenhuma questão idêntica entre casa e sala.
 import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { embaralharQuestao } from "../../public/js/core/embaralhar.js";
+import { codificarBandas } from "../../public/js/core/iv.js";
 
 const raiz = new URL("../../", import.meta.url);
-const { compostos } = JSON.parse(readFileSync(new URL("public/conteudo/iv/compostos.json", raiz)));
+const { compostos } = JSON.parse(readFileSync(new URL("privado/iv-compostos.json", raiz))); // dados químicos: só no privado
 const teoricas = JSON.parse(readFileSync(new URL("tools/iv/teoricas.json", raiz)));
 const semente = Number(process.argv[2] ?? 20262);
 let t = semente >>> 0;
@@ -43,6 +44,14 @@ const EVIDENCIA = {
   amina3: "nenhuma N–H nem C=O, com C–N em 1200–1000", nitrila: "C≡N fina perto de 2250", nitro: "duas bandas fortes perto de 1550 e 1380",
 };
 
+// banda de C=O do próprio composto (mais forte entre 1630 e 1850), para a explicação citar o número certo
+const co = (c) => { const b = c.bandas.filter(([x, a]) => x >= 1630 && x <= 1850 && a >= 0.8).sort((p, q) => q[1] - p[1])[0]; return b ? Math.round(b[0] / 5) * 5 : null; };
+const evidencia = (c) => {
+  const n = co(c);
+  return n && /perto de 1(6|7|8)\d0/.test(EVIDENCIA[c.funcao]) && !["anidrido"].includes(c.funcao)
+    ? EVIDENCIA[c.funcao].replace(/C=O( alta,| muito alta,| forte)? perto de 1\d{3}/, (m) => m.replace(/1\d{3}/, String(n)))
+    : EVIDENCIA[c.funcao];
+};
 const L = Object.values(compostos).filter((c) => !c.grupo);
 const NOPC = { facil: () => 2, medio: () => (rnd() < 0.5 ? 3 : 4), dificil: () => 5 };
 
@@ -71,14 +80,18 @@ function questao(alvo, nivel, prefixo) {
   const ds = distratores(alvo, nivel);
   if (!ds) return null;
   const ops = embaralhar([alvo, ...ds]);
+  const sala = prefixo === "iv-s";
   return {
     id: `${prefixo}-${String(++seq).padStart(3, "0")}`, bloco: blocoDe(alvo, nivel), tipo: "mc", subtipo: "espectro", nivel,
-    espectro: alvo.id, enunciado: "Qual molécula corresponde a este espectro?",
-    alternativas: ops.map((c) => "@est:" + c.id), correta: ops.indexOf(alvo),
-    explicacao: `${alvo.diagnostico} As outras: ${ds.map((d) => `${d.nome} mostraria ${EVIDENCIA[d.funcao]}`).join("; ")}.`,
+    // casa: id opaco do espectro; sala: bandas embutidas (outra impressão digital) + alvo (só no arquivo privado)
+    ...(sala ? { bandas: codificarBandas(alvo.bandasSala), alvo: alvo.id } : { espectro: alvo.espId }),
+    enunciado: "Qual molécula corresponde a este espectro?",
+    alternativas: ops.map((c) => "@est:" + c.estId), correta: ops.indexOf(alvo),
+    explicacao: `${alvo.diagnostico} As outras: ${ds.map((d) => `${d.nome} mostraria ${evidencia(d)}`).join("; ")}.`,
   };
 }
-const chave = (q) => `${q.espectro}|${[...q.alternativas].sort().join(",")}`;
+const alvoDe = (q) => q.alvo ?? Object.values(compostos).find((c) => c.espId === q.espectro).id;
+const chave = (q) => `${alvoDe(q)}|${[...q.alternativas].sort().join(",")}`;
 
 // ---------- sala: 8 fácil, 10 médio, 8 difícil (+ teóricas) ----------
 const usadas = new Set();
@@ -87,7 +100,7 @@ const metaSala = { facil: 8, medio: 10, dificil: 8 };
 for (const [nivel, meta] of Object.entries(metaSala)) {
   for (const alvo of embaralhar(L)) {
     if (sala.filter((q) => q.nivel === nivel).length >= meta) break;
-    if (sala.some((q) => q.espectro === alvo.id)) continue; // na sala, cada composto uma vez
+    if (sala.some((q) => q.alvo === alvo.id)) continue; // na sala, cada composto uma vez
     const q = questao(alvo, nivel, "iv-s");
     if (q && !usadas.has(chave(q))) { sala.push(q); usadas.add(chave(q)); }
   }

@@ -119,3 +119,9 @@ test("data de corte: null vira 'a definir'", () => {
   assert.equal(rotuloCorte(null), "a definir");
   assert.equal(rotuloCorte("2026-11-09"), "09/11/2026");
 });
+
+test("resposta de IV sem campo modulo (regras antigas) é reconhecida pela atividade iv-casa-N", () => {
+  const rs = [{ ...r("111", "iv-c-001", 7, true, 1), atividade: "iv-casa-7" }];
+  const [ana] = montarLinhas(alunos, [], rs, [], { totais: { uvvis: 88, iv: 80 } });
+  assert.deepEqual(ana.casaFeitas, { uvvis: 0, iv: 1 });
+});

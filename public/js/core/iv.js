@@ -17,3 +17,10 @@ export function pontosEspectro(bandas, n = 1500) {
     return [x, transmitancia(x, bandas)];
   });
 }
+
+// O Firestore não aceita lista dentro de lista: no quiz, as bandas viajam como texto "pos,a,hw,forma;…"
+export const codificarBandas = (bandas) => bandas.map(([p, a, hw, f]) => `${p},${a},${hw},${f ?? "l"}`).join(";");
+export function decodificarBandas(b) {
+  if (Array.isArray(b)) return b;
+  return String(b).split(";").filter(Boolean).map((s) => { const [p, a, hw, f] = s.split(","); return [Number(p), Number(a), Number(hw), f || "l"]; });
+}

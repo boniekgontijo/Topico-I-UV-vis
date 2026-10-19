@@ -4,105 +4,105 @@
   {
    "n": 1,
    "formula": "C5H10O",
-   "espectro": "3-metil-2-butanona",
+   "espectro": "s569bd9e3b0",
    "pista": "A cadeia é ramificada e o composto não é oxidado pelo reagente de Tollens.",
    "candidatas": [
-    "@est:ciclopentanol",
-    "@est:3-metil-2-butanona",
-    "@est:2-metilbutanal",
-    "@est:pentanal",
-    "@est:2-pentanona",
-    "@est:3-pentanona"
+    "@est:ee42b486a46",
+    "@est:e383db8a37d",
+    "@est:e135c13ac2c",
+    "@est:e7b29de75ae",
+    "@est:e3e20811bae",
+    "@est:e3d796dcf45"
    ]
   },
   {
    "n": 2,
    "formula": "C6H12O",
-   "espectro": "hexanal",
+   "espectro": "s9a41e11f5b",
    "pista": "Cadeia linear, sem ramificação.",
    "candidatas": [
-    "@est:hex-5-en-1-ol",
-    "@est:3-hexanona",
-    "@est:4-metil-2-pentanona",
-    "@est:2-hexanona",
-    "@est:ciclohexanol",
-    "@est:hexanal"
+    "@est:e7c7cc1fca2",
+    "@est:e91bc300fc9",
+    "@est:e2fde2eb36d",
+    "@est:e7c367859be",
+    "@est:e6a85024f14",
+    "@est:ed74e924910"
    ]
   },
   {
    "n": 3,
    "formula": "C6H14O",
-   "espectro": "3-hexanol",
+   "espectro": "sdc3b438cf5",
    "pista": "A oxidação branda dá uma cetona; a cadeia não é ramificada.",
    "candidatas": [
-    "@est:3-hexanol",
-    "@est:2-metil-2-pentanol",
-    "@est:dipropil_eter",
-    "@est:butil_etil_eter",
-    "@est:1-hexanol"
+    "@est:ee0488e00e3",
+    "@est:edf3554b559",
+    "@est:e74cb47d4af",
+    "@est:ef138fc64a6",
+    "@est:e083ca62875"
    ]
   },
   {
    "n": 4,
    "formula": "C5H10O2",
-   "espectro": "propanoato_etila",
+   "espectro": "s0040c1eddb",
    "pista": "A hidrólise produz etanol e ácido propanoico.",
    "candidatas": [
-    "@est:butanoato_metila",
-    "@est:4-hidroxi-2-pentanona",
-    "@est:acetato_propila",
-    "@est:acido_pentanoico",
-    "@est:propanoato_etila"
+    "@est:e9a26590f16",
+    "@est:e1e6e920f43",
+    "@est:e421a402dd7",
+    "@est:e39e7eab526",
+    "@est:e264fe91fc2"
    ]
   },
   {
    "n": 5,
    "formula": "C4H8O2",
-   "espectro": "acido_isobutirico",
+   "espectro": "s70437e6440",
    "pista": "Cadeia ramificada.",
    "candidatas": [
-    "@est:acido_isobutirico",
-    "@est:propanoato_metila",
-    "@est:3-hidroxibutanona",
-    "@est:acido_butanoico",
-    "@est:acetato_etila",
-    "@est:dioxano"
+    "@est:e0ab54c01ac",
+    "@est:ed098bdacb0",
+    "@est:ef28070fd75",
+    "@est:e744434cb2a",
+    "@est:ecddb888be2",
+    "@est:e33892de414"
    ]
   },
   {
    "n": 6,
    "formula": "C5H13N",
-   "espectro": "pentilamina",
+   "espectro": "s0b26a09916",
    "pista": "O nitrogênio está na ponta de uma cadeia linear.",
    "candidatas": [
-    "@est:dimetilpropilamina",
-    "@est:n-metilbutilamina",
-    "@est:2-pentanamina",
-    "@est:pentilamina"
+    "@est:e9ce9a5b3cf",
+    "@est:ebd38d41814",
+    "@est:e3a020acfb8",
+    "@est:e75f7e6e809"
    ]
   },
   {
    "n": 7,
    "formula": "C9H8O",
-   "espectro": "cinamaldeido",
+   "espectro": "s4c4bc0501d",
    "pista": "Dá o aroma da canela; a C=C fica entre o anel e o grupo funcional.",
    "candidatas": [
-    "@est:4-vinilbenzaldeido",
-    "@est:3-fenil-2-propin-1-ol",
-    "@est:indanona",
-    "@est:cinamaldeido"
+    "@est:e5d532e4be7",
+    "@est:e7e6e9f7d17",
+    "@est:e51bab533a7",
+    "@est:e54a37ad7a5"
    ]
   },
   {
    "n": 8,
    "formula": "C6H11N",
-   "espectro": "hexanonitrila",
+   "espectro": "s751f3e52c7",
    "pista": "Cadeia linear.",
    "candidatas": [
-    "@est:hex-5-in-1-amina",
-    "@est:2-metilpentanonitrila",
-    "@est:4-metilpentanonitrila",
-    "@est:hexanonitrila"
+    "@est:e6108f5b840",
+    "@est:e045f0b0835",
+    "@est:e0f80b74469",
+    "@est:e08acc4c647"
    ]
   }
  ]

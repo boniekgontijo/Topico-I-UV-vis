@@ -15,7 +15,7 @@ const sub = (f) => f.replace(/(\d+)/g, (d) => d.split("").map((x) => "₀₁₂�
 
 export async function telaGruposIV(el, codigo) {
   parar();
-  const [grupoJ, { compostos }, respostas] = await Promise.all([carregarJSON(BASE + "grupo.json"), carregarJSON(BASE + "compostos.json"), fb.lerBanco("iv-grupo")]);
+  const [grupoJ, espectros, respostas] = await Promise.all([carregarJSON(BASE + "grupo.json"), carregarJSON(BASE + "espectros.json"), fb.lerBanco("iv-grupo").catch(() => null)]);
   if (!codigo) return telaCriar(el, grupoJ, respostas);
   const area = h("div", { class: "telao" });
   limpar(el, area);
@@ -47,7 +47,7 @@ export async function telaGruposIV(el, codigo) {
 
   const projetar = (l) => {
     const p = prob(l.problema), r = resp(l.problema), revelado = ativ.revelados?.[l.problema];
-    const espectro = h("div", { class: "espectro-tela" }); desenharEspectroIV(espectro, compostos[p.espectro].bandas, { altura: 210 });
+    const espectro = h("div", { class: "espectro-tela" }); desenharEspectroIV(espectro, espectros[p.espectro], { altura: 210 });
     const revelar = async () => {
       if (!r) return toast("Carregue privado/iv-grupo.json na aba Perguntas (módulo IV).", "erro");
       await fb.revelarProblema(codigo, l.problema, { correta: r.correta, resolucao: r.resolucao, bandasChave: r.bandasChave });
@@ -59,7 +59,7 @@ export async function telaGruposIV(el, codigo) {
       h("p", { class: "centro" }, h("b", {}, "Pista: "), p.pista),
       h("div", { class: "t-alts", style: { gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))" } }, p.candidatas.map((c, k) =>
         h("div", { class: "t-alt", style: { background: revelado?.correta === k ? "#26890C" : l.escolha === k ? "#1368CE" : "#9AA3B8", flexDirection: "column" } },
-          alternativa(c, BASE), h("small", {}, [l.escolha === k ? "proposta do grupo" : "", revelado?.correta === k ? "✓ correta" : ""].filter(Boolean).join(" · "))))),
+          alternativa(c, BASE, k), h("small", {}, [l.escolha === k ? "proposta do grupo" : "", revelado?.correta === k ? "✓ correta" : ""].filter(Boolean).join(" · "))))),
       h("div", { class: "cartao", style: { fontSize: "1.15rem" } }, h("b", {}, "Justificativa do grupo: "), l.entregue ? l.justificativa : "(sem entrega)"),
       revelado ? h("div", { class: "cartao", style: { background: "#E3F7EC" } }, h("b", {}, "Resolução: "), revelado.resolucao,
         h("ul", {}, revelado.bandasChave.map((b) => h("li", {}, b)))) : null,
@@ -79,8 +79,13 @@ function telaCriar(el, grupoJ, respostas) {
     const sel = caixas.filter((c) => c.el.checked).map((c) => c.n);
     if (sel.length !== 6) return toast("Escolha exatamente 6 problemas (um por grupo).", "erro");
     const ordem = [...sel].sort(() => Math.random() - 0.5);
-    const codigo = await fb.criarAtividade({ turma: turma.value, problemas: ordem });
-    location.hash = `#grupos-iv/${codigo}`;
+    try {
+      const codigo = await fb.criarAtividade({ turma: turma.value, problemas: ordem });
+      location.hash = `#grupos-iv/${codigo}`;
+    } catch (e) {
+      console.error(e);
+      toast(e.code === "permission-denied" ? "O Firebase recusou: publique as regras novas (firestore.rules) no console." : "Não foi possível abrir a atividade.", "erro");
+    }
   };
   limpar(el, h("h1", {}, "👥 Atividade em grupo — IV"),
     respostas?.length ? null : h("p", { class: "aviso" }, "As respostas ainda não foram carregadas: aba Perguntas → IV → privado/iv-grupo.json (necessário para revelar)."),

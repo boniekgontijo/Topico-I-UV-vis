@@ -67,12 +67,7 @@ test("banco com sequência fixa dos slides é validado", () => {
   assert.equal(validarBanco(banco).nSequencia, 0);
 });
 
-test("pergunta pública do IV leva o espectro, mas nunca o gabarito", () => {
-  const p = perguntaPublica({ enunciado: "?", alternativas: ["@est:a", "@est:b"], bloco: 7, espectro: "a", correta: 0, explicacao: "x" });
-  assert.equal(p.espectro, "a");
-  assert.equal("correta" in p, false);
-  assert.equal("explicacao" in p, false);
-});
+
 
 test("banco aceita até 5 alternativas (IV) e recusa 6", () => {
   const q5 = { id: "x", bloco: 7, tipo: "mc", enunciado: "?", alternativas: ["a", "b", "c", "d", "e"], correta: 4 };
@@ -84,4 +79,10 @@ import { FORMAS_QUIZ, CORES_QUIZ } from "../public/js/core/competicao.js";
 test("quinta alternativa: ★ roxo", () => {
   assert.deepEqual(FORMAS_QUIZ, ["▲", "◆", "●", "■", "★"]);
   assert.equal(CORES_QUIZ[4], "#7B2FBE");
+});
+
+test("pergunta pública do quiz de IV leva as bandas, nunca um id que aponte para a estrutura certa", () => {
+  const p = perguntaPublica({ enunciado: "?", alternativas: ["@est:e1", "@est:e2"], bloco: 7, bandas: "1715,1.7,10,l", alvo: "2-pentanona", correta: 0 });
+  assert.equal(p.bandas, "1715,1.7,10,l");
+  for (const k of ["alvo", "espectro", "correta"]) assert.equal(k in p, false, k);
 });

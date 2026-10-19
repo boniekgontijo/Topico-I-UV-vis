@@ -91,7 +91,10 @@ service cloud.firestore {
           && soCampos(["grupo", "problema", "escolha", "justificativa", "membros", "uid", "quando"])
           && request.resource.data.grupo is int && request.resource.data.grupo >= 1 && request.resource.data.grupo <= 6
           && grupo == string(request.resource.data.grupo)
-          && request.resource.data.problema is int && request.resource.data.escolha is int
+          && request.resource.data.problema is int
+          && request.resource.data.problema == atividade().problemas[request.resource.data.grupo - 1]   // o problema do próprio grupo
+          && !(string(request.resource.data.problema) in atividade().revelados)                       // já revelado: não troca mais
+          && request.resource.data.escolha is int && request.resource.data.escolha >= 0 && request.resource.data.escolha <= 5
           && texto(request.resource.data.justificativa, 1500)
           && membrosOk(request.resource.data.membros)
           && request.resource.data.uid == request.auth.uid
