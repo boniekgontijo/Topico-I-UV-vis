@@ -1,0 +1,92 @@
+rules_version = '2';
+// Regras da plataforma de espectroscopia.
+// Aluno: login anônimo; só cria registros próprios, nunca lê dados de outros.
+// Professor: login Google com o e-mail abaixo (o mesmo de public/js/config.js).
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function logado() { return request.auth != null; }
+    function isProf() {
+      return logado()
+        && request.auth.token.email == "boniek@ufg.br"
+        && request.auth.token.email_verified == true;
+    }
+    function agora(campo) { return request.resource.data[campo] == request.time; }
+    function soCampos(lista) { return request.resource.data.keys().hasOnly(lista); }
+
+    // alunos/{turma}_{matricula}
+    match /alunos/{id} {
+      allow read: if isProf();
+      allow create: if logado()
+        && id == request.resource.data.turma + "_" + request.resource.data.matricula
+        && soCampos(["nome", "matricula", "turma", "primeiroAcesso", "ultimoAcesso"])
+        && request.resource.data.nome is string && request.resource.data.nome.size() <= 80
+        && agora("primeiroAcesso") && agora("ultimoAcesso");
+      // troca de celular: outro uid pode atualizar nome e último acesso
+      allow update: if logado()
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(["nome", "ultimoAcesso"])
+        && request.resource.data.nome is string && request.resource.data.nome.size() <= 80
+        && agora("ultimoAcesso");
+      allow write: if isProf();
+    }
+
+    match /acessos/{id} {
+      allow read: if isProf();
+      allow create: if logado()
+        && soCampos(["turma", "matricula", "pagina", "uid", "quando"])
+        && request.resource.data.uid == request.auth.uid
+        && agora("quando");
+    }
+
+    match /respostas/{id} {
+      allow read: if isProf();
+      allow create: if logado()
+        && soCampos(["tipo", "turma", "atividade", "questaoId", "bloco", "correta", "tentativa", "equipe", "membros", "uid", "quando"])
+        && request.resource.data.tipo in ["casa", "grupo"]
+        && request.resource.data.correta is bool
+        && request.resource.data.tentativa is int && request.resource.data.tentativa >= 1
+        && request.resource.data.membros is list && request.resource.data.membros.size() <= 4
+        && request.resource.data.uid == request.auth.uid
+        && agora("quando");
+    }
+
+    // gabarito da competição: só o professor
+    match /bancos/{modulo} {
+      allow read, write: if isProf();
+    }
+
+    match /salas/{codigo} {
+      allow read: if logado();
+      allow write: if isProf();
+
+      function sala() { return get(/databases/$(database)/documents/salas/$(codigo)).data; }
+
+      match /jogadores/{uid} {
+        allow read: if logado();
+        allow create: if logado() && uid == request.auth.uid
+          && soCampos(["nome", "matricula", "entrouEm"])
+          && agora("entrouEm");
+        allow write: if isProf();
+      }
+
+      match /respostas/{id} {
+        allow read: if isProf();
+        allow create: if logado()
+          && id == string(request.resource.data.indice) + "_" + request.auth.uid
+          && soCampos(["uid", "indice", "alternativa", "quando"])
+          && request.resource.data.uid == request.auth.uid
+          && request.resource.data.alternativa is int
+          && sala().estado == "pergunta"
+          && request.resource.data.indice == sala().indice
+          && request.time < sala().fechaEm
+          && agora("quando");
+        allow delete: if isProf();
+      }
+
+      match /placar/{uid} {
+        allow read: if logado();
+        allow write: if isProf();
+      }
+    }
+  }
+}
