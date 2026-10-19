@@ -63,47 +63,74 @@ export async function telaSala(el, codigo) {
   if (!sala || !qs) return limpar(el, h("p", { class: "aviso" }, `Sala ${codigo} não encontrada.`), h("a", { class: "btn", href: "#comp" }, "Novo quiz"));
   const emEquipe = sala.modo === "equipe";
   const rotJog = (n) => emEquipe ? `${n} ${n === 1 ? "equipe" : "equipes"}` : `${n} ${n === 1 ? "jogador" : "jogadores"}`;
-  let jogadores = [], nResp = 0, fechando = false, tic = null, cancelarNResp = null;
+  let jogadores = [], nResp = 0, fechando = false, ocupado = false, tic = null, cancelarNResp = null;
+  // diferença entre o relógio do servidor e o deste computador (medida ao abrir cada pergunta)
+  let desvio = Number(sessionStorage.getItem(`desvio:${codigo}`)) || 0;
   const area = h("div", { class: "telao" });
-  limpar(el, area);
+  limpar(el, h("p", { class: "ajuda" }, "Conectando…"));
   desligar.push(() => clearInterval(tic), () => cancelarNResp?.());
+  // espera a lista de jogadores antes de desenhar (evita nomes "?" ao retomar)
+  await new Promise((ok) => {
+    let primeira = true;
+    desligar.push(fb.ouvirJogadores(codigo, (js) => {
+      jogadores = js;
+      if (primeira) { primeira = false; return ok(); }
+      if (sala.estado === "lobby") render();
+    }));
+  });
+  limpar(el, area);
 
   const urlAluno = () => {
     const base = location.href.split("#")[0].replace(/professor\.html.*$/, "");
     return `${base}index.html?t=${encodeURIComponent(sala.turma)}#quiz/${codigo}`;
   };
   const qrSvg = (txt) => { const q = window.qrcode(0, "M"); q.addData(txt); q.make(); return q.createSvgTag({ cellSize: 8, margin: 2, scalable: true }); };
-  const nomes = () => Object.fromEntries(jogadores.map((j) => [j.uid, j.nome]));
+  const nomes = () => Object.fromEntries(jogadores.map((j) => [j.uid, String(j.nome ?? "?")]));
 
-  const abrir = async (i) => {
-    const q = qs[i];
-    await fb.abrirPergunta(codigo, i, perguntaPublica(q), sala.limiteMs);
-    sala = await fb.lerSala(codigo);
-    render();
+  // impede clique duplo em Começar/Próxima/Encerrar
+  const umaVez = (fn) => async (...a) => {
+    if (ocupado) return;
+    ocupado = true;
+    area.querySelectorAll("button").forEach((b) => (b.disabled = true));
+    try { await fn(...a); } catch (e) { console.error(e); toast("Falha de conexão — tente de novo.", "erro"); render(); }
+    finally { ocupado = false; }
   };
 
+  const abrir = umaVez(async (i) => {
+    const antes = Date.now();
+    await fb.abrirPergunta(codigo, i, perguntaPublica(qs[i]));
+    sala = await fb.lerSala(codigo);
+    desvio = sala.abertaEmMs - (antes + Date.now()) / 2;
+    sessionStorage.setItem(`desvio:${codigo}`, String(desvio));
+    render();
+  });
+
+  // Fecha a rodada em duas etapas (ver fb.iniciarFechamento / fb.revelar): pontua uma vez só.
   const fechar = async () => {
-    if (fechando || sala.estado !== "pergunta") return;
+    if (fechando) return;
     fechando = true;
     clearInterval(tic);
     try {
-      const s = await fb.lerSala(codigo);
-      const resp = await fb.respostasDaRodada(codigo, s.indice);
-      const atual = await fb.lerPlacar(codigo);
-      const base = Object.fromEntries(jogadores.map((j) => [j.uid, atual[j.uid] ?? { nome: j.nome, pontos: 0, somaDtAcertos: 0, acertos: 0 }]));
-      const rodada = resp.map((r) => ({ uid: r.uid, alternativa: r.alternativa, dtMs: (r.quandoMs ?? s.fechaEmMs) - s.abertaEmMs }));
-      const novo = aplicarRodada({ ...atual, ...base }, rodada, qs[s.indice].correta, s.limiteMs, nomes());
-      await fb.revelar(codigo, qs[s.indice].correta, novo);
+      const i = sala.indice;
+      const decisao = await fb.iniciarFechamento(codigo, i);
+      if (decisao !== "ignorar") {
+        const [s, resp, atual] = await Promise.all([fb.lerSala(codigo), fb.respostasDaRodada(codigo, i), fb.lerPlacar(codigo)]);
+        const base = Object.fromEntries(jogadores.map((j) => [j.uid, atual[j.uid] ?? { nome: String(j.nome ?? "?"), pontos: 0, somaDtAcertos: 0, acertos: 0 }]));
+        const rodada = resp.map((r) => ({ uid: r.uid, alternativa: r.alternativa, dtMs: (r.quandoMs ?? s.abertaEmMs + s.limiteMs) - s.abertaEmMs }));
+        const novo = aplicarRodada({ ...atual, ...base }, rodada, qs[i].correta, s.limiteMs, nomes());
+        await fb.revelar(codigo, i, qs[i].correta, novo);
+      }
       sala = await fb.lerSala(codigo);
       render();
-    } catch (e) { console.error(e); toast("Falha ao fechar a rodada — tente de novo.", "erro"); }
+    } catch (e) { console.error(e); toast("Falha ao fechar a rodada — clique em Encerrar tempo de novo.", "erro"); }
     finally { fechando = false; }
   };
 
-  const proxima = async () => {
+  const proxima = umaVez(async () => {
     if (sala.indice + 1 >= qs.length) { await fb.encerrar(codigo); sala = await fb.lerSala(codigo); return render(); }
+    ocupado = false;
     await abrir(sala.indice + 1);
-  };
+  });
 
   const cartaoPergunta = (q, revelar, dist) => h("div", {},
     h("div", { class: "enunciado-tela", html: q.enunciado }),
@@ -136,7 +163,7 @@ export async function telaSala(el, codigo) {
           h("div", { class: "codigo-grande" }, codigo),
           h("p", { class: "ajuda", style: { fontSize: ".9rem", wordBreak: "break-all" } }, urlAluno()),
           emEquipe ? h("p", { class: "ajuda" }, "Um celular por equipe: discutam e enviem uma resposta.") : null,
-          h("div", { class: "nomes" }, jogadores.map((j) => h("span", {}, j.membros ? `👥 ${j.nome} (${j.membros.length})` : j.nome))),
+          h("div", { class: "nomes" }, jogadores.map((j) => h("span", {}, j.membros ? `👥 ${String(j.nome)} (${j.membros.length})` : String(j.nome)))),
           h("div", { class: "linha-acoes", style: { justifyContent: "flex-start" } },
             h("button", { class: "btn", onclick: () => abrir(0), disabled: !jogadores.length }, `Começar (${qs.length} perguntas)`)))));
     }
@@ -145,7 +172,7 @@ export async function telaSala(el, codigo) {
       const q = qs[sala.indice];
       const relogio = h("div", { class: "relogio" });
       const contagem = h("span");
-      const fim = (sala.fechaEmMs ?? Date.now()) - 1500;
+      const fim = (sala.abertaEmMs ?? Date.now() + desvio) + sala.limiteMs - desvio; // em hora local
       const tick = () => {
         const s = Math.max(0, Math.ceil((fim - Date.now()) / 1000));
         relogio.textContent = s;
@@ -159,6 +186,11 @@ export async function telaSala(el, codigo) {
       });
       return limpar(area, cab, relogio, cartaoPergunta(q, false, null),
         h("div", { class: "linha-acoes" }, contagem, h("button", { class: "btn sec", onclick: fechar }, "Encerrar tempo")));
+    }
+
+    if (sala.estado === "fechando") {
+      limpar(area, cab, h("div", { class: "relogio" }, "⏳"), h("p", { class: "centro" }, "Calculando os pontos…"));
+      return fechar(); // retoma um fechamento interrompido
     }
 
     if (sala.estado === "revelada") {
@@ -177,7 +209,7 @@ export async function telaSala(el, codigo) {
     if (sala.estado === "fim") {
       nomesPlacar = await fb.lerPlacar(codigo);
       const r = top(1000);
-      const membrosDe = (uid) => jogadores.find((j) => j.uid === uid)?.membros?.map((m) => m.nome.split(" ")[0]).join(", ");
+      const membrosDe = (uid) => jogadores.find((j) => j.uid === uid)?.membros?.map((m) => String(m?.nome ?? "").split(" ")[0]).join(", ");
       const deg = (p, cls, med) => p ? h("div", {}, h("div", { class: "nome" }, `${med} ${p.nome}`),
         membrosDe(p.uid) ? h("div", { class: "ajuda", style: { fontSize: "1rem" } }, membrosDe(p.uid)) : null, h("div", { class: `deg ${cls}` }, `${p.pontos} pts`, h("br"), plural(p.acertos, "acerto", "acertos"))) : h("div");
       const lista = h("ol", { class: "ranking oculto" }, r.map((p) => h("li", {}, h("span", {}, `${p.posicao}º ${p.nome}`), h("b", {}, `${p.pontos} · ${p.acertos} ✓`))));
@@ -190,9 +222,5 @@ export async function telaSala(el, codigo) {
     }
   };
 
-  desligar.push(fb.ouvirJogadores(codigo, (js) => {
-    jogadores = js;
-    if (sala.estado === "lobby") render();
-  }));
   render();
 }

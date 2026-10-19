@@ -6,9 +6,10 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
 import {
   initializeFirestore, connectFirestoreEmulator, doc, getDoc, getDocs, setDoc, updateDoc, addDoc, collection,
-  query, where, onSnapshot, serverTimestamp, Timestamp, writeBatch,
+  query, where, onSnapshot, serverTimestamp, runTransaction,
 } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 import { firebaseConfig, PROFESSOR_EMAIL, USAR_EMULADOR } from "./config.js";
+import { decidirFechamento, podeRevelar } from "./core/competicao.js";
 
 const app = initializeApp(USAR_EMULADOR ? { apiKey: "demo", projectId: "demo-uvvis", authDomain: "localhost" } : firebaseConfig);
 // Professor: sessão só da aba (não interfere na sessão anônima de aluno no mesmo navegador).
@@ -57,7 +58,7 @@ export async function salvarResposta({ tipo, turma, atividade, questaoId, bloco,
 
 // ---------- competição (aluno) ----------
 const msDe = (t) => (t?.toMillis ? t.toMillis() : null);
-const salaDe = (s) => s.exists() ? { codigo: s.id, ...s.data(), abertaEmMs: msDe(s.data().abertaEm), fechaEmMs: msDe(s.data().fechaEm) } : null;
+const salaDe = (s) => s.exists() ? { codigo: s.id, ...s.data(), abertaEmMs: msDe(s.data().abertaEm) } : null;
 
 export const ouvirSala = (codigo, cb) => onSnapshot(doc(db, "salas", codigo), (s) => cb(salaDe(s)), () => cb(null));
 export async function entrarSala(codigo, { nome, matricula, membros }) {
@@ -97,7 +98,7 @@ export async function criarSala({ turma, modulo, limiteMs, total, modo = "indivi
     const ref = doc(db, "salas", codigo);
     if ((await getDoc(ref)).exists()) continue;
     await setDoc(ref, { turma, modulo, modo, estado: "lobby", indice: -1, total, limiteMs, pergunta: null,
-      abertaEm: null, fechaEm: null, correta: null, criadaEm: serverTimestamp() });
+      abertaEm: null, correta: null, criadaEm: serverTimestamp() });
     return codigo;
   }
 }
@@ -107,10 +108,19 @@ export const ouvirJogadores = (codigo, cb) =>
 export const ouvirNumRespostas = (codigo, indice, cb) =>
   onSnapshot(query(collection(db, "salas", codigo, "respostas"), where("indice", "==", indice)), (q) => cb(q.size));
 
-export async function abrirPergunta(codigo, indice, pergunta, limiteMs) {
-  await updateDoc(doc(db, "salas", codigo), {
-    estado: "pergunta", indice, pergunta, correta: null,
-    abertaEm: serverTimestamp(), fechaEm: Timestamp.fromMillis(Date.now() + limiteMs + 1500),
+// O prazo é contado pelo servidor (abertaEm + limiteMs), não pelo relógio do computador.
+export async function abrirPergunta(codigo, indice, pergunta) {
+  await updateDoc(doc(db, "salas", codigo), { estado: "pergunta", indice, pergunta, correta: null, abertaEm: serverTimestamp() });
+}
+// 1ª etapa do fechamento: "pergunta" → "fechando" (a partir daí as regras recusam respostas).
+// Devolve "fechar" | "retomar" | "ignorar".
+export function iniciarFechamento(codigo, indice) {
+  const ref = doc(db, "salas", codigo);
+  return runTransaction(db, async (tx) => {
+    const s = await tx.get(ref);
+    const d = decidirFechamento(s.data(), indice);
+    if (d === "fechar") tx.update(ref, { estado: "fechando" });
+    return d;
   });
 }
 export async function respostasDaRodada(codigo, indice) {
@@ -119,11 +129,16 @@ export async function respostasDaRodada(codigo, indice) {
 }
 export const lerPlacar = async (codigo) =>
   Object.fromEntries((await getDocs(collection(db, "salas", codigo, "placar"))).docs.map((d) => [d.id, d.data()]));
-export async function revelar(codigo, correta, novoPlacar) {
-  const b = writeBatch(db);
-  b.update(doc(db, "salas", codigo), { estado: "revelada", correta });
-  for (const [u, p] of Object.entries(novoPlacar)) b.set(doc(db, "salas", codigo, "placar", u), p);
-  await b.commit();
+// 2ª etapa: grava o placar e revela, só se a rodada ainda estiver "fechando" (nunca pontua duas vezes).
+export function revelar(codigo, indice, correta, novoPlacar) {
+  const ref = doc(db, "salas", codigo);
+  return runTransaction(db, async (tx) => {
+    const s = await tx.get(ref);
+    if (!podeRevelar(s.data(), indice)) return false;
+    for (const [u, p] of Object.entries(novoPlacar)) tx.set(doc(db, "salas", codigo, "placar", u), p);
+    tx.update(ref, { estado: "revelada", correta });
+    return true;
+  });
 }
 export const encerrar = (codigo) => updateDoc(doc(db, "salas", codigo), { estado: "fim" });
 

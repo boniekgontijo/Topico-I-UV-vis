@@ -13,6 +13,13 @@ service cloud.firestore {
     }
     function agora(campo) { return request.resource.data[campo] == request.time; }
     function soCampos(lista) { return request.resource.data.keys().hasOnly(lista); }
+    function texto(v, max) { return v is string && v.size() <= max; }
+    function membroOk(l, i) { return l.size() <= i || (l[i] is map && texto(l[i].nome, 80) && texto(l[i].matricula, 12)); }
+    // até 6 integrantes, cada um {nome, matricula} como texto
+    function membrosOk(l) {
+      return l is list && l.size() <= 6 && membroOk(l, 0) && membroOk(l, 1) && membroOk(l, 2)
+        && membroOk(l, 3) && membroOk(l, 4) && membroOk(l, 5);
+    }
 
     // alunos/{turma}_{matricula}
     match /alunos/{id} {
@@ -45,7 +52,7 @@ service cloud.firestore {
         && request.resource.data.tipo in ["casa", "grupo"]
         && request.resource.data.correta is bool
         && request.resource.data.tentativa is int && request.resource.data.tentativa >= 1
-        && request.resource.data.membros is list && request.resource.data.membros.size() <= 4
+        && membrosOk(request.resource.data.membros) && request.resource.data.membros.size() <= 4
         && request.resource.data.uid == request.auth.uid
         && agora("quando");
     }
@@ -56,18 +63,19 @@ service cloud.firestore {
     }
 
     match /salas/{codigo} {
-      allow read: if logado();
+      allow get: if logado();   // aluno lê a sala pelo código, mas não lista as salas
+      allow list: if isProf();
       allow write: if isProf();
 
       function sala() { return get(/databases/$(database)/documents/salas/$(codigo)).data; }
 
       match /jogadores/{uid} {
-        allow read: if logado();
+        allow read: if isProf() || (logado() && request.auth.uid == uid);
         // no quiz em equipes, "nome" é o nome da equipe e "membros" lista os integrantes
         allow create: if logado() && uid == request.auth.uid
           && soCampos(["nome", "matricula", "membros", "entrouEm"])
-          && (!("membros" in request.resource.data)
-              || (request.resource.data.membros is list && request.resource.data.membros.size() <= 6))
+          && texto(request.resource.data.nome, 80) && texto(request.resource.data.matricula, 12)
+          && (!("membros" in request.resource.data) || membrosOk(request.resource.data.membros))
           && agora("entrouEm");
         allow write: if isProf();
       }
@@ -81,7 +89,8 @@ service cloud.firestore {
           && request.resource.data.alternativa is int
           && sala().estado == "pergunta"
           && request.resource.data.indice == sala().indice
-          && request.time < sala().fechaEm
+          // prazo pelo relógio do servidor: abertura + tempo da pergunta + 1,5 s de tolerância
+          && request.time < sala().abertaEm + duration.value(sala().limiteMs + 1500, "ms")
           && agora("quando");
         allow delete: if isProf();
       }

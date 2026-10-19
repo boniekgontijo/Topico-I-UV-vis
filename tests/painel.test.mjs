@@ -50,3 +50,24 @@ test("CSV com BOM, ponto e vírgula e vírgula decimal", () => {
   assert.match(l1, /^111;Ana;/);
   assert.ok(l1.includes(";50;") || l1.includes(";50,0;"));
 });
+
+test("primeira tentativa é a mais antiga por matrícula, mesmo vinda de outro celular", () => {
+  const rs = [
+    { ...r("111", "c1-01", 1, false, 1), quando: t("2026-10-04T10:00:00Z") }, // primeira de verdade
+    { ...r("111", "c1-01", 1, true, 1), quando: t("2026-10-05T10:00:00Z") },  // refez no 2º celular
+  ];
+  const [ana] = montarLinhas(alunos, [], rs, []);
+  assert.equal(ana.casaPctPorBloco[1], 0);
+});
+
+test("quiz conta uma vez por aluno mesmo se ele entrou com dois celulares", () => {
+  const q = [{ codigo: "1", modo: "individual", jogadores: [{ uid: "a", matricula: "111" }, { uid: "b", matricula: "111" }],
+    placar: { a: { pontos: 300 }, b: { pontos: 900 } } }];
+  const [ana] = montarLinhas(alunos, [], [], q);
+  assert.deepEqual([ana.quizzes, ana.quizPontos], [1, 900]);
+});
+
+test("CSV neutraliza células que viram fórmula no Excel", () => {
+  const csv = paraCSV(montarLinhas([{ matricula: "999", nome: "=HYPERLINK(\"x\")" }], [], [], []));
+  assert.ok(csv.includes("'=HYPERLINK"));
+});

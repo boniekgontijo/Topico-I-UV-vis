@@ -6,7 +6,10 @@ import { incentivo } from "../core/mensagens.js";
 
 export const FORMAS = ["▲", "◆", "●", "■"];
 let desligar = [];
-const parar = () => { desligar.forEach((f) => f()); desligar = []; };
+let geracao = 0; // muda a cada navegação: telas antigas param depois de um await
+const parar = () => { geracao++; desligar.forEach((f) => f()); desligar = []; };
+const espera = (ms) => new Promise((r) => setTimeout(r, ms));
+const NEGADA = -1; // resposta recusada pelo servidor (fora do tempo)
 window.addEventListener("hashchange", () => { if (!location.hash.startsWith("#quiz")) parar(); });
 
 export async function telaCompeticao(el, aluno, codigo) {
@@ -16,21 +19,29 @@ export async function telaCompeticao(el, aluno, codigo) {
     h("p", {}, "Sem conexão com o servidor. Verifique a internet e recarregue a página."),
     h("button", { class: "btn", onclick: () => location.reload() }, "Recarregar")));
   const fb = api();
-  const s0 = await fb.lerSala(codigo).catch(() => null);
-  if (s0?.modo === "equipe") {
-    const eq = ls.get(`equipe:${codigo}`);
-    if (!eq) return formEquipe(el, aluno, codigo);
-    try { await fb.entrarSala(codigo, { nome: eq.nome, matricula: aluno.matricula, membros: eq.membros }); } catch (e) { console.warn(e); }
-  } else {
-    try { await fb.entrarSala(codigo, aluno); } catch (e) { console.warn(e); }
+  const meu = geracao;
+  limpar(el, topo(aluno, "#menu"), h("div", { class: "cartao status-grande" }, h("div", { class: "grande" }, "📶"), h("p", {}, "Conectando à sala…")));
+  // com 4G instável, tenta de novo até conseguir ler a sala (o modo individual/equipe depende dela)
+  let s0 = null;
+  for (let tentativa = 0; ; tentativa++) {
+    try { s0 = await fb.lerSala(codigo); break; } catch (e) { console.warn(e); }
+    if (meu !== geracao) return;
+    await espera(Math.min(5000, 1000 * (tentativa + 1)));
+    if (meu !== geracao) return;
   }
-  const equipe = s0?.modo === "equipe" ? ls.get(`equipe:${codigo}`) : null;
+  if (meu !== geracao) return;
+  if (!s0) return limpar(el, topo(aluno, "#menu"), h("div", { class: "cartao status-grande" }, h("div", { class: "grande" }, "🤔"),
+    h("p", {}, `Sala ${codigo} não encontrada.`), h("a", { class: "btn", href: "#quiz" }, "Digitar outro código")));
+  const equipe = s0.modo === "equipe" ? ls.get(`equipe:${codigo}`) : null;
+  if (s0.modo === "equipe" && !equipe) return formEquipe(el, aluno, codigo);
+  // não espera: se a rede cair, o Firestore envia quando voltar
+  fb.entrarSala(codigo, equipe ? { nome: equipe.nome, matricula: aluno.matricula, membros: equipe.membros } : aluno).catch((e) => console.warn(e));
 
   const minhas = ls.get(`comp:${codigo}`, {}); // índice → alternativa escolhida
   let sala = null, placar = {}, tic = null;
   desligar.push(() => clearInterval(tic));
   const corpo = h("div");
-  limpar(el, topo(aluno, "#menu"), equipe ? h("p", { class: "ajuda centro" }, `👥 Equipe ${equipe.nome} · ${equipe.membros.map((m) => m.nome.split(" ")[0]).join(", ")}`) : null, corpo);
+  limpar(el, topo(aluno, "#menu"), equipe ? h("p", { class: "ajuda centro" }, `👥 Equipe ${equipe.nome} · ${equipe.membros.map((m) => String(m.nome).split(" ")[0]).join(", ")}`) : null, corpo);
 
   const meuPlacar = () => {
     const lista = Object.entries(placar).sort((a, b) => b[1].pontos - a[1].pontos || a[1].somaDtAcertos - b[1].somaDtAcertos);
@@ -40,8 +51,8 @@ export async function telaCompeticao(el, aluno, codigo) {
 
   const render = () => {
     clearInterval(tic);
-    if (!sala) return limpar(corpo, h("div", { class: "cartao status-grande" }, h("div", { class: "grande" }, "🤔"),
-      h("p", {}, `Sala ${codigo} não encontrada.`), h("a", { class: "btn", href: "#quiz" }, "Digitar outro código")));
+    if (!sala) return limpar(corpo, h("div", { class: "cartao status-grande" }, h("div", { class: "grande" }, "📶"),
+      h("p", {}, "Conexão perdida com a sala."), h("button", { class: "btn", onclick: () => telaCompeticao(el, aluno, codigo) }, "Reconectar")));
     const p = meuPlacar();
     const cab = h("div", { class: "ajuda centro" }, `Sala ${codigo}`, sala.indice >= 0 ? ` · pergunta ${sala.indice + 1} de ${sala.total}` : "", ` · ${p.pontos} pts`);
 
@@ -54,7 +65,7 @@ export async function telaCompeticao(el, aluno, codigo) {
       const escolhida = minhas[sala.indice];
       const q = sala.pergunta;
       const barra = h("div");
-      const restante = () => Math.max(0, (sala.fechaEmMs ?? 0) - 1500 - Date.now());
+      const restante = () => Math.max(0, (sala.abertaEmMs ?? Date.now()) + sala.limiteMs - Date.now());
       const desenharBarra = () => {
         const f = sala.limiteMs ? restante() / sala.limiteMs : 0;
         limpar(barra, h("div", { class: "barra-tempo" }, h("div", { style: { width: `${Math.max(0, Math.min(1, f)) * 100}%` } })));
@@ -67,20 +78,25 @@ export async function telaCompeticao(el, aluno, codigo) {
         try { await fb.responder(codigo, sala.indice, k); }
         catch (e) {
           console.warn(e);
-          toast(e.code === "permission-denied" ? "Tempo esgotado: a resposta não foi aceita." : "Falha de conexão: tente de novo.", "erro");
-          if (e.code !== "permission-denied") { delete minhas[sala.indice]; ls.set(`comp:${codigo}`, minhas); render(); }
+          if (e.code === "permission-denied") minhas[sala.indice] = NEGADA; else delete minhas[sala.indice];
+          ls.set(`comp:${codigo}`, minhas); render();
+          toast(e.code === "permission-denied" ? "O tempo acabou antes da resposta chegar." : "Falha de conexão: toque de novo.", "erro");
         }
       };
       return limpar(corpo, cab, barra,
         h("div", { class: "cartao" }, h("p", { class: "enunciado", html: q.enunciado }),
-          escolhida != null ? h("p", { class: "centro" }, h("b", {}, "Resposta enviada! "), "Aguarde o fim do tempo.") : null,
+          escolhida === NEGADA ? h("p", { class: "centro" }, h("b", {}, "⏳ O tempo acabou. "), "Na próxima você responde!")
+            : escolhida != null ? h("p", { class: "centro" }, h("b", {}, "Resposta enviada! "), "Aguarde o fim do tempo.") : null,
           h("div", { class: "k-alts" }, q.alternativas.map((a, k) => h("button", {
             class: `k-alt k${k} ${escolhida === k ? "escolhida" : ""}`, disabled: escolhida != null,
             onclick: () => responder(k) }, h("span", { class: "forma", "aria-hidden": "true" }, FORMAS[k]), h("span", { html: a }))))));
     }
 
+    if (sala.estado === "fechando") return limpar(corpo, cab, h("div", { class: "cartao status-grande" },
+      h("div", { class: "grande" }, "⏳"), h("p", {}, "Tempo esgotado! Calculando os pontos…")));
+
     if (sala.estado === "revelada") {
-      const escolhida = minhas[sala.indice];
+      const escolhida = minhas[sala.indice] === NEGADA ? null : minhas[sala.indice];
       const acertou = escolhida === sala.correta;
       return limpar(corpo, cab, h("div", { class: "cartao status-grande", style: { background: acertou ? "#E3F7EC" : "#FFF6E0" } },
         h("div", { class: "grande" }, escolhida == null ? "⏳" : acertou ? "🎉" : "💪"),

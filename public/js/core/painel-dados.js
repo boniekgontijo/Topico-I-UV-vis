@@ -6,27 +6,31 @@ export function montarLinhas(alunos, acessos, respostas, quizzes = []) {
   const nAcessos = {};
   for (const a of acessos) nAcessos[a.matricula] = (nAcessos[a.matricula] ?? 0) + 1;
 
-  // casa: primeira tentativa de cada questão, por aluno
-  const primeira = {}; // matricula → questaoId → {bloco, correta}
+  // casa: a resposta MAIS ANTIGA de cada questão, por aluno (vale mesmo com outro celular)
+  const primeira = {}; // matricula → questaoId → {bloco, correta, t}
   const grupo = {};    // matricula → Set(atividade)
   for (const r of respostas) {
+    const t = ms(r.quando) ?? (r.tentativa === 1 ? -1 : Infinity);
     for (const m of r.membros ?? []) {
-      if (r.tipo === "casa" && r.tentativa === 1) {
-        (primeira[m.matricula] ??= {})[r.questaoId] = { bloco: r.bloco, correta: r.correta };
+      if (r.tipo === "casa") {
+        const p = (primeira[m.matricula] ??= {});
+        if (!p[r.questaoId] || t < p[r.questaoId].t) p[r.questaoId] = { bloco: r.bloco, correta: r.correta, t };
       }
       if (r.tipo === "grupo") (grupo[m.matricula] ??= new Set()).add(r.atividade);
     }
   }
 
-  const quiz = {}; // matricula → {n, pontos}
+  const quiz = {}; // matricula → {n, pontos}; um quiz conta uma vez por aluno (melhor pontuação)
   for (const q of quizzes) {
+    const melhor = {};
     for (const j of q.jogadores ?? []) {
       const mats = j.membros?.length ? j.membros.map((m) => m.matricula) : [j.matricula];
       const pts = q.placar?.[j.uid]?.pontos ?? 0;
-      for (const m of new Set(mats)) {
-        const x = (quiz[m] ??= { n: 0, pontos: 0 });
-        x.n += 1; x.pontos += pts;
-      }
+      for (const m of mats) melhor[m] = Math.max(melhor[m] ?? 0, pts);
+    }
+    for (const [m, pts] of Object.entries(melhor)) {
+      const x = (quiz[m] ??= { n: 0, pontos: 0 });
+      x.n += 1; x.pontos += pts;
     }
   }
 
@@ -50,7 +54,8 @@ export function montarLinhas(alunos, acessos, respostas, quizzes = []) {
 
 const dataBR = (m) => (m == null ? "" : new Date(m).toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" }));
 const cel = (v) => {
-  const s = v == null ? "" : typeof v === "number" ? String(v).replace(".", ",") : String(v);
+  let s = v == null ? "" : typeof v === "number" ? String(v).replace(".", ",") : String(v);
+  if (typeof v === "string" && /^[=+\-@\t\r]/.test(s)) s = "'" + s; // não vira fórmula no Excel
   return /[;"\r\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
 };
 

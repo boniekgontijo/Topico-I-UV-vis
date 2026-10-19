@@ -2,7 +2,7 @@
 import { test, before, after, beforeEach } from "node:test";
 import { readFileSync } from "node:fs";
 import { initializeTestEnvironment, assertSucceeds, assertFails } from "@firebase/rules-unit-testing";
-import { doc, getDoc, setDoc, updateDoc, addDoc, collection, serverTimestamp, Timestamp } from "firebase/firestore";
+import { doc, getDoc, getDocs, setDoc, updateDoc, addDoc, collection, serverTimestamp, Timestamp } from "firebase/firestore";
 
 let env;
 before(async () => {
@@ -66,11 +66,11 @@ test("professor lê e grava banco, alunos e respostas; outro e-mail não", async
   await assertFails(getDoc(doc(outro(), "alunos/2026-2_123")));
 });
 
-async function salaEmPergunta({ estado = "pergunta", indice = 2, fechaMs = Date.now() + 60000 } = {}) {
+async function salaEmPergunta({ estado = "pergunta", indice = 2, abertaMs = Date.now(), fechaMs = Date.now() + 60000 } = {}) {
   await semRegras((db) => setDoc(doc(db, "salas/111111"), {
     turma: "2026-2", modulo: "uvvis", estado, indice, total: 10, limiteMs: 20000,
     pergunta: { enunciado: "?", alternativas: ["a", "b"], bloco: 1 },
-    abertaEm: Timestamp.now(), fechaEm: Timestamp.fromMillis(fechaMs), correta: null,
+    abertaEm: Timestamp.fromMillis(abertaMs), fechaEm: Timestamp.fromMillis(fechaMs), correta: null,
   }));
 }
 const resp = (uid, indice = 2) => ({ uid, indice, alternativa: 1, quando: serverTimestamp() });
@@ -87,8 +87,13 @@ test("competição: uma resposta por aluno, só enquanto a pergunta está aberta
 });
 
 test("competição: resposta negada depois do fim do tempo ou com a pergunta revelada", async () => {
-  await salaEmPergunta({ fechaMs: Date.now() - 1000 });
+  // prazo pelo relógio do servidor: abertaEm + limiteMs (+1,5 s), não pelo fechaEm do computador do professor
+  await salaEmPergunta({ abertaMs: Date.now() - 30000, fechaMs: Date.now() + 60000 });
   await assertFails(setDoc(doc(aluno("u1"), "salas/111111/respostas/2_u1"), resp("u1")));
+  await salaEmPergunta({ abertaMs: Date.now() - 5000, fechaMs: Date.now() - 60000 });
+  await assertSucceeds(setDoc(doc(aluno("u5"), "salas/111111/respostas/2_u5"), resp("u5")));
+  await salaEmPergunta({ estado: "fechando" });
+  await assertFails(setDoc(doc(aluno("u6"), "salas/111111/respostas/2_u6"), resp("u6")));
   await salaEmPergunta({ estado: "revelada" });
   await assertFails(setDoc(doc(aluno("u2"), "salas/111111/respostas/2_u2"), resp("u2")));
 });
@@ -127,4 +132,25 @@ test("quiz em equipes: o celular da equipe entra com nome da equipe e integrante
   const muitos = Array.from({ length: 7 }, (_, i) => ({ nome: `X${i}`, matricula: `${i}` }));
   await assertFails(setDoc(doc(aluno("e2"), "salas/111111/jogadores/e2"),
     { nome: "Lotada", matricula: "9", membros: muitos, entrouEm: serverTimestamp() }));
+});
+
+test("jogadores: aluno só lê o próprio registro; salas não podem ser listadas por alunos", async () => {
+  await salaEmPergunta();
+  await semRegras((db) => setDoc(doc(db, "salas/111111/jogadores/outro"), { nome: "Bia", matricula: "456" }));
+  await assertFails(getDoc(doc(aluno("u1"), "salas/111111/jogadores/outro")));
+  await assertFails(getDocs(collection(aluno("u1"), "salas/111111/jogadores")));
+  await assertFails(getDocs(collection(aluno("u1"), "salas")));
+  await assertSucceeds(getDocs(collection(prof(), "salas/111111/jogadores")));
+});
+
+test("jogadores e respostas: nomes e integrantes com tipo e tamanho válidos", async () => {
+  await salaEmPergunta();
+  const base = { matricula: "123", entrouEm: serverTimestamp() };
+  await assertFails(setDoc(doc(aluno("a1"), "salas/111111/jogadores/a1"), { ...base, nome: "x".repeat(81) }));
+  await assertFails(setDoc(doc(aluno("a2"), "salas/111111/jogadores/a2"), { ...base, nome: "Eq", membros: [1] }));
+  await assertFails(setDoc(doc(aluno("a3"), "salas/111111/jogadores/a3"), { ...base, nome: "Eq", membros: [{ nome: 5, matricula: "1" }] }));
+  await assertFails(setDoc(doc(aluno("a4"), "salas/111111/jogadores/a4"), { ...base, nome: 42 }));
+  const r = { tipo: "grupo", turma: "2026-2", atividade: "grupo-A", questaoId: "gA-1", bloco: 4, correta: true, tentativa: 1,
+    membros: [{ nome: "Ana", matricula: "123" }, 7], uid: "u1", quando: serverTimestamp() };
+  await assertFails(setDoc(doc(aluno("u1"), "respostas/rx"), r));
 });

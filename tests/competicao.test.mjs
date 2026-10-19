@@ -30,3 +30,13 @@ test("a pergunta pública não leva gabarito nem explicação", () => {
   assert.deepEqual(Object.keys(p).sort(), ["alternativas", "bloco", "enunciado", "figura"]);
   assert.equal("correta" in perguntaPublica(q("b", 2)), false);
 });
+
+import { decidirFechamento, podeRevelar } from "../public/js/core/competicao.js";
+test("fechamento da rodada acontece uma vez só", () => {
+  assert.equal(decidirFechamento({ estado: "pergunta", indice: 2 }, 2), "fechar");
+  assert.equal(decidirFechamento({ estado: "fechando", indice: 2 }, 2), "retomar");
+  assert.equal(decidirFechamento({ estado: "revelada", indice: 2 }, 2), "ignorar");
+  assert.equal(decidirFechamento({ estado: "pergunta", indice: 3 }, 2), "ignorar");
+  assert.equal(podeRevelar({ estado: "fechando", indice: 2 }, 2), true);
+  assert.equal(podeRevelar({ estado: "revelada", indice: 2 }, 2), false);
+});

@@ -28,3 +28,13 @@ export function prepararCompeticao(questoes, { blocos, n, rnd = Math.random }) {
 export function perguntaPublica({ enunciado, alternativas, figura, bloco }) {
   return figura ? { enunciado, alternativas, figura, bloco } : { enunciado, alternativas, bloco };
 }
+
+// Fechamento da rodada em duas etapas ("pergunta" → "fechando" → "revelada"):
+// impede pontuar duas vezes (duas abas, clique repetido, falha de rede no meio).
+export function decidirFechamento(sala, indice) {
+  if (sala?.indice !== indice) return "ignorar";
+  if (sala.estado === "pergunta") return "fechar";
+  if (sala.estado === "fechando") return "retomar";
+  return "ignorar";
+}
+export const podeRevelar = (sala, indice) => sala?.estado === "fechando" && sala.indice === indice;
