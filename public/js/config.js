@@ -17,3 +17,6 @@ export const TURMA_PADRAO = "2026-2";
 // Em localhost ou na rede local (teste com celulares no mesmo Wi-Fi), usa os emuladores (npm run emulador).
 export const USAR_EMULADOR = ["localhost", "127.0.0.1"].includes(location.hostname)
   || /^(192\.168|10)\.\d+\.\d+(\.\d+)?$|^172\.(1[6-9]|2\d|3[01])\.\d+\.\d+$/.test(location.hostname);
+
+// Data de corte da nota de prática de cada módulo ("AAAA-MM-DD"; null = a definir)
+export const CORTE_PRATICA = { uvvis: "2026-11-09", iv: null };

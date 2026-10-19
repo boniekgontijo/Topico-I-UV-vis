@@ -24,8 +24,8 @@ const quizzes = [
 test("conta acessos e só a primeira tentativa de casa", () => {
   const [ana] = montarLinhas(alunos, acessos, respostas, quizzes);
   assert.equal(ana.nAcessos, 2);
-  assert.equal(ana.casaPctPorBloco[4], 50); // c4-01 errou na 1ª, c4-02 acertou
-  assert.equal(ana.casaPctPorBloco[1], null);
+  assert.equal(ana.casaPctPorBloco.uvvis[4], 50); // c4-01 errou na 1ª, c4-02 acertou
+  assert.equal(ana.casaPctPorBloco.uvvis[1], null);
 });
 
 test("atividade em grupo credita todos os membros", () => {
@@ -46,7 +46,7 @@ test("CSV com BOM, ponto e vírgula e vírgula decimal", () => {
   assert.ok(csv.startsWith("﻿"));
   const [cab, l1] = csv.slice(1).split("\r\n");
   assert.match(cab, /^matricula;nome;/);
-  assert.ok(cab.includes("bloco4_%"));
+  assert.ok(cab.includes("uv_bloco4_%") && cab.includes("iv_bloco9_%"));
   assert.match(l1, /^111;Ana;/);
   assert.ok(l1.includes(";50;") || l1.includes(";50,0;"));
 });
@@ -57,7 +57,7 @@ test("primeira tentativa é a mais antiga por matrícula, mesmo vinda de outro c
     { ...r("111", "c1-01", 1, true, 1), quando: t("2026-10-05T10:00:00Z") },  // refez no 2º celular
   ];
   const [ana] = montarLinhas(alunos, [], rs, []);
-  assert.equal(ana.casaPctPorBloco[1], 0);
+  assert.equal(ana.casaPctPorBloco.uvvis[1], 0);
 });
 
 test("quiz conta uma vez por aluno mesmo se ele entrou com dois celulares", () => {
@@ -75,25 +75,47 @@ test("CSV neutraliza células que viram fórmula no Excel", () => {
 test("nota de prática (0–10) = questões diferentes de casa feitas ÷ total, refazer não conta", () => {
   const rs = [r("111", "c1-01", 1, false, 1), r("111", "c1-01", 1, true, 2), r("111", "c1-02", 1, true, 1),
     r("222", "c1-01", 1, true, 1)];
-  const linhas = montarLinhas(alunos, [], rs, [], { totalCasa: 8 });
+  const linhas = montarLinhas(alunos, [], rs, [], { totais: { uvvis: 8, iv: 80 } });
   const por = (m) => linhas.find((l) => l.matricula === m);
-  assert.equal(por("111").casaFeitas, 2);
-  assert.equal(por("111").pratica, 2.5);  // 10 × 2/8
-  assert.equal(por("222").pratica, 1.3);  // 10 × 1/8 = 1,25 → 1,3
-  assert.equal(por("333").pratica, 0);
+  assert.equal(por("111").casaFeitas.uvvis, 2);
+  assert.equal(por("111").pratica.uvvis, 2.5);  // 10 × 2/8
+  assert.equal(por("222").pratica.uvvis, 1.3);  // 10 × 1/8 = 1,25 → 1,3
+  assert.equal(por("333").pratica.uvvis, 0);
 });
 
 test("simuladores diferentes abertos contam pelos acessos", () => {
   const ac = [{ matricula: "111", pagina: "#sim/beer" }, { matricula: "111", pagina: "#sim/beer" },
     { matricula: "111", pagina: "#sim/curva" }, { matricula: "111", pagina: "#sim" }, { matricula: "222", pagina: "#casa/1" }];
-  const linhas = montarLinhas(alunos, ac, [], [], { totalCasa: 88 });
+  const linhas = montarLinhas(alunos, ac, [], [], { totais: { uvvis: 88, iv: 86 } });
   assert.equal(linhas.find((l) => l.matricula === "111").simuladores, 2);
   assert.equal(linhas.find((l) => l.matricula === "222").simuladores, 0);
 });
 
 test("CSV traz a nota de prática com vírgula decimal", () => {
-  const csv = paraCSV(montarLinhas(alunos, [], [r("111", "c1-01", 1, true, 1), r("111", "c1-02", 1, true, 1)], [], { totalCasa: 8 }));
+  const csv = paraCSV(montarLinhas(alunos, [], [r("111", "c1-01", 1, true, 1), r("111", "c1-02", 1, true, 1)], [], { totais: { uvvis: 8, iv: 80 } }));
   const [cab, l1] = csv.slice(1).split("\r\n");
-  assert.ok(cab.includes("pratica_0a10") && cab.includes("simuladores"));
+  assert.ok(cab.includes("pratica_uvvis_0a10") && cab.includes("pratica_iv_0a10") && cab.includes("questoes_casa_iv") && cab.includes("simuladores"));
   assert.ok(l1.split(";").includes("2,5"));
+});
+
+import { rotuloCorte } from "../public/js/core/painel-dados.js";
+test("prática do IV separada; resposta antiga sem módulo conta no UV-vis", () => {
+  const rs = [r("111", "c1-01", 1, true, 1),                                            // antiga, sem modulo → UV-vis
+    { ...r("111", "iv-c-001", 7, true, 1), modulo: "iv", atividade: "iv-casa-7" },
+    { ...r("111", "iv-c-002", 7, false, 1), modulo: "iv", atividade: "iv-casa-7" }];
+  const [ana] = montarLinhas(alunos, [], rs, [], { totais: { uvvis: 88, iv: 80 } });
+  assert.deepEqual(ana.casaFeitas, { uvvis: 1, iv: 2 });
+  assert.equal(ana.pratica.iv, 0.3);   // 10 × 2/80 = 0,25 → 0,3
+  assert.equal(ana.pratica.uvvis, 0.1);
+  assert.equal(ana.casaPctPorBloco.iv[7], 50);
+  assert.equal(ana.casaPctPorBloco.uvvis[7], null);
+});
+test("mesma questãoId em módulos diferentes não se mistura", () => {
+  const rs = [r("111", "x1", 1, true, 1), { ...r("111", "x1", 1, false, 1), modulo: "iv" }];
+  const [ana] = montarLinhas(alunos, [], rs, [], { totais: { uvvis: 10, iv: 10 } });
+  assert.deepEqual(ana.casaFeitas, { uvvis: 1, iv: 1 });
+});
+test("data de corte: null vira 'a definir'", () => {
+  assert.equal(rotuloCorte(null), "a definir");
+  assert.equal(rotuloCorte("2026-11-09"), "09/11/2026");
 });
