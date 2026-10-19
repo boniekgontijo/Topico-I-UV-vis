@@ -184,3 +184,11 @@ test("personagem da turma: um dono por símbolo; o dono pode trocar de celular e
 test("registro do aluno guarda o símbolo", async () => {
   await assertSucceeds(setDoc(doc(aluno(), "alunos/2026-2_123"), { ...dadosAluno, avatar: "🦊" }));
 });
+
+test("resposta registra o módulo (uvvis ou iv); registros antigos sem módulo continuam válidos", async () => {
+  const r = { tipo: "casa", turma: "2026-2", atividade: "casa-7", questaoId: "iv-c-001", bloco: 7, correta: true, tentativa: 1,
+    membros: [{ nome: "Ana", matricula: "123" }], uid: "u1", quando: serverTimestamp() };
+  await assertSucceeds(setDoc(doc(aluno(), "respostas/m1"), { ...r, modulo: "iv" }));
+  await assertFails(setDoc(doc(aluno(), "respostas/m2"), { ...r, modulo: "rmn" }));
+  await assertSucceeds(setDoc(doc(aluno(), "respostas/m3"), r));
+});

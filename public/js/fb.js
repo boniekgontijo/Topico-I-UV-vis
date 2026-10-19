@@ -68,8 +68,9 @@ export async function registrarAcesso({ turma, matricula, pagina }) {
   return addDoc(collection(db, "acessos"), { turma, matricula, pagina, uid: await eu(), quando: serverTimestamp() }).catch(() => {});
 }
 
-export async function salvarResposta({ tipo, turma, atividade, questaoId, bloco, correta, tentativa, equipe, membros }) {
+export async function salvarResposta({ tipo, modulo, turma, atividade, questaoId, bloco, correta, tentativa, equipe, membros }) {
   const r = { tipo, turma, atividade, questaoId, bloco, correta, tentativa, membros, uid: await eu(), quando: serverTimestamp() };
+  if (modulo) r.modulo = modulo;
   if (equipe) r.equipe = equipe;
   return addDoc(collection(db, "respostas"), r);
 }

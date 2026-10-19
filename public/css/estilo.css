@@ -142,3 +142,12 @@ input[type=range] { width: 100%; min-height: 36px; padding: 0; border: 0; accent
 .avatar:active { transform: scale(.95); border-color: var(--hipso); }
 .avatar.escolhida { border-color: var(--hipso); background: #E6F1FB; box-shadow: 0 0 0 3px var(--hipso); }
 .avatar:disabled { opacity: .25; cursor: default; filter: grayscale(1); }
+
+/* IV: alternativas com estrutura */
+.alt-est { display: flex; align-items: center; justify-content: center; padding: 6px; min-height: 96px; background: #fff; }
+.alts:has(.alt-est) { grid-template-columns: 1fr 1fr; }
+.estrutura { max-width: 100%; max-height: 110px; display: block; margin: 0 auto; }
+.k-alt .estrutura { max-height: 80px; background: #fff; border-radius: 8px; padding: 2px; }
+.modulos { display: flex; gap: 8px; margin: 4px 0 12px; }
+.modulos button { flex: 1; min-height: 48px; border-radius: 12px; border: 2px solid var(--borda); background: #fff; font: inherit; font-weight: 800; cursor: pointer; }
+.modulos button.ativo { background: var(--azul-escuro); color: #fff; border-color: var(--azul-escuro); }

@@ -6,10 +6,13 @@ import { topo } from "./menu.js";
 import { salvarResposta } from "./dados.js";
 import { matriculaValida } from "./identificacao.js";
 import { incentivo } from "../core/mensagens.js";
+import { moduloAtual, baseAtual } from "./estado.js";
+import { alternativa } from "../ui/alternativa.js";
+import { desenharEspectroIV } from "../ui/espectro-iv.js";
 
-const BASE = "conteudo/uvvis/";
 let cache = {};
-const conteudo = async (arq) => (cache[arq] ??= await carregarJSON(BASE + arq));
+const conteudo = async (arq) => (cache[baseAtual() + arq] ??= await carregarJSON(baseAtual() + arq));
+const prefixo = () => (moduloAtual() === "iv" ? "iv-" : ""); // atividades do IV: "iv-casa-7" (UV-vis mantém "casa-4")
 
 // progresso local: primeira tentativa de cada questão
 const chave = (atividade, aluno) => `prog:${aluno.turma}:${aluno.matricula}:${atividade}`;
@@ -23,7 +26,7 @@ export async function telaCasaLista(el, aluno) {
     h("p", { class: "ajuda" }, "Faça no seu ritmo. Você pode tentar de novo; o professor vê a primeira tentativa."),
     h("ul", { class: "lista" }, blocos.map((b) => {
       const qs = casa.questoes.filter((q) => q.bloco === b.n);
-      const p = lerProg(`casa-${b.n}`, aluno);
+      const p = lerProg(`${prefixo()}casa-${b.n}`, aluno);
       const feitas = qs.filter((q) => q.id in p).length;
       return h("li", {}, h("a", { href: `#casa/${b.n}` },
         h("span", {}, h("b", {}, `${b.n}. `), b.titulo),
@@ -36,7 +39,8 @@ export async function telaCasaBloco(el, aluno, n) {
   const bloco = blocos.find((b) => b.n === Number(n));
   if (!bloco) return (location.hash = "#casa");
   executar(el, aluno, {
-    titulo: `${bloco.n}. ${bloco.titulo}`, voltar: "#casa", tipo: "casa", atividade: `casa-${bloco.n}`,
+    titulo: `${bloco.n}. ${bloco.titulo}`, voltar: "#casa", tipo: "casa", atividade: `${prefixo()}casa-${bloco.n}`,
+    compostos: moduloAtual() === "iv" ? (await conteudo("compostos.json")).compostos : null,
     questoes: casa.questoes.filter((q) => q.bloco === bloco.n),
     membros: [{ nome: aluno.nome, matricula: aluno.matricula }],
   });
@@ -105,7 +109,7 @@ function executar(el, aluno, cfg) {
     tentativas[q.id] = (tentativas[q.id] ?? 0) + 1;
     ls.set(tentKey, tentativas);
     if (!(q.id in prog)) { prog[q.id] = correta; gravarProg(cfg.atividade, aluno, prog); }
-    salvarResposta({ tipo: cfg.tipo, turma: aluno.turma, atividade: cfg.atividade, questaoId: q.id, bloco: q.bloco,
+    salvarResposta({ tipo: cfg.tipo, modulo: moduloAtual(), turma: aluno.turma, atividade: cfg.atividade, questaoId: q.id, bloco: q.bloco,
       correta, tentativa: tentativas[q.id], equipe: cfg.equipe, membros: cfg.membros });
   };
 
@@ -139,7 +143,7 @@ function executar(el, aluno, cfg) {
     let entrada;
     if (q.tipo === "mc") {
       entrada = h("div", { class: "alts" }, q.alternativas.map((a, k) =>
-        h("button", { class: "alt", "data-v": k, onclick: (e) => responder(k, e.currentTarget), html: a })));
+        h("button", { class: `alt ${q.subtipo === "espectro" ? "alt-est" : ""}`, "data-v": k, onclick: (e) => responder(k, e.currentTarget) }, alternativa(a, baseAtual()))));
     } else if (q.tipo === "vf") {
       entrada = h("div", { class: "alts" }, [[true, "Verdadeiro"], [false, "Falso"]].map(([v, t]) =>
         h("button", { class: "alt", "data-v": String(v), onclick: (e) => responder(v, e.currentTarget) }, t)));
@@ -153,8 +157,9 @@ function executar(el, aluno, cfg) {
       h("div", { class: "ajuda" }, `Questão ${i + 1} de ${qs.length}`),
       h("div", { class: "progresso" }, h("div", { style: { width: `${(100 * i) / qs.length}%` } })),
       h("p", { class: "enunciado", html: q.enunciado }),
-      q.figura ? h("a", { href: BASE + q.figura, target: "_blank", rel: "noopener" },
-        h("img", { class: "figura", src: BASE + q.figura, alt: "Figura da questão (toque para ampliar)", loading: "lazy" })) : null,
+      q.espectro && cfg.compostos?.[q.espectro] ? (() => { const d = h("div", { style: { margin: "8px 0" } }); desenharEspectroIV(d, cfg.compostos[q.espectro].bandas); return d; })() : null,
+      q.figura ? h("a", { href: baseAtual() + q.figura, target: "_blank", rel: "noopener" },
+        h("img", { class: "figura", src: baseAtual() + q.figura, alt: "Figura da questão (toque para ampliar)", loading: "lazy" })) : null,
       entrada, fb);
     limpar(el, topo(aluno, cfg.voltar), h("h2", {}, cfg.titulo), corpo);
   };

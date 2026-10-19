@@ -48,8 +48,9 @@ service cloud.firestore {
     match /respostas/{id} {
       allow read: if isProf();
       allow create: if logado()
-        && soCampos(["tipo", "turma", "atividade", "questaoId", "bloco", "correta", "tentativa", "equipe", "membros", "uid", "quando"])
+        && soCampos(["tipo", "modulo", "turma", "atividade", "questaoId", "bloco", "correta", "tentativa", "equipe", "membros", "uid", "quando"])
         && request.resource.data.tipo in ["casa", "grupo"]
+        && (!("modulo" in request.resource.data) || request.resource.data.modulo in ["uvvis", "iv"])
         && request.resource.data.correta is bool
         && request.resource.data.tentativa is int && request.resource.data.tentativa >= 1
         && membrosOk(request.resource.data.membros) && request.resource.data.membros.size() <= 4
