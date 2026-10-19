@@ -94,3 +94,21 @@ export function padroesCurva({ niveis, a, b, sigma = 0.005, curvatura = 0, rnd =
   };
   return niveis.map((c) => ({ c, A: (a * c) / (1 + curvatura * c) + b + (sigma ? ruido() : 0) }));
 }
+
+// Cor aproximada de um λ visível (380–780 nm); fora do visível → null
+export function corDoComprimento(l) {
+  if (l < 380 || l > 780) return null;
+  let r = 0, g = 0, b = 0;
+  if (l < 440) { r = (440 - l) / 60; b = 1; }
+  else if (l < 490) { g = (l - 440) / 50; b = 1; }
+  else if (l < 510) { g = 1; b = (510 - l) / 20; }
+  else if (l < 580) { r = (l - 510) / 70; g = 1; }
+  else if (l < 645) { r = 1; g = (645 - l) / 65; }
+  else r = 1;
+  const f = l < 420 ? 0.3 + (0.7 * (l - 380)) / 40 : l > 700 ? 0.3 + (0.7 * (780 - l)) / 80 : 1; // olho vê menos nas bordas
+  const hex = (v) => Math.round(255 * Math.pow(v * f, 0.8)).toString(16).padStart(2, "0");
+  return `#${hex(r)}${hex(g)}${hex(b)}`;
+}
+
+// A num λ qualquer: ε(λ) = εmáx × forma da banda
+export const absorbanciaEm = (l, { lambdaMax, epsMax, b, c, largura = 35 }) => banda(l, lambdaMax, epsMax * b * c, largura);

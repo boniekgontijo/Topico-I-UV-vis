@@ -3,3 +3,4 @@ privado/
 .firebase/
 *-debug.log
 .superpowers/
+firestore-debug.log

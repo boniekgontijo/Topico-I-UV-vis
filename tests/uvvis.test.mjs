@@ -96,3 +96,21 @@ test("padrões simulados da curva analítica", () => {
   const r = uv.padroesCurva({ niveis: [5], a: 0.1, b: 0, sigma: 0.005, rnd: fixo });
   assert.ok(Math.abs(r[0].A - 0.5) < 0.03);
 });
+
+test("cor de cada comprimento de onda visível", () => {
+  assert.equal(uv.corDoComprimento(300), null); // UV: invisível
+  assert.equal(uv.corDoComprimento(850), null); // IV próximo
+  const rgb = (hex) => [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16));
+  const [r4, g4, b4] = rgb(uv.corDoComprimento(450));
+  assert.ok(b4 > r4 && b4 > g4, "450 nm é azul");
+  const [r5, g5, b5] = rgb(uv.corDoComprimento(530));
+  assert.ok(g5 > r5 && g5 > b5, "530 nm é verde");
+  const [r6, g6, b6] = rgb(uv.corDoComprimento(650));
+  assert.ok(r6 > g6 && r6 > b6, "650 nm é vermelho");
+});
+
+test("absorbância em um λ qualquer segue o formato da banda", () => {
+  perto(uv.absorbanciaEm(450, { lambdaMax: 450, epsMax: 15000, b: 1, c: 3e-5 }), 0.45, 1e-9);
+  const fora = uv.absorbanciaEm(500, { lambdaMax: 450, epsMax: 15000, b: 1, c: 3e-5 });
+  assert.ok(fora < 0.45 && fora > 0);
+});
