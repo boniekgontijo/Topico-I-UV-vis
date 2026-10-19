@@ -132,10 +132,12 @@ export async function criarSala({ turma, modulo, limiteMs, total, porRodada = nu
     if ((await getDoc(ref)).exists()) continue;
     await setDoc(ref, { turma, modulo, modo, porRodada, estado: "lobby", indice: -1, total, limiteMs, pergunta: null,
       abertaEm: null, correta: null, criadaEm: serverTimestamp() });
-    await setDoc(doc(db, "turmas", turma), { salaAtual: codigo, atualizadoEm: serverTimestamp() }, { merge: true });
+    await marcarSalaAtual(turma, codigo);
     return codigo;
   }
 }
+export const marcarSalaAtual = (turma, codigo) =>
+  setDoc(doc(db, "turmas", turma), { salaAtual: codigo, atualizadoEm: serverTimestamp() }, { merge: true });
 export const lerSala = async (codigo) => salaDe(await getDoc(doc(db, "salas", codigo)));
 export const ouvirJogadores = (codigo, cb, aoErro = console.error) =>
   onSnapshot(collection(db, "salas", codigo, "jogadores"), (q) => cb(q.docs.map((d) => ({ uid: d.id, ...d.data() }))), aoErro);

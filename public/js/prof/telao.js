@@ -36,9 +36,10 @@ export async function telaNova(el, { slides = false, modulo = "uvvis" } = {}) {
   const tempo = h("select", {});
   const modo = h("select", {}, h("option", { value: "individual" }, "Individual (cada um no seu celular)"), h("option", { value: "equipe" }, "Em equipes (um celular por equipe)"));
   const opcoesTempo = () => {
-    const ops = modo.value === "equipe" ? [45, 60, 90] : [10, 20, 30];
-    const padrao = modo.value === "equipe" ? 60 : 20;
-    tempo.replaceChildren(...ops.map((s) => h("option", { value: s, selected: s === padrao }, `${s} s`)));
+    const ops = modo.value === "equipe" ? [60, 90, 120, 180] : [20, 30, 60, 90, 120];
+    const padrao = 120; // 2 min por pergunta: tempo para discutir antes de votar
+    const rot = (s) => (s % 60 ? `${s} s` : `${s / 60} min`);
+    tempo.replaceChildren(...ops.map((s) => h("option", { value: s, selected: s === padrao }, rot(s))));
   };
   modo.addEventListener("change", opcoesTempo);
   opcoesTempo();
@@ -79,6 +80,8 @@ export async function telaSala(el, codigo) {
   let sala = await fb.lerSala(codigo);
   const IMG = MODULOS[sala?.modulo ?? "uvvis"]?.base ?? MODULOS.uvvis.base;
   if (!sala || !qs) return limpar(el, h("p", { class: "aviso" }, `Sala ${codigo} não encontrada.`), h("a", { class: "btn", href: "#comp" }, "Novo quiz"));
+  // reabrir uma sala pelo link #sala/<código> faz dela a sala atual da turma (o QR fixo leva para ela)
+  if (sala.estado !== "fim") fb.marcarSalaAtual(sala.turma, codigo).catch((e) => console.warn(e));
   const emEquipe = sala.modo === "equipe";
   const rotJog = (n) => emEquipe ? `${n} ${n === 1 ? "equipe" : "equipes"}` : `${n} ${n === 1 ? "jogador" : "jogadores"}`;
   let jogadores = [], nResp = 0, fechando = false, ocupado = false, tic = null, cancelarNResp = null;
@@ -106,8 +109,9 @@ export async function telaSala(el, codigo) {
   limpar(el, area);
 
   const urlAluno = () => {
+    // o MESMO link fixo dos slides (QR igual): o aluno entra sozinho na sala atual da turma (turmas/{t}.salaAtual)
     const base = location.href.split("#")[0].replace(/professor\.html.*$/, "");
-    return `${base}index.html?t=${encodeURIComponent(sala.turma)}${sala.modulo === "iv" ? "&m=iv" : ""}#quiz/${codigo}`;
+    return `${base}?t=${encodeURIComponent(sala.turma)}${sala.modulo === "iv" ? "&m=iv" : ""}#quiz`;
   };
   const qrSvg = (txt) => { const q = window.qrcode(0, "M"); q.addData(txt); q.make(); return q.createSvgTag({ cellSize: 8, margin: 2, scalable: true }); };
   const rotulo = (j) => `${j.avatar ? j.avatar + " " : ""}${String(j.nome ?? "?")}`;
