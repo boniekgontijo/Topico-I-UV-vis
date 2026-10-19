@@ -1,5 +1,5 @@
 // Painel do professor: acessos, exercícios, quizzes e exportação CSV.
-import { h, limpar, toast, ls } from "../ui/dom.js";
+import { h, limpar, toast, ls, carregarJSON } from "../ui/dom.js";
 import { montarLinhas, paraCSV } from "../core/painel-dados.js";
 import { ranking } from "../core/pontuacao.js";
 import * as fb from "../fb.js";
@@ -13,14 +13,16 @@ export async function telaPainel(el) {
   const turma = h("input", { value: ls.get("painelTurma", TURMA_PADRAO), maxlength: 20, style: { maxWidth: "160px" } });
   const recentes = h("input", { type: "checkbox", style: { width: "auto", minHeight: "0" } });
   const area = h("div");
-  let linhas = [], quizzes = [], ordem = { k: "nome", asc: true };
+  let linhas = [], quizzes = [], totalCasa = 88, ordem = { k: "pratica", asc: false };
 
   const carregar = async () => {
     ls.set("painelTurma", turma.value);
     limpar(area, h("p", { class: "ajuda" }, "Carregando…"));
     try {
-      const [al, ac, re, qz] = await Promise.all([fb.lerAlunos(turma.value), fb.lerAcessos(turma.value), fb.lerRespostas(turma.value), fb.lerQuizzes(turma.value)]);
-      linhas = montarLinhas(al, ac, re, qz);
+      const [al, ac, re, qz, casa] = await Promise.all([fb.lerAlunos(turma.value), fb.lerAcessos(turma.value), fb.lerRespostas(turma.value),
+        fb.lerQuizzes(turma.value), carregarJSON("conteudo/uvvis/casa.json")]);
+      totalCasa = casa.questoes.length;
+      linhas = montarLinhas(al, ac, re, qz, { totalCasa });
       quizzes = qz.sort((a, b) => (b.criadaEmMs ?? 0) - (a.criadaEmMs ?? 0));
       desenhar();
     } catch (e) { console.error(e); toast("Não consegui ler os dados.", "erro"); }
@@ -38,16 +40,20 @@ export async function telaPainel(el) {
         h("div", {}, h("span", { class: "ajuda" }, "alunos"), h("b", {}, linhas.length)),
         h("div", {}, h("span", { class: "ajuda" }, "ativos em 7 dias"), h("b", {}, ativos7)),
         h("div", {}, h("span", { class: "ajuda" }, "quizzes"), h("b", {}, quizzes.length)),
-        h("div", {}, h("span", { class: "ajuda" }, "questões de casa feitas"), h("b", {}, linhas.reduce((s, l) => s + l.casaFeitas, 0)))),
+        h("div", {}, h("span", { class: "ajuda" }, "praticaram em casa"), h("b", {}, linhas.filter((l) => l.casaFeitas > 0).length)),
+        h("div", {}, h("span", { class: "ajuda" }, "média de prática (0–10)"),
+          h("b", {}, linhas.length ? (linhas.reduce((s, l) => s + l.pratica, 0) / linhas.length).toFixed(1).replace(".", ",") : "—"))),
       h("div", { class: "rolar cartao", style: { padding: 0 } }, h("table", { class: "tab" },
         h("tr", {}, th("nome", "Nome"), th("matricula", "Matrícula"), th("ultimoAcesso", "Último acesso"), th("nAcessos", "Acessos"),
-          th("casaFeitas", "Casa"), ...Array.from({ length: 10 }, (_, i) => th(`b${i + 1}`, `B${i + 1}`)),
+          th("pratica", "Prática 0–10"), th("casaFeitas", `Casa (de ${totalCasa})`), th("simuladores", "Simul."), ...Array.from({ length: 10 }, (_, i) => th(`b${i + 1}`, `B${i + 1}`)),
           h("th", {}, "Grupo"), th("quizzes", "Quizzes"), th("quizPontos", "Pts quiz")),
         ls_.map((l) => h("tr", {},
-          h("td", {}, l.nome), h("td", {}, l.matricula), h("td", {}, dataBR(l.ultimoAcesso)), h("td", {}, l.nAcessos), h("td", {}, l.casaFeitas),
+          h("td", {}, l.nome), h("td", {}, l.matricula), h("td", {}, dataBR(l.ultimoAcesso)), h("td", {}, l.nAcessos),
+          h("td", { style: { background: calor(l.pratica * 10), textAlign: "center", fontWeight: 700 } }, String(l.pratica).replace(".", ",")),
+          h("td", { style: { textAlign: "center" } }, l.casaFeitas), h("td", { style: { textAlign: "center" } }, `${l.simuladores}/5`),
           ...Array.from({ length: 10 }, (_, i) => { const p = l.casaPctPorBloco[i + 1]; return h("td", { style: { background: calor(p), textAlign: "center" } }, p == null ? "·" : `${p}%`); }),
           h("td", {}, l.grupoAtividades.map((a) => a.replace("grupo-", "")).join(" ")), h("td", {}, l.quizzes), h("td", {}, l.quizPontos))))),
-      h("p", { class: "ajuda" }, "Casa: % de acerto na primeira tentativa, por bloco. Grupo: estações feitas (A–E, P). Quiz em equipe conta para todos os integrantes."),
+      h("p", { class: "ajuda" }, `Prática = 10 × questões diferentes de casa feitas ÷ ${totalCasa} (refazer não soma). B1–B10: % de acerto na primeira tentativa, por bloco. Grupo: estações feitas (A–E, P). Quiz em equipe conta para todos os integrantes.`),
       h("h2", {}, "Quizzes"),
       quizzes.length ? h("div", {}, quizzes.map((q) => {
         const r = ranking(Object.fromEntries(q.jogadores.map((j) => [j.uid, { nome: j.nome, pontos: 0, somaDtAcertos: 0, acertos: 0, ...q.placar[j.uid] }]))).slice(0, 3);

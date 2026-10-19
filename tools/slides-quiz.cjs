@@ -165,6 +165,28 @@ const POR_RODADA = 10;
     p.addNotes(fim ? "Toque em 🏁 Ver pódio final no celular e projete/mostre o pódio." : "Toque em 🏆 Pódio da rodada 1 no celular; depois ▶ Começar rodada 2.");
   }
 
+  // ---------- para casa ----------
+  const LINK_CASA = `${SITE}?t=${TURMA}#menu`;
+  const qrCasa = "image/png;base64," + (await QRCode.toBuffer(LINK_CASA, { margin: 1, width: 900, errorCorrectionLevel: "M" })).toString("base64");
+  pres.addSection({ title: "Para casa" });
+  const c = pres.addSlide({ masterName: "PERGUNTA", sectionTitle: "Para casa" });
+  c.addText("Para casa", { placeholder: "secao" });
+  c.addText("Pratique no seu ritmo 🏠", { placeholder: "title" });
+  c.addImage({ data: qrCasa, x: 0.6, y: 2.45, w: 4.3, h: 4.3, altText: "QR code da página da disciplina" });
+  c.addText(LINK_CASA.replace("https://", ""), { x: 0.6, y: 6.8, w: 4.3, h: 0.35, fontSize: 10, color: GRAY, align: "center", margin: 0, isTextBox: true });
+  [
+    ["🏠", "Exercícios para casa", "88 questões nos 10 blocos da aula, com explicação em cada resposta", "E6F4EA", GREEN],
+    ["📈", "Simuladores", "Lei de Beer com λ, conjugação e cor, deslocamentos, curva analítica, Woodward-Fieser", "F1E8F8", "7030A0"],
+    ["🏅", "Sua prática conta", "Nota de 0 a 10 pelas questões diferentes que você fizer — o professor acompanha", "FFF6CC", "D89E00"],
+  ].forEach(([ic, t, sub, fundo, borda], i) => {
+    const y = 2.45 + i * 1.45;
+    c.addShape(pres.ShapeType.roundRect, { x: 5.4, y, w: 7.5, h: 1.25, rectRadius: 0.12, fill: { color: fundo }, line: { color: borda, width: 1.5 }, objectName: `cartao ${t}` });
+    c.addText(ic, { x: 5.55, y, w: 0.9, h: 1.25, fontSize: 34, align: "center", valign: "middle", margin: 0, isTextBox: true });
+    c.addText([{ text: t, options: { bold: true, fontSize: 22, color: "000000", breakLine: true } }, { text: sub, options: { fontSize: 15, color: "404040" } }],
+      { x: 6.55, y, w: 6.2, h: 1.25, valign: "middle", margin: 0, isTextBox: true });
+  });
+  c.addNotes("Mesmo registro do quiz (nome, matrícula, personagem). No painel do professor: coluna Prática 0–10 = 10 × questões diferentes feitas ÷ 88; exporta CSV.");
+
   await pres.writeFile({ fileName: SAIDA });
   await applyTheme(SAIDA, THEME);
   console.log(`ok: ${SAIDA} (${pres.slides.length} slides) — link ${LINK}`);

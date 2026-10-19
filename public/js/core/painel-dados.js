@@ -2,9 +2,15 @@
 
 const ms = (t) => (t?.toMillis ? t.toMillis() : typeof t === "number" ? t : null);
 
-export function montarLinhas(alunos, acessos, respostas, quizzes = []) {
+// opcoes.totalCasa: nº de questões de casa disponíveis (normaliza a nota de prática 0–10)
+export function montarLinhas(alunos, acessos, respostas, quizzes = [], { totalCasa = 88 } = {}) {
   const nAcessos = {};
-  for (const a of acessos) nAcessos[a.matricula] = (nAcessos[a.matricula] ?? 0) + 1;
+  const sims = {}; // matricula → Set(simulador aberto)
+  for (const a of acessos) {
+    nAcessos[a.matricula] = (nAcessos[a.matricula] ?? 0) + 1;
+    const m = /^#sim\/(\w+)/.exec(a.pagina ?? "");
+    if (m) (sims[a.matricula] ??= new Set()).add(m[1]);
+  }
 
   // casa: a resposta MAIS ANTIGA de cada questão, por aluno (vale mesmo com outro celular)
   const primeira = {}; // matricula → questaoId → {bloco, correta, t}
@@ -46,6 +52,8 @@ export function montarLinhas(alunos, acessos, respostas, quizzes = []) {
       nAcessos: nAcessos[a.matricula] ?? 0,
       casaPctPorBloco,
       casaFeitas: Object.keys(primeira[a.matricula] ?? {}).length,
+      pratica: Math.round((100 * Object.keys(primeira[a.matricula] ?? {}).length) / totalCasa) / 10, // 0–10, 1 casa decimal
+      simuladores: sims[a.matricula]?.size ?? 0,
       grupoAtividades: [...(grupo[a.matricula] ?? [])].sort(),
       quizzes: quiz[a.matricula]?.n ?? 0, quizPontos: quiz[a.matricula]?.pontos ?? 0,
     };
@@ -61,9 +69,9 @@ const cel = (v) => {
 
 export function paraCSV(linhas) {
   const blocos = Array.from({ length: 10 }, (_, i) => i + 1);
-  const cab = ["matricula", "nome", "primeiro_acesso", "ultimo_acesso", "acessos", "questoes_casa",
+  const cab = ["matricula", "nome", "primeiro_acesso", "ultimo_acesso", "acessos", "questoes_casa", "pratica_0a10", "simuladores",
     ...blocos.map((b) => `bloco${b}_%`), "atividades_grupo", "quizzes", "pontos_quiz"];
-  const corpo = linhas.map((l) => [l.matricula, l.nome, dataBR(l.primeiroAcesso), dataBR(l.ultimoAcesso), l.nAcessos, l.casaFeitas,
+  const corpo = linhas.map((l) => [l.matricula, l.nome, dataBR(l.primeiroAcesso), dataBR(l.ultimoAcesso), l.nAcessos, l.casaFeitas, l.pratica, l.simuladores,
     ...blocos.map((b) => l.casaPctPorBloco[b]), l.grupoAtividades.join(" "), l.quizzes, l.quizPontos].map(cel).join(";"));
   return "﻿" + [cab.join(";"), ...corpo].join("\r\n");
 }
