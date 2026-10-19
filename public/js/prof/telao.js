@@ -15,12 +15,16 @@ window.addEventListener("hashchange", () => { if (!location.hash.startsWith("#sa
 // ---------- criar ----------
 export async function telaNova(el) {
   parar();
-  const [blocos, banco] = await Promise.all([carregarJSON(IMG + "blocos.json"), fb.lerBanco("uvvis")]);
+  const [blocos, bancoDoc] = await Promise.all([carregarJSON(IMG + "blocos.json"), fb.lerBancoCompleto("uvvis")]);
+  const banco = bancoDoc?.questoes, sequencia = bancoDoc?.sequencia ?? [];
   if (!banco?.length) return limpar(el, h("div", { class: "cartao" },
     h("h2", {}, "Carregue as perguntas primeiro"), h("p", {}, "Vá à aba Perguntas e escolha o arquivo privado/uvvis-competicao.json."),
     h("a", { class: "btn", href: "#perguntas" }, "Ir para Perguntas")));
   const conta = (n) => banco.filter((q) => q.bloco === n).length;
   const caixas = blocos.map((b) => ({ n: b.n, el: h("input", { type: "checkbox", checked: true }) }));
+  const ordem = h("select", {},
+    sequencia.length ? h("option", { value: "slides" }, `Sequência dos slides (${sequencia.length} perguntas, ordem fixa)`) : null,
+    h("option", { value: "sorteio" }, "Sortear perguntas agora"));
   const nRodadas = h("select", {}, [1, 2, 3].map((n) => h("option", { value: n, selected: n === 2 }, `${n}`)));
   const porRodada = h("select", {}, [5, 10].map((n) => h("option", { value: n, selected: n === 10 }, `${n}`)));
   const tempo = h("select", {});
@@ -36,9 +40,9 @@ export async function telaNova(el) {
   const criar = async (e) => {
     e.preventDefault();
     const sel = caixas.filter((c) => c.el.checked).map((c) => c.n);
-    if (!sel.length) return toast("Escolha ao menos um bloco.", "erro");
+    if (!sel.length && ordem.value !== "slides") return toast("Escolha ao menos um bloco.", "erro");
     const n = Number(nRodadas.value) * Number(porRodada.value);
-    const qs = prepararCompeticao(banco, { blocos: sel, n });
+    const qs = ordem.value === "slides" ? sequencia.slice(0, n) : prepararCompeticao(banco, { blocos: sel, n });
     if (qs.length < n) toast(`Só há ${qs.length} perguntas nos blocos escolhidos; o quiz terá ${qs.length}.`);
     if (!/^[\w-]{1,20}$/.test(turma.value)) return toast("Turma: use letras, números e hífen.", "erro");
     const limiteMs = Number(tempo.value) * 1000;
@@ -50,6 +54,7 @@ export async function telaNova(el) {
     h("form", { class: "cartao", onsubmit: criar },
       h("h3", {}, "Blocos"),
       h("div", { class: "blocos-sel" }, blocos.map((b, i) => h("label", {}, caixas[i].el, `${b.n}. ${b.titulo} (${conta(b.n)})`))),
+      h("label", {}, "Ordem das perguntas"), ordem,
       h("label", {}, "Modo"), modo,
       h("div", { class: "grade", style: { gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))" } },
         h("div", {}, h("label", {}, "Rodadas"), nRodadas),
@@ -147,6 +152,7 @@ export async function telaSala(el, codigo) {
   const cartaoPergunta = (q, revelar, dist) => h("div", {},
     h("div", { class: "enunciado-tela", html: q.enunciado }),
     q.figura ? h("div", { class: "centro" }, h("img", { class: "figura", src: IMG + q.figura, alt: "" })) : null,
+    revelar && q.figuraResposta ? h("div", { class: "centro" }, h("img", { class: "figura", src: IMG + q.figuraResposta, alt: "" })) : null,
     dist ? h("div", { class: "barras" }, q.alternativas.map((_, k) => {
       const max = Math.max(1, ...dist);
       return h("div", { class: `k${k}`, style: { height: `${14 + (86 * dist[k]) / max}%`, opacity: revelar && k !== q.correta ? 0.35 : 1 } }, `${FORMAS[k]} ${dist[k]}`);

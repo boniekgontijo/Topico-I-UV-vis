@@ -73,7 +73,7 @@ export async function telaCompeticao(el, aluno, codigo) {
     if (sala.estado === "lobby") return limpar(corpo, cab, h("div", { class: "cartao status-grande" },
       h("div", { class: "grande" }, "✅"), h("h2", {}, equipe ? "Equipe dentro!" : "Você está dentro!"),
       h("p", {}, equipe ? `${equipe.nome}: discutam juntos e enviem UMA resposta por pergunta.` : `${aluno.nome}, aguarde o professor começar.`),
-      h("p", { class: "ajuda" }, "Olhe para o telão: a pergunta aparece lá e aqui.")));
+      h("p", { class: "ajuda" }, "Olhe para o slide: a pergunta aparece lá e aqui no celular.")));
 
     if (sala.estado === "pergunta") {
       const escolhida = minhas[sala.indice];
@@ -177,9 +177,23 @@ function formEquipe(el, aluno, codigo) {
 
 function pedirCodigo(el, aluno) {
   const inp = h("input", { class: "codigo-input", inputmode: "numeric", maxlength: 6, placeholder: "000000", "aria-label": "Código da sala" });
-  limpar(el, topo(aluno, "#menu"), h("h1", {}, "🏆 Quiz"),
+  const status = h("div", { class: "cartao status-grande" }, h("div", { class: "grande" }, "⏳"), h("p", {}, "Procurando o quiz da turma…"));
+  limpar(el, topo(aluno, "#menu"), h("h1", {}, "🏆 Quiz"), status,
     h("form", { class: "cartao", onsubmit: (e) => { e.preventDefault(); const c = inp.value.replace(/\D/g, ""); if (c.length === 6) location.hash = `#quiz/${c}`; else toast("O código tem 6 dígitos.", "erro"); } },
-      h("label", {}, "Código que está no telão"), inp, h("p", { class: "ajuda" }, "Ou leia o QR code do telão com a câmera."),
+      h("label", {}, "Ou digite o código que está na tela do professor"), inp,
       h("button", { class: "btn largo", type: "submit" }, "Entrar na sala")));
-  inp.focus();
+  if (!online()) return limpar(status, h("p", {}, "Sem conexão com o servidor. Verifique a internet e recarregue a página."));
+  // link fixo da turma (QR code do slide): entra sozinho no quiz que o professor abrir
+  const fb = api();
+  const meu = geracao;
+  desligar.push(fb.ouvirTurma(aluno.turma, async (t) => {
+    if (meu !== geracao) return;
+    if (t?.salaAtual) {
+      const sala = await fb.lerSala(t.salaAtual).catch(() => null);
+      if (meu !== geracao) return;
+      if (sala && sala.estado !== "fim") { location.hash = `#quiz/${t.salaAtual}`; return; }
+    }
+    limpar(status, h("div", { class: "grande" }, "🙋"), h("h2", {}, `Tudo certo, ${aluno.nome.split(" ")[0]}!`),
+      h("p", {}, "Aguarde: quando o professor abrir o quiz, você entra sozinho."), h("p", { class: "ajuda" }, `Turma ${aluno.turma}`));
+  }));
 }

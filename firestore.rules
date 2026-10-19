@@ -57,6 +57,12 @@ service cloud.firestore {
         && agora("quando");
     }
 
+    // sala atual de cada turma: o QR code fixo do slide leva o aluno ao quiz aberto
+    match /turmas/{turma} {
+      allow get: if logado();
+      allow write: if isProf();
+    }
+
     // gabarito da competição: só o professor
     match /bancos/{modulo} {
       allow read, write: if isProf();

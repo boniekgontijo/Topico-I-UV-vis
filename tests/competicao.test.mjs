@@ -56,3 +56,12 @@ test("avatares: ao menos 16, sem repetição, curtos", () => {
   assert.equal(new Set(AVATARES.map((a) => a.emoji)).size, AVATARES.length);
   AVATARES.forEach((a) => { assert.ok(a.emoji.length <= 8); assert.ok(a.nome); });
 });
+
+test("banco com sequência fixa dos slides é validado", () => {
+  const seq = [q("a", 1), { ...q("c", 2), alternativas: ["b", "certa", "c", "d"], correta: 1 }];
+  const r = validarBanco({ ...banco, sequencia: seq });
+  assert.equal(r.ok, true);
+  assert.equal(r.nSequencia, 2);
+  assert.equal(validarBanco({ ...banco, sequencia: [{ ...q("x", 1), correta: 9 }] }).ok, false);
+  assert.equal(validarBanco(banco).nSequencia, 0);
+});

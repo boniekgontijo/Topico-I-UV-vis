@@ -161,3 +161,11 @@ test("jogador pode escolher um avatar curto", async () => {
   await assertSucceeds(setDoc(doc(aluno("v1"), "salas/111111/jogadores/v1"), { ...base, avatar: "🦊" }));
   await assertFails(setDoc(doc(aluno("v2"), "salas/111111/jogadores/v2"), { ...base, avatar: "x".repeat(20) }));
 });
+
+test("turma: aluno lê a sala atual da turma; só o professor define", async () => {
+  await semRegras((db) => setDoc(doc(db, "turmas/2026-2"), { salaAtual: "111111" }));
+  await assertSucceeds(getDoc(doc(aluno(), "turmas/2026-2")));
+  await assertFails(setDoc(doc(aluno(), "turmas/2026-2"), { salaAtual: "999999" }));
+  await assertSucceeds(setDoc(doc(prof(), "turmas/2026-2"), { salaAtual: "222222" }));
+  await assertFails(getDocs(collection(aluno(), "turmas")));
+});

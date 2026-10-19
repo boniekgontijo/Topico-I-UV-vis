@@ -108,6 +108,7 @@ export async function criarSala({ turma, modulo, limiteMs, total, porRodada = nu
     if ((await getDoc(ref)).exists()) continue;
     await setDoc(ref, { turma, modulo, modo, porRodada, estado: "lobby", indice: -1, total, limiteMs, pergunta: null,
       abertaEm: null, correta: null, criadaEm: serverTimestamp() });
+    await setDoc(doc(db, "turmas", turma), { salaAtual: codigo, atualizadoEm: serverTimestamp() });
     return codigo;
   }
 }
@@ -151,8 +152,14 @@ export function revelar(codigo, indice, correta, novoPlacar) {
 }
 export const encerrar = (codigo) => updateDoc(doc(db, "salas", codigo), { estado: "fim" });
 
-export const salvarBanco = (modulo, questoes) => setDoc(doc(db, "bancos", modulo), { questoes, atualizadoEm: serverTimestamp() });
+export const salvarBanco = (modulo, questoes, sequencia = null) =>
+  setDoc(doc(db, "bancos", modulo), { questoes, sequencia, atualizadoEm: serverTimestamp() });
 export const lerBanco = async (modulo) => (await getDoc(doc(db, "bancos", modulo))).data()?.questoes ?? null;
+export const lerBancoCompleto = async (modulo) => (await getDoc(doc(db, "bancos", modulo))).data() ?? null;
+
+// sala atual da turma (o QR code fixo do slide usa isto)
+export const ouvirTurma = (turma, cb) =>
+  onSnapshot(doc(db, "turmas", turma), (s) => cb(s.data() ?? null), () => cb(null));
 
 const porTurma = async (col, turma) =>
   (await getDocs(query(collection(db, col), where("turma", "==", turma)))).docs.map((d) => ({ id: d.id, ...d.data() }));

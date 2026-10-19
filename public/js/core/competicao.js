@@ -1,18 +1,22 @@
 // Preparação da competição ao vivo (puro: sem DOM nem Firebase).
 import { embaralharQuestao } from "./embaralhar.js";
 
+const mcValida = (x) => x?.tipo === "mc" && Array.isArray(x.alternativas) && x.alternativas.length >= 2 && x.alternativas.length <= 4
+  && Number.isInteger(x.correta) && x.correta >= 0 && x.correta < x.alternativas.length && !!x.enunciado && Number.isInteger(x.bloco);
+
+// "sequencia" (opcional): perguntas já sorteadas, na ordem e com as alternativas na posição dos slides
 export function validarBanco(banco) {
   const erros = [];
   const qs = banco?.questoes;
-  if (!Array.isArray(qs) || !qs.length) return { ok: false, erros: ["arquivo sem lista 'questoes'"], porBloco: {} };
+  if (!Array.isArray(qs) || !qs.length) return { ok: false, erros: ["arquivo sem lista 'questoes'"], porBloco: {}, nSequencia: 0 };
   const porBloco = {};
   for (const x of qs) {
-    const ok = x.tipo === "mc" && Array.isArray(x.alternativas) && x.alternativas.length >= 2 && x.alternativas.length <= 4
-      && Number.isInteger(x.correta) && x.correta >= 0 && x.correta < x.alternativas.length && x.enunciado && Number.isInteger(x.bloco);
-    if (!ok) erros.push(`questão ${x.id ?? "?"} inválida`);
+    if (!mcValida(x)) erros.push(`questão ${x.id ?? "?"} inválida`);
     else porBloco[x.bloco] = (porBloco[x.bloco] ?? 0) + 1;
   }
-  return { ok: erros.length === 0, erros, porBloco };
+  const seq = banco.sequencia ?? [];
+  seq.forEach((x, i) => { if (!mcValida(x)) erros.push(`sequência: pergunta ${i + 1} inválida`); });
+  return { ok: erros.length === 0, erros, porBloco, nSequencia: seq.length };
 }
 
 export function prepararCompeticao(questoes, { blocos, n, rnd = Math.random }) {
