@@ -1,9 +1,11 @@
 // Configuração do Firebase do professor (ver docs/CONFIGURAR.md, passo 4).
 export const firebaseConfig = {
-  apiKey: "COLE_AQUI",
-  authDomain: "COLE_AQUI.firebaseapp.com",
-  projectId: "COLE_AQUI",
-  appId: "COLE_AQUI",
+  apiKey: "AIzaSyCs0VadQoerKzhp81qyVVA9yqAnqrI8ny0",
+  authDomain: "espectroscopia-imia.firebaseapp.com",
+  projectId: "espectroscopia-imia",
+  storageBucket: "espectroscopia-imia.firebasestorage.app",
+  messagingSenderId: "927197219637",
+  appId: "1:927197219637:web:1bd8fed5ab74c5244a5a7c",
 };
 
 // Único e-mail com acesso à área do professor (repetido em firestore.rules).
