@@ -6,7 +6,8 @@
     "test": "node --test \"tests/*.test.mjs\"",
     "servir": "python3 tools/servir.py 8080",
     "test:regras": "firebase emulators:exec --only firestore --project demo-uvvis \"node --test tests/regras.spec.mjs\"",
-    "emulador": "firebase emulators:start --only firestore,auth --project demo-uvvis"
+    "emulador": "firebase emulators:start --only firestore,auth --project demo-uvvis",
+    "test:py": "python3 -m unittest discover -s tests -p \"iv_*_test.py\""
   },
   "devDependencies": {
     "@firebase/rules-unit-testing": "^3.0.4",
