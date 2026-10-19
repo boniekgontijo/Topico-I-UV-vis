@@ -177,7 +177,7 @@ const POR_RODADA = 10;
   [
     ["🏠", "Exercícios para casa", "88 questões nos 10 blocos da aula, com explicação em cada resposta", "E6F4EA", GREEN],
     ["📈", "Simuladores", "Lei de Beer com λ, conjugação e cor, deslocamentos, curva analítica, Woodward-Fieser", "F1E8F8", "7030A0"],
-    ["🏅", "Sua prática conta", "Nota de 0 a 10 pelas questões diferentes que você fizer — o professor acompanha", "FFF6CC", "D89E00"],
+    ["🏅", "Sua prática conta — até 09/11", "Nota = questões diferentes feitas ÷ 88 × 10 (igual para todos; errar não tira ponto)", "FFF6CC", "D89E00"],
   ].forEach(([ic, t, sub, fundo, borda], i) => {
     const y = 2.45 + i * 1.45;
     c.addShape(pres.ShapeType.roundRect, { x: 5.4, y, w: 7.5, h: 1.25, rectRadius: 0.12, fill: { color: fundo }, line: { color: borda, width: 1.5 }, objectName: `cartao ${t}` });
@@ -185,7 +185,7 @@ const POR_RODADA = 10;
     c.addText([{ text: t, options: { bold: true, fontSize: 22, color: "000000", breakLine: true } }, { text: sub, options: { fontSize: 15, color: "404040" } }],
       { x: 6.55, y, w: 6.2, h: 1.25, valign: "middle", margin: 0, isTextBox: true });
   });
-  c.addNotes("Mesmo registro do quiz (nome, matrícula, personagem). No painel do professor: coluna Prática 0–10 = 10 × questões diferentes feitas ÷ 88; exporta CSV.");
+  c.addNotes("Mesmo registro do quiz (nome, matrícula, personagem). Data de corte: 09/11 — nesse dia, abra o Painel e exporte o CSV (coluna pratica_0a10 = 10 × questões diferentes feitas ÷ 88).");
 
   await pres.writeFile({ fileName: SAIDA });
   await applyTheme(SAIDA, THEME);
