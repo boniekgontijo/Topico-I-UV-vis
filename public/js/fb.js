@@ -21,8 +21,9 @@ const auth = initializeAuth(app, {
 // long polling automático: mais estável em redes móveis/proxies
 const db = initializeFirestore(app, { experimentalAutoDetectLongPolling: true });
 if (USAR_EMULADOR) {
-  connectAuthEmulator(auth, "http://127.0.0.1:9099", { disableWarnings: true });
-  connectFirestoreEmulator(db, "127.0.0.1", 8081);
+  const host = location.hostname === "localhost" ? "127.0.0.1" : location.hostname; // celular na rede usa o IP do computador
+  connectAuthEmulator(auth, `http://${host}:9099`, { disableWarnings: true });
+  connectFirestoreEmulator(db, host, 8081);
 }
 
 const usuarioAtual = () => new Promise((ok) => { const u = onAuthStateChanged(auth, (x) => { u(); ok(x); }); });
