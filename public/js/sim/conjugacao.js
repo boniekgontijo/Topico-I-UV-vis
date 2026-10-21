@@ -19,7 +19,7 @@ export function montar(el) {
     const altura = 20 + (gap / 700) * 110;
     limpar(niveis, h("div", { style: { display: "flex", alignItems: "center", gap: "14px" } },
       h("div", { style: { width: "110px", flex: "none" }, html:
-        `<svg viewBox="0 0 120 156" width="110"><line x1="20" y1="${140 - altura}" x2="100" y2="${140 - altura}" stroke="#0070C0" stroke-width="4"/>
+        `<svg viewBox="0 -14 120 170" width="110"><line x1="20" y1="${140 - altura}" x2="100" y2="${140 - altura}" stroke="#0070C0" stroke-width="4"/>
          <text x="60" y="${132 - altura}" font-size="11" text-anchor="middle" fill="#0070C0">LUMO (π*)</text>
          <line x1="20" y1="140" x2="100" y2="140" stroke="#000099" stroke-width="4"/>
          <text x="60" y="152" font-size="11" text-anchor="middle" fill="#000099">HOMO (π)</text>

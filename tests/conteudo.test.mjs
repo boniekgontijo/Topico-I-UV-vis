@@ -14,6 +14,7 @@ const grupo = ler(new URL("grupo.json", BASE)).estacoes;
 const semPrivado = process.env.SEM_PRIVADO === "1";
 assert.ok(semPrivado || existsSync(PRIV), "crie privado/uvvis-competicao.json");
 const comp = semPrivado ? [] : ler(PRIV).questoes;
+const quizPratica = ler(new URL("quiz.json", BASE)).questoes; // quiz de prática (público); mesmas questões do banco dos slides
 const todasGrupo = grupo.flatMap((e) => e.questoes);
 const todas = [...casa, ...todasGrupo, ...comp];
 
@@ -67,6 +68,27 @@ test("quiz: só múltipla escolha, ≥ 40, ≥ 4 por bloco, textos curtos", { sk
     q.alternativas.forEach((a) => assert.ok(a.length <= 60, `${q.id}: alternativa longa: ${a}`));
   }
   for (let b = 1; b <= 10; b++) assert.ok(comp.filter((q) => q.bloco === b).length >= 4, `bloco ${b}`);
+});
+
+test("quiz de prática: válido, curto, ≥ 4 por bloco, raciocínio T1–T6, sem repetir ids da casa", () => {
+  const tipos = ["T1", "T2", "T3", "T4", "T5", "T6"];
+  const idsCasa = new Set(casa.map((q) => q.id));
+  assert.ok(quizPratica.length >= 40);
+  for (const q of quizPratica) {
+    validarQuestao(q);
+    assert.equal(q.tipo, "mc", q.id);
+    assert.ok(!idsCasa.has(q.id), `${q.id} repete id da casa`);
+    assert.ok(tipos.includes(q.raciocinio), `${q.id}: raciocinio ${q.raciocinio}`);
+    assert.ok(q.enunciado.length <= 140, `${q.id}: enunciado longo`);
+    q.alternativas.forEach((a) => assert.ok(a.length <= 60, `${q.id}: alternativa longa: ${a}`));
+    if (q.figuraResposta) assert.ok(existsSync(new URL(q.figuraResposta, BASE)), `${q.id}: figura ${q.figuraResposta} não existe`);
+  }
+  for (let b = 1; b <= 10; b++) assert.ok(quizPratica.filter((q) => q.bloco === b).length >= 4, `bloco ${b}`);
+  for (const t of tipos) assert.ok(quizPratica.filter((q) => q.raciocinio === t).length >= 5, `poucas questões ${t}`);
+});
+
+test("quiz de prática = banco dos slides (gerados juntos por Revisao_questoes/uv_quiz.py)", { skip: semPrivado }, () => {
+  assert.deepEqual(quizPratica, comp);
 });
 
 test("grupo: estações A–E e Plenário, sem questões abertas", () => {

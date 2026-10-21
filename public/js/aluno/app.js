@@ -2,7 +2,7 @@
 import { h, limpar, rotas, toast } from "../ui/dom.js";
 import { obterAluno, telaIdentificacao, sair } from "./identificacao.js";
 import { telaMenu } from "./menu.js";
-import { telaCasaLista, telaCasaBloco, telaGrupoLista, telaGrupoEstacao } from "./exercicios.js";
+import { telaCasaLista, telaCasaBloco, telaGrupoLista, telaGrupoEstacao, telaPraticaLista, telaPraticaRodada } from "./exercicios.js";
 import { conectar, salvarAluno, registrarAcesso } from "./dados.js";
 
 const el = document.getElementById("app");
@@ -37,6 +37,7 @@ rotas({
   menu: protegido(() => telaMenu(el, aluno, () => { sair(); aluno = null; location.hash = "#"; window.dispatchEvent(new HashChangeEvent("hashchange")); })),
   casa: protegido(([n]) => (n ? telaCasaBloco(el, aluno, n) : telaCasaLista(el, aluno))),
   grupo: protegido(([id]) => (id ? telaGrupoEstacao(el, aluno, id) : telaGrupoLista(el, aluno))),
+  pratica: protegido(([q]) => (q ? telaPraticaRodada(el, aluno, q) : telaPraticaLista(el, aluno))),
   sim: protegido(sim),
   quiz: protegido(competicao),
   "grupo-iv": protegido(async ([c]) => (await import("./grupo-iv.js")).telaGrupoIV(el, aluno, c)),

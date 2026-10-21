@@ -20,7 +20,8 @@ export function telaMenu(el, aluno, aoSair) {
       h("button", { class: k === m ? "ativo" : "", role: "tab", "aria-selected": k === m ? "true" : "false",
         onclick: () => { trocarModulo(k); telaMenu(el, aluno, aoSair); } }, v.titulo))),
     h("div", { class: "grade" },
-      tile("#quiz", "t-comp", "🏆", "Quiz", "Ao vivo, em sala"),
+      m === "iv" ? tile("#quiz", "t-comp", "🏆", "Quiz", "Ao vivo, em sala")
+        : tile("#pratica", "t-comp", "🏆", "Quiz", "Pratique quando quiser"),
       m === "iv" ? tile("#grupo-iv", "t-grupo", "👥", "Em grupo", "Composto desconhecido")
         : tile("#grupo", "t-grupo", "👥", "Em grupo", "Estações do Workshop"),
       tile("#casa", "t-casa", "🏠", "Para casa", m === "iv" ? "Qual molécula é?" : "Exercícios por tema"),

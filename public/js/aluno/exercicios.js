@@ -9,6 +9,7 @@ import { incentivo } from "../core/mensagens.js";
 import { moduloAtual, baseAtual } from "./estado.js";
 import { alternativa } from "../ui/alternativa.js";
 import { desenharEspectroIV } from "../ui/espectro-iv.js";
+import { sortearRodada } from "../core/pratica.js";
 
 let cache = {};
 const conteudo = async (arq) => (cache[baseAtual() + arq] ??= await carregarJSON(baseAtual() + arq));
@@ -96,17 +97,44 @@ export async function telaGrupoEstacao(el, aluno, id) {
       erro, h("button", { class: "btn largo", type: "submit" }, "Começar")));
 }
 
+// ---------- quiz de prática (UV-vis): não conta na nota, nada vai para o servidor ----------
+export async function telaPraticaLista(el, aluno) {
+  if (moduloAtual() !== "uvvis") return (location.hash = "#quiz"); // o IV continua com o quiz ao vivo
+  const [blocos, quiz] = await Promise.all([conteudo("blocos.json"), conteudo("quiz.json")]);
+  limpar(el, topo(aluno, "#menu"), h("h1", {}, "🏆 Quiz de prática"),
+    h("p", { class: "ajuda" }, "Rodadas curtas para treinar o raciocínio. Não vale nota: erre à vontade e leia a explicação."),
+    h("a", { class: "btn largo", href: "#pratica/mista", style: { margin: "10px 0" } }, `Rodada mista (${blocos.length} questões, uma de cada tema)`),
+    h("h3", {}, "Ou treine um tema"),
+    h("ul", { class: "lista" }, blocos.map((b) => h("li", {}, h("a", { href: `#pratica/${b.n}` },
+      h("span", {}, h("b", {}, `${b.n}. `), b.titulo),
+      h("span", { class: "pilula" }, `${quiz.questoes.filter((q) => q.bloco === b.n).length} questões`))))));
+}
+
+export async function telaPraticaRodada(el, aluno, qual) {
+  if (moduloAtual() !== "uvvis") return (location.hash = "#quiz"); // o IV continua com o quiz ao vivo
+  const [blocos, quiz] = await Promise.all([conteudo("blocos.json"), conteudo("quiz.json")]);
+  const bloco = qual === "mista" ? null : blocos.find((b) => b.n === Number(qual));
+  if (qual !== "mista" && !bloco) return (location.hash = "#pratica");
+  const rodada = () => executar(el, aluno, {
+    titulo: bloco ? `Quiz · ${bloco.n}. ${bloco.titulo}` : "Quiz · rodada mista", voltar: "#pratica", pratica: true,
+    questoes: sortearRodada(quiz.questoes, { bloco: bloco?.n }), novaRodada: () => rodada(),
+  });
+  rodada();
+}
+
 // ---------- executor de questões ----------
 function executar(el, aluno, cfg) {
-  const prog = lerProg(cfg.atividade, aluno);
-  const tentKey = chave(cfg.atividade, aluno).replace("prog:", "tent:");
-  const tentativas = ls.get(tentKey, {});
+  // prática: progresso só na memória (cada rodada começa do zero) e nada é enviado ao servidor
+  const prog = cfg.pratica ? {} : lerProg(cfg.atividade, aluno);
+  const tentKey = cfg.pratica ? null : chave(cfg.atividade, aluno).replace("prog:", "tent:");
+  const tentativas = cfg.pratica ? {} : ls.get(tentKey, {});
   const qs = cfg.questoes.map((q) => embaralharQuestao(q));
   let i = Math.max(0, qs.findIndex((q) => !(q.id in prog)));
   if (qs.every((q) => q.id in prog)) i = 0;
 
   const registrar = (q, correta) => {
     tentativas[q.id] = (tentativas[q.id] ?? 0) + 1;
+    if (cfg.pratica) { if (!(q.id in prog)) prog[q.id] = correta; return; }
     ls.set(tentKey, tentativas);
     if (!(q.id in prog)) { prog[q.id] = correta; gravarProg(cfg.atividade, aluno, prog); }
     // só o IV envia "modulo": o UV-vis continua aceito pelas regras antigas enquanto as novas não forem publicadas
@@ -135,6 +163,7 @@ function executar(el, aluno, cfg) {
       limpar(fb, h("div", { class: `feedback ${r.correta ? "ok" : "nao"}` },
         h("b", {}, r.correta ? `✓ ${incentivo(true)}` : `💡 ${incentivo(false)}`),
         h("p", { html: q.explicacao + (r.correta ? certoTxt : "") }),
+        q.figuraResposta ? h("img", { class: "figura", src: baseAtual() + q.figuraResposta, alt: "Figura da explicação" }) : null,
         h("div", { class: "acoes" },
           !r.correta ? h("button", { class: "btn sec", onclick: () => mostrar() }, "Tentar de novo") : null,
           h("button", { class: "btn", onclick: () => { i++; mostrar(); } }, i + 1 < qs.length ? "Próxima →" : "Ver resultado"))));
@@ -173,7 +202,8 @@ function executar(el, aluno, cfg) {
         h("p", {}, h("b", {}, `${certas} de ${qs.length}`), " na primeira tentativa"),
         h("p", { class: "ajuda" }, certas === qs.length ? "Perfeito! Você domina este tema." : "Cada revisão fixa um pouco mais. Que tal refazer?"),
         h("div", { class: "acoes", style: { display: "flex", gap: "8px", justifyContent: "center" } },
-          h("button", { class: "btn sec", onclick: () => { i = 0; mostrar(); } }, "Refazer"),
+          cfg.novaRodada ? h("button", { class: "btn sec", onclick: cfg.novaRodada }, "Nova rodada")
+            : h("button", { class: "btn sec", onclick: () => { i = 0; mostrar(); } }, "Refazer"),
           h("a", { class: "btn", href: cfg.voltar }, "Voltar"))));
   };
 
