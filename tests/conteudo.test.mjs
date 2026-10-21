@@ -53,6 +53,12 @@ test("casa: ≥ 8 questões por bloco", () => {
   for (let b = 1; b <= 10; b++) assert.ok(casa.filter((q) => q.bloco === b).length >= 8, `bloco ${b}`);
 });
 
+test("casa: toda questão pede raciocínio (T1–T6) e todos os tipos aparecem", () => {
+  const tipos = ["T1", "T2", "T3", "T4", "T5", "T6"];
+  for (const q of casa) assert.ok(tipos.includes(q.raciocinio), `${q.id}: raciocinio ${q.raciocinio}`);
+  for (const t of tipos) assert.ok(casa.filter((q) => q.raciocinio === t).length >= 8, `poucas questões ${t}`);
+});
+
 test("quiz: só múltipla escolha, ≥ 40, ≥ 4 por bloco, textos curtos", { skip: semPrivado }, () => {
   assert.ok(comp.length >= 40);
   for (const q of comp) {

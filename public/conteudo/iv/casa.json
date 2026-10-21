@@ -1060,322 +1060,344 @@
    "bloco": 1,
    "nivel": "facil",
    "tipo": "mc",
-   "enunciado": "O IV médio, usado para identificar grupos funcionais, vai de…",
+   "raciocinio": "T6",
+   "enunciado": "Um aparelho de IV só mede de 4000 a 1500 cm⁻¹. O que você perde?",
    "alternativas": [
-    "4000 a 400 cm⁻¹",
-    "12 800 a 4000 cm⁻¹",
-    "400 a 10 cm⁻¹",
-    "200 a 800 nm"
+    "A impressão digital (1500–400 cm⁻¹): não dá para confirmar a identidade com um padrão",
+    "A banda de C=O",
+    "As bandas de O–H e N–H",
+    "Nada: tudo importante está acima de 1500"
    ],
    "correta": 0,
-   "explicacao": "IV próximo 12 800–4000, médio 4000–400, distante 400–10 cm⁻¹.",
+   "explicacao": "C=O (~1715) e O–H/N–H (3600–3200) ficam acima de 1500 cm⁻¹ e continuam visíveis. A região de 1500–400 cm⁻¹ é única de cada molécula e é a que confirma a identidade.",
    "id": "iv-ct-1"
   },
   {
    "bloco": 1,
    "nivel": "medio",
    "tipo": "mc",
-   "enunciado": "Quanto vale 1715 cm⁻¹ em micrômetros?",
+   "raciocinio": "T5",
+   "enunciado": "Um espectro antigo, em micrômetros, mostra bandas em 5,83 µm e em 3,03 µm. Em cm⁻¹, onde elas estão e o que podem ser?",
    "alternativas": [
-    "5,83 µm",
-    "1,715 µm",
-    "17,15 µm",
-    "0,583 µm"
+    "1715 e 3300 cm⁻¹: C=O e O–H, N–H ou ≡C–H",
+    "583 e 303 cm⁻¹: impressão digital",
+    "1715 e 3300 nm: são do UV-vis",
+    "5830 e 3030 cm⁻¹: IV próximo"
    ],
    "correta": 0,
-   "explicacao": "λ (µm) = 10 000 / ν̃ (cm⁻¹) = 10 000 / 1715 = 5,83 µm.",
+   "explicacao": "ν̃ (cm⁻¹) = 10 000/λ (µm): 10 000/5,83 = 1715 e 10 000/3,03 = 3300 cm⁻¹. 1715 é a C=O típica de cetona; 3300 é região de O–H, N–H ou ≡C–H.",
    "id": "iv-ct-2"
   },
   {
    "bloco": 1,
    "nivel": "facil",
    "tipo": "mc",
-   "enunciado": "No espectro de IV (%T), uma banda de absorção aparece como…",
+   "raciocinio": "T2",
+   "enunciado": "No espectro em %T, uma banda desce até 5 %T e outra só até 80 %T. Qual absorve mais?",
    "alternativas": [
-    "Um vale (queda de %T)",
-    "Um pico para cima",
-    "Uma linha vertical",
-    "Uma faixa colorida"
+    "A que vai a 5 %T: só 5 % da luz passou",
+    "A que vai a 80 %T",
+    "As duas igualmente",
+    "Nada se conclui pela %T"
    ],
    "correta": 0,
-   "explicacao": "T = I/I₀: onde a amostra absorve, menos luz passa e %T cai — a banda é um vale.",
+   "explicacao": "%T = 100·I/I₀. Quanto mais fundo o vale, menos luz passou e mais forte é a absorção. A banda de 80 %T absorveu só 20 % da luz.",
    "id": "iv-ct-3"
   },
   {
    "bloco": 1,
    "nivel": "facil",
    "tipo": "mc",
-   "enunciado": "A radiação IV provoca na molécula uma transição…",
+   "raciocinio": "T6",
+   "enunciado": "Por que um composto pode ser transparente no UV-vis e, mesmo assim, ter um espectro de IV cheio de bandas?",
    "alternativas": [
-    "Vibracional",
-    "Eletrônica",
-    "Nuclear",
-    "Só de translação"
+    "O IV excita vibrações, que exigem bem menos energia que as transições eletrônicas",
+    "O IV mede a cor do composto",
+    "No IV os elétrons vão do HOMO ao LUMO",
+    "Todo composto absorve igual no IV e no UV"
    ],
    "correta": 0,
-   "explicacao": "A energia do IV (~300–4000 cm⁻¹) corresponde a níveis vibracionais; a eletrônica exige UV-vis.",
+   "explicacao": "Fótons de IV (4000–400 cm⁻¹) não têm energia para transições eletrônicas, mas casam com os níveis vibracionais. Quase toda molécula orgânica tem ligações que vibram mudando o dipolo.",
    "id": "iv-ct-4"
   },
   {
    "bloco": 2,
    "nivel": "medio",
    "tipo": "mc",
-   "enunciado": "Quantos modos vibracionais tem uma molécula não linear com N átomos?",
+   "raciocinio": "T5",
+   "enunciado": "Quantos modos vibracionais têm a água (H₂O, angular) e o CO₂ (linear)?",
    "alternativas": [
-    "3N − 6",
-    "3N − 5",
-    "3N",
-    "N − 1"
+    "3 e 4",
+    "3 e 3",
+    "4 e 3",
+    "9 e 9"
    ],
    "correta": 0,
-   "explicacao": "3N graus de liberdade menos 3 de translação e 3 de rotação (linear: 3N − 5).",
+   "explicacao": "Não linear: 3N − 6 → H₂O: 9 − 6 = 3. Linear: 3N − 5 (uma rotação a menos) → CO₂: 9 − 5 = 4.",
    "id": "iv-ct-5"
   },
   {
    "bloco": 2,
    "nivel": "dificil",
    "tipo": "mc",
-   "enunciado": "No CO₂ (linear), qual modo NÃO aparece no IV?",
+   "raciocinio": "T6",
+   "enunciado": "O CO₂ tem 4 modos vibracionais, mas o espectro de IV mostra só duas bandas (2350 e 667 cm⁻¹). Por quê?",
    "alternativas": [
-    "Estiramento simétrico",
-    "Estiramento assimétrico",
-    "Deformação angular",
-    "Todos aparecem"
+    "O estiramento simétrico não muda o dipolo, e as duas deformações angulares têm a mesma energia",
+    "O CO₂ só tem 2 modos",
+    "As outras bandas são fracas demais para aparecer",
+    "O aparelho não mede abaixo de 667 cm⁻¹"
    ],
    "correta": 0,
-   "explicacao": "No estiramento simétrico o dipolo continua zero; o assimétrico (2350) e a deformação (667) mudam o dipolo.",
+   "explicacao": "No estiramento simétrico o dipolo continua zero: inativo no IV. As duas deformações (no plano e fora dele) são iguais em energia (degeneradas) e caem juntas em 667 cm⁻¹. Sobram 2350 (assimétrico) e 667.",
    "id": "iv-ct-6"
   },
   {
    "bloco": 2,
    "nivel": "facil",
    "tipo": "mc",
-   "enunciado": "O HCl absorve no IV porque…",
+   "raciocinio": "T1",
+   "enunciado": "Qual destas moléculas NÃO tem banda de estiramento no IV?",
    "alternativas": [
-    "A vibração muda o dipolo",
-    "É um gás",
-    "É diatômico",
-    "Tem ligação simples"
+    "N₂",
+    "HCl",
+    "CO",
+    "H₂O"
    ],
    "correta": 0,
-   "explicacao": "H–Cl é polar: ao vibrar, o momento de dipolo varia — condição para absorver no IV.",
+   "explicacao": "Só absorve no IV a vibração que muda o dipolo. N≡N é simétrica: o dipolo é zero antes e durante a vibração. HCl e CO são polares; a água tem estiramentos que mudam o dipolo.",
    "id": "iv-ct-7"
   },
   {
    "bloco": 2,
    "nivel": "medio",
    "tipo": "mc",
-   "enunciado": "Uma banda de IV é intensa quando…",
+   "raciocinio": "T6",
+   "enunciado": "A C=O de uma cetona (~1715 cm⁻¹) dá banda fortíssima; a C=C de um alceno simétrico (~1650 cm⁻¹) quase não aparece. Por quê?",
    "alternativas": [
-    "A vibração muda muito o dipolo",
-    "A ligação é apolar",
-    "A molécula é grande",
-    "A massa é pequena"
+    "A C=O é polar e seu dipolo varia muito ao esticar; a C=C simétrica quase não muda o dipolo",
+    "A C=O é mais leve",
+    "A C=O é uma ligação mais forte",
+    "A C=C só absorve no UV"
    ],
    "correta": 0,
-   "explicacao": "Intensidade ∝ (dμ/dx)²: C=O e O–H (polares) dão bandas fortes; C=C simétrica, fraca.",
+   "explicacao": "Intensidade ∝ (variação do dipolo)². O O é muito mais eletronegativo que o C. Numa C=C simétrica, esticar a ligação quase não muda o dipolo: banda fraca ou ausente.",
    "id": "iv-ct-8"
   },
   {
    "bloco": 3,
    "nivel": "medio",
    "tipo": "mc",
-   "enunciado": "Pela Lei de Hooke, o número de onda aumenta com…",
+   "raciocinio": "T6",
+   "enunciado": "A C–H absorve perto de 3000 cm⁻¹. Trocando o H por deutério (C–D: mesma ligação, massa maior), onde a banda aparece?",
    "alternativas": [
-    "k maior e massa reduzida menor",
-    "k menor",
-    "Massa reduzida maior",
-    "A temperatura"
+    "Perto de 2200 cm⁻¹",
+    "Perto de 4000 cm⁻¹",
+    "No mesmo lugar, 3000 cm⁻¹",
+    "Perto de 1500 cm⁻¹, metade"
    ],
    "correta": 0,
-   "explicacao": "ν̃ = (1/2πc)·√(k/μ): ligação mais forte e átomos mais leves vibram mais rápido.",
+   "explicacao": "Lei de Hooke: ν̃ ∝ √(k/μ). k é a mesma; μ passa de 0,92 para 1,71: ν̃ cai pelo fator √(1,71/0,92) ≈ 1,36 → ~2200 cm⁻¹ (Pavia §2.4: C–D calc. 2228, obs. 2206). Dobrar a massa do H não divide ν̃ por 2.",
    "id": "iv-ct-9"
   },
   {
    "bloco": 3,
    "nivel": "medio",
    "tipo": "mc",
-   "enunciado": "Uma C=O conjugada com C=C absorve…",
+   "raciocinio": "T1",
+   "enunciado": "A ciclo-hexanona tem C=O em 1715 cm⁻¹. Onde você espera a C=O da 2-ciclo-hexenona (C=C conjugada com a C=O)?",
    "alternativas": [
-    "Em ν̃ menor (~1680)",
-    "Em ν̃ maior (~1750)",
-    "No mesmo lugar (1715)",
-    "Não absorve"
+    "Perto de 1680 cm⁻¹: a ressonância dá caráter de ligação simples à C=O",
+    "Perto de 1750 cm⁻¹",
+    "Em 1715 cm⁻¹",
+    "Não aparece"
    ],
    "correta": 0,
-   "explicacao": "A ressonância dá caráter de ligação simples à C=O (k menor) → ν̃ menor.",
+   "explicacao": "A conjugação deslocaliza os elétrons π: a C=O fica mais longa e mais fraca (k menor) e absorve em ν̃ menor, ~1675–1680 cm⁻¹ (Pavia §2.4).",
    "id": "iv-ct-10"
   },
   {
    "bloco": 3,
    "nivel": "medio",
    "tipo": "mc",
-   "enunciado": "Ordem de número de onda do C–H por hibridização:",
+   "raciocinio": "T2",
+   "enunciado": "Um espectro mostra C–H em 3300 cm⁻¹ (fina e forte) e em 2950 cm⁻¹, e nenhuma outra banda de C–H. Que tipos de C–H existem?",
    "alternativas": [
-    "sp > sp² > sp³",
-    "sp³ > sp² > sp",
-    "sp² > sp > sp³",
-    "Todas iguais"
+    "≡C–H (alcino terminal) e C–H sp³",
+    "=C–H sp² e C–H sp³",
+    "Só C–H sp³",
+    "Só C–H aromático"
    ],
    "correta": 0,
-   "explicacao": "Mais caráter s, ligação mais forte: ≡C–H ~3300 > =C–H ~3080 > C–H ~2950 cm⁻¹.",
+   "explicacao": "Quanto mais caráter s, mais forte a ligação e maior ν̃: ≡C–H ~3300 > =C–H 3100–3000 > C–H sp³ < 3000. Não há banda entre 3100 e 3000, então não há C–H sp².",
    "id": "iv-ct-11"
   },
   {
    "bloco": 3,
    "nivel": "dificil",
    "tipo": "mc",
-   "enunciado": "A ciclopentanona tem C=O em…",
+   "raciocinio": "T1",
+   "enunciado": "C=O: ciclo-hexanona 1715 cm⁻¹, ciclopentanona ~1745 cm⁻¹. Onde você espera a C=O da ciclobutanona?",
    "alternativas": [
-    "~1745 (tensão do anel)",
-    "~1715",
-    "~1680",
-    "~1800"
+    "Perto de 1780 cm⁻¹: anel menor, mais tensão, ν̃ maior",
+    "Perto de 1715 cm⁻¹",
+    "Perto de 1680 cm⁻¹",
+    "Perto de 1745 cm⁻¹"
    ],
    "correta": 0,
-   "explicacao": "Anéis pequenos aumentam a frequência da C=O: ciclo-hexanona 1715, ciclopentanona ~1745.",
+   "explicacao": "A tensão de anel aumenta a frequência da C=O: quanto menor o anel, maior ν̃. A tendência 1715 → 1745 continua: ciclobutanona ~1780 cm⁻¹ (Pavia §2.14).",
    "id": "iv-ct-12"
   },
   {
    "bloco": 4,
    "nivel": "facil",
    "tipo": "mc",
-   "enunciado": "Por que não se usam janelas de vidro no IV médio?",
+   "raciocinio": "T4",
+   "enunciado": "Um colega montou a amostra entre duas lâminas de vidro de microscópio, e o espectro de IV ficou sem sinal em boa parte da região abaixo de 2000 cm⁻¹. Causa?",
    "alternativas": [
-    "O vidro absorve no IV",
-    "O vidro reflete demais",
-    "O vidro é caro",
-    "Funcionam bem"
+    "O vidro absorve no IV médio: use janelas de NaCl ou KBr",
+    "A amostra está concentrada demais",
+    "O detector está frio",
+    "O vidro reflete a luz IV"
    ],
    "correta": 0,
-   "explicacao": "Vidro e quartzo absorvem no IV médio; usam-se NaCl ou KBr (transparentes).",
+   "explicacao": "Vidro e quartzo absorvem fortemente no IV médio. Por isso as janelas e pastilhas são de sais como NaCl e KBr, transparentes nessa região.",
    "id": "iv-ct-13"
   },
   {
    "bloco": 4,
    "nivel": "facil",
    "tipo": "mc",
-   "enunciado": "A pastilha de KBr é usada para amostras…",
+   "raciocinio": "T3",
+   "enunciado": "Você tem um sólido orgânico seco e quer o espectro de IV. Qual preparo é adequado?",
    "alternativas": [
-    "Sólidas",
-    "Gasosas",
-    "Só líquidas voláteis",
-    "Aquosas"
+    "Moer com KBr seco e prensar uma pastilha (ou medir direto no ATR)",
+    "Dissolver em água e pôr entre janelas de NaCl",
+    "Pôr entre lâminas de vidro",
+    "Medir o pó numa cubeta de quartzo"
    ],
    "correta": 0,
-   "explicacao": "O sólido é moído com KBr e prensado; KBr é transparente no IV médio.",
+   "explicacao": "KBr é transparente no IV médio e forma uma pastilha com o sólido disperso. Água dissolve NaCl e absorve forte; vidro e quartzo absorvem no IV.",
    "id": "iv-ct-14"
   },
   {
    "bloco": 4,
    "nivel": "medio",
    "tipo": "mc",
-   "enunciado": "Bandas em ~2350 e em ~3700/1600 no espectro de fundo vêm de…",
+   "raciocinio": "T4",
+   "enunciado": "O espectro da amostra mostra uma banda em ~2350 cm⁻¹ e picos finos em ~3700 e ~1600 cm⁻¹ que mudam de tamanho de uma medida para outra. O que fazer?",
    "alternativas": [
-    "CO₂ e H₂O do ar",
-    "Da amostra",
-    "Da janela de NaCl",
-    "Do detector"
+    "São CO₂ e vapor de água do ar: refazer o background logo antes da amostra",
+    "São da amostra: anotar no relatório",
+    "A janela está suja: lixar",
+    "Aumentar a concentração da amostra"
    ],
    "correta": 0,
-   "explicacao": "O espectro de fundo (background) registra o CO₂ e o vapor de água do caminho óptico (Pavia §2.22).",
+   "explicacao": "O background registra o CO₂ (2350) e a água (~3700 e ~1600) do caminho óptico. Se o ar muda entre o background e a amostra, sobram essas bandas (Pavia §2.22).",
    "id": "iv-ct-15"
   },
   {
    "bloco": 4,
    "nivel": "medio",
    "tipo": "mc",
-   "enunciado": "A água é um mau solvente para IV porque…",
+   "raciocinio": "T4",
+   "enunciado": "Um colega quer o IV de um ácido orgânico dissolvido em água, em células de NaCl. Quais são os dois problemas?",
    "alternativas": [
-    "Absorve forte e dissolve NaCl/KBr",
-    "É apolar",
-    "Não dissolve nada",
-    "É volátil demais"
+    "A água absorve forte (O–H) e dissolve as janelas de NaCl",
+    "A água é apolar e não dissolve o ácido",
+    "A água é volátil demais",
+    "Não há problema"
    ],
    "correta": 0,
-   "explicacao": "O–H da água cobre regiões importantes e ela dissolve as janelas de sal.",
+   "explicacao": "O O–H da água cobre regiões importantes (3600–3000 e ~1640 cm⁻¹), inclusive o O–H do ácido; e NaCl/KBr se dissolvem em água.",
    "id": "iv-ct-16"
   },
   {
    "bloco": 9,
    "nivel": "facil",
    "tipo": "mc",
-   "enunciado": "Por onde começar a ler um espectro desconhecido?",
+   "raciocinio": "T2",
+   "enunciado": "Num espectro desconhecido não há nenhuma banda forte entre 1820 e 1660 cm⁻¹. O que você já pode descartar?",
    "alternativas": [
-    "Pela região de C=O (1700) e acima de 3000",
-    "Pela impressão digital",
-    "Pela banda mais fraca",
-    "Pelo eixo de %T"
+    "Cetonas, aldeídos, ácidos, ésteres e amidas: não há C=O",
+    "Álcoois",
+    "Aminas",
+    "Alcanos"
    ],
    "correta": 0,
-   "explicacao": "Estratégia (Lopes & Fascio): procure primeiro C=O (~1700) e O–H/N–H (3500–3200); depois o resto.",
+   "explicacao": "A C=O aparece entre 1820 e 1660 cm⁻¹ e costuma ser a banda mais forte do espectro (Pavia). Sem ela, descartam-se todas as funções carboniladas; álcoois, aminas e alcanos continuam possíveis.",
    "id": "iv-ct-17"
   },
   {
    "bloco": 9,
    "nivel": "medio",
    "tipo": "mc",
-   "enunciado": "Quantas insaturações tem C₄H₈O?",
+   "raciocinio": "T2",
+   "enunciado": "Um composto C₄H₈O não mostra C=O nem C=C no IV, mas tem O–H largo em ~3300 cm⁻¹. Que estrutura é compatível?",
    "alternativas": [
-    "1",
-    "0",
-    "2",
-    "4"
+    "Um álcool cíclico, como o ciclobutanol",
+    "Butanal",
+    "Butanona",
+    "1-Butanol"
    ],
    "correta": 0,
-   "explicacao": "I = C − H/2 + N/2 + 1 = 4 − 4 + 0 + 1 = 1 (uma C=O, uma C=C ou um anel).",
+   "explicacao": "I = C − H/2 + 1 = 4 − 4 + 1 = 1 insaturação. Sem C=O e sem C=C, ela só pode ser um anel. Butanal e butanona têm C=O; 1-butanol é C₄H₁₀O (0 insaturações).",
    "id": "iv-ct-18"
   },
   {
    "bloco": 9,
    "nivel": "medio",
    "tipo": "mc",
-   "enunciado": "C=O forte em 1715, sem O–H e sem 2820/2720. A função é…",
+   "raciocinio": "T4",
+   "enunciado": "C=O forte em 1715 cm⁻¹, sem O–H e sem as bandas em 2820 e 2720 cm⁻¹. Um colega diz que é um aldeído. Está certo?",
    "alternativas": [
-    "Cetona",
-    "Álcool",
-    "Aldeído",
-    "Ácido"
+    "Não: um aldeído mostraria o par 2820/2720 (C–H do CHO); é uma cetona",
+    "Sim: 1715 é sempre aldeído",
+    "Não: é um ácido",
+    "Sim, se a amostra for líquida"
    ],
    "correta": 0,
-   "explicacao": "C=O em 1715 sem C–H de aldeído (2820/2720) e sem O–H: cetona.",
+   "explicacao": "O que separa aldeído de cetona é o C–H do grupo CHO (dubleto em ~2820 e ~2720 cm⁻¹). Ácido teria O–H muito largo de 3300 a 2500.",
    "id": "iv-ct-19"
   },
   {
    "bloco": 9,
    "nivel": "facil",
    "tipo": "mc",
-   "enunciado": "A região de impressão digital (1500–400 cm⁻¹) serve sobretudo para…",
+   "raciocinio": "T3",
+   "enunciado": "1-Butanol e 2-butanol têm bandas de O–H e C–H quase iguais. Como distinguir os dois pelo IV?",
    "alternativas": [
-    "Confirmar a identidade com um padrão",
-    "Achar o grupo funcional",
-    "Medir concentração",
-    "Ver O–H"
+    "Comparando a impressão digital (1500–400 cm⁻¹) com espectros de referência",
+    "Pela banda de O–H",
+    "Pela banda de C=O",
+    "Não há como distinguir pelo IV"
    ],
    "correta": 0,
-   "explicacao": "É única de cada molécula, mas difícil de interpretar: use para comparar com um espectro de referência.",
+   "explicacao": "Grupos iguais dão bandas parecidas acima de 1500 cm⁻¹. A impressão digital é única de cada molécula: comparar com o espectro de referência confirma qual é qual.",
    "id": "iv-ct-20"
   },
   {
    "bloco": 9,
    "nivel": "medio",
    "tipo": "mc",
-   "enunciado": "Banda larguíssima de 3300 a 2500 cm⁻¹ sobre o C–H indica…",
+   "raciocinio": "T2",
+   "enunciado": "Banda larguíssima de 3300 a 2500 cm⁻¹, por cima do C–H, e C=O em ~1710 cm⁻¹. Qual a função, e por que o O–H é tão largo?",
    "alternativas": [
-    "Ácido carboxílico",
-    "Álcool",
-    "Amina",
-    "Nitrila"
+    "Ácido carboxílico: forma dímeros com ligações de H muito fortes",
+    "Álcool: O–H livre",
+    "Amina primária: dois N–H",
+    "Aldeído: C–H do CHO"
    ],
    "correta": 0,
-   "explicacao": "O–H de ácido forma dímeros com ligação de H muito forte: banda enorme que cobre o C–H.",
+   "explicacao": "O O–H do ácido forma dímeros com ligações de H fortes, que alargam muito a banda (3300–2500). O álcool dá O–H largo em ~3400, sem C=O; a amina, N–H finos; o aldeído, o par 2820/2720.",
    "id": "iv-ct-21"
   },
   {
    "bloco": 9,
    "nivel": "dificil",
    "tipo": "mc",
-   "enunciado": "C₅H₁₀O com C=O em 1730 e dubleto 2820/2720: quantas estruturas são aldeídos possíveis?",
+   "raciocinio": "T5",
+   "enunciado": "C₅H₁₀O com C=O em 1730 cm⁻¹ e dubleto em 2820/2720 cm⁻¹: quantas estruturas de aldeído são possíveis?",
    "alternativas": [
     "4",
     "2",
@@ -1383,7 +1405,7 @@
     "5"
    ],
    "correta": 0,
-   "explicacao": "Aldeídos C₅H₁₀O: pentanal, 2-metilbutanal, 3-metilbutanal e 2,2-dimetilpropanal.",
+   "explicacao": "O dubleto 2820/2720 e a C=O em 1730 indicam aldeído. Com C₅H₁₀O: pentanal, 2-metilbutanal, 3-metilbutanal e 2,2-dimetilpropanal.",
    "id": "iv-ct-22"
   }
  ]

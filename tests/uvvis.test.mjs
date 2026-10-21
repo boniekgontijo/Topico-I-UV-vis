@@ -75,6 +75,9 @@ test("Woodward-Fieser: tabelas completas dos slides 61, 63 e 64", () => {
   assert.equal(uv.woodwardFieser("dieno-hetero", { SR: 1, Cl: 1, OCOR: 1 }), 249);
   assert.equal(uv.woodwardFieser("enona-anel5", { beta: 1 }), 214);
   assert.equal(uv.woodwardFieser("aldeido", { alfa: 1 }), 220);
+  assert.equal(uv.woodwardFieser("aldeido", {}), 208); // Pavia, Tab. 7.8
+  assert.equal(uv.woodwardFieser("aldeido", { beta: 2 }), 230);
+  assert.equal(uv.woodwardFieser("aldeido", { alfa: 1, beta: 2 }), 242);
   assert.equal(uv.woodwardFieser("acido-ester", { beta: 2 }), 219);
   assert.equal(uv.woodwardFieser("enona", { extensao: 1, homoanular: 1, gamaDelta: 1 }), 302);
   assert.throws(() => uv.woodwardFieser("enona", { inexistente: 1 }));
@@ -113,4 +116,13 @@ test("absorbância em um λ qualquer segue o formato da banda", () => {
   perto(uv.absorbanciaEm(450, { lambdaMax: 450, epsMax: 15000, b: 1, c: 3e-5 }), 0.45, 1e-9);
   const fora = uv.absorbanciaEm(500, { lambdaMax: 450, epsMax: 15000, b: 1, c: 3e-5 });
   assert.ok(fora < 0.45 && fora > 0);
+});
+
+test("auxiliares das questões de raciocínio", () => {
+  perto(uv.concentracaoDiluida(0.36, 15000, 1, 5), 1.2e-4, 1e-12);
+  perto(uv.caminhoOptico(0.5, 2500, 4e-5), 5, 1e-9);
+  perto(uv.percentTDiluida(0.4, 2), 63.25, 0.01);
+  perto(uv.inclinacaoParaLoq(0.002, 0.1), 0.2, 1e-12);
+  perto(uv.velocidadeMedia(0.8, 0.5, 20000, 1, 60), 2.5e-7, 1e-15);
+  perto(uv.porcentagemDissolvida(0.42, 0.7, 0.05, 900, 50), 54, 1e-9);
 });

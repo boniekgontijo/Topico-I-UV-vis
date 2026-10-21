@@ -64,15 +64,18 @@ export const loq = (s, a) => (10 * s) / a;
 // Woodward-Fieser (slides 61–64): λ = base + Σ incrementos
 const WF_BASE = {
   "dieno-hetero": 214, "dieno-homo": 253,          // slide 61
-  enona: 215, "enona-anel5": 202, aldeido: 210, "acido-ester": 195, // slide 64
+  enona: 215, "enona-anel5": 202, aldeido: 208, "acido-ester": 195, // slide 64
 };
 const WF_INC = {
   extensao: 30, exociclica: 5, homoanular: 39,
   alquila: 5, OR: 6, SR: 30, Cl: 5, Br: 5, NR2: 60, OCOR: 0, // dienos
   alfa: 10, beta: 12, gamaDelta: 18,                          // enonas: alquila/resíduo de anel
 };
+// Aldeídos α,β-insaturados: Pavia, Tab. 7.8 (valores por nº de alquilas em α/β, não aditivos)
+const WF_ALDEIDO = [208, 220, 230, 242];
 export function woodwardFieser(tipo, inc = {}) {
   if (!(tipo in WF_BASE)) throw new Error(`tipo desconhecido: ${tipo}`);
+  if (tipo === "aldeido") return WF_ALDEIDO[(inc.alfa ?? 0) + (inc.beta ?? 0)];
   return Object.entries(inc).reduce((s, [k, n]) => {
     if (!(k in WF_INC)) throw new Error(`incremento desconhecido: ${k}`);
     return s + WF_INC[k] * n;
@@ -85,6 +88,12 @@ export const diferenca = (a, b) => a - b;
 export const lambdaDeEnergiaKJmol = (kJ) => (H * C * NA) / (kJ * 1000) * 1e9;
 export const absortividade = (A, b, c) => A / (b * c);
 export const diluicaoV1 = (C1, C2, V2) => (C2 * V2) / C1; // C₁V₁ = C₂V₂
+export const concentracaoDiluida = (A, eps, b, fator) => (A / (eps * b)) * fator; // leitura da solução diluída × fator
+export const caminhoOptico = (A, eps, c) => A / (eps * c);
+export const percentTDiluida = (T, fator) => percentT(absDeT(T) / fator); // T (fração) da amostra, diluída "fator" vezes
+export const inclinacaoParaLoq = (s, loqAlvo) => (10 * s) / loqAlvo;
+export const velocidadeMedia = (A1, A2, eps, b, dt) => (A1 - A2) / (eps * b) / dt; // mol L⁻¹ s⁻¹
+export const porcentagemDissolvida = (A, Apad, cPad, V, dose) => (100 * (A / Apad) * cPad * V) / dose; // c em mg/mL, V em mL, dose em mg
 
 // Padrões simulados para o simulador de curva: A = a·c/(1 + k·c) + b + ruído gaussiano (Box-Muller)
 export function padroesCurva({ niveis, a, b, sigma = 0.005, curvatura = 0, rnd = Math.random }) {

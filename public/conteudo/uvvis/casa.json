@@ -5,201 +5,225 @@
    "id": "c1-01",
    "bloco": 1,
    "tipo": "mc",
-   "enunciado": "Comparando dois fótons, qual tem MAIOR energia?",
+   "raciocinio": "T5",
+   "enunciado": "Uma solução absorve em 450 nm e outra em 650 nm. Qual transição eletrônica exige mais energia, e quantas vezes mais?",
    "alternativas": [
-    "O de menor λ",
-    "O de maior λ",
-    "Têm a mesma energia",
-    "Depende da intensidade"
+    "A de 450 nm, cerca de 1,4 vez mais",
+    "A de 650 nm, cerca de 1,4 vez mais",
+    "A de 450 nm, cerca de 2 vezes mais",
+    "As duas iguais: ambas estão no visível"
    ],
    "correta": 0,
-   "explicacao": "E = hc/λ: λ menor → energia maior.",
+   "explicacao": "E = hc/λ: E é inversamente proporcional a λ. E(450)/E(650) = 650/450 ≈ 1,4. Quem marcou 650 nm inverteu a relação; '2 vezes' não sai da conta.",
    "figura": "img/B_onda_foton.png"
   },
   {
    "id": "c1-02",
    "bloco": 1,
    "tipo": "num",
-   "enunciado": "Qual a energia (kJ mol⁻¹) de um mol de fótons de 300 nm?",
-   "resposta": 398.8,
-   "tol": 0.02,
+   "raciocinio": "T5",
+   "enunciado": "Uma lâmpada germicida emite em 254 nm. Calcule a energia de um mol desses fótons (kJ mol⁻¹) e compare com a ligação C–C (~350 kJ mol⁻¹).",
+   "resposta": 471.0,
    "unidade": "kJ mol⁻¹",
+   "tol": 0.02,
    "calc": {
     "fn": "energiaKJmol",
     "args": [
-     300
+     254
     ]
    },
-   "explicacao": "E = hcN_A/λ ≈ 399 kJ/mol — na faixa de 150–600 kJ/mol do UV-vis."
+   "explicacao": "E = hcN_A/λ ≈ 471 kJ/mol: mais que a energia da ligação C–C. Por isso o UV-C danifica DNA e microrganismos."
   },
   {
    "id": "c1-03",
    "bloco": 1,
-   "tipo": "num",
-   "enunciado": "Qual λ (nm) corresponde a fótons de 600 kJ mol⁻¹?",
-   "resposta": 199.4,
-   "tol": 0.02,
-   "unidade": "nm",
-   "calc": {
-    "fn": "lambdaDeEnergiaKJmol",
-    "args": [
-     600
-    ]
-   },
-   "explicacao": "λ = hcN_A/E ≈ 199 nm: limite do UV próximo."
+   "tipo": "mc",
+   "raciocinio": "T6",
+   "enunciado": "Um composto tem gap HOMO–LUMO que corresponde a 300 nm. Ele não absorve luz de 600 nm. Num espectrofotômetro comum, o que acontece se dobrarmos a intensidade da luz de 600 nm?",
+   "alternativas": [
+    "Continua sem absorver: cada fóton tem só metade da energia necessária",
+    "Passa a absorver: dois fótons somam a energia",
+    "Absorve metade da luz",
+    "Passa a absorver em 300 nm"
+   ],
+   "correta": 0,
+   "explicacao": "A absorção depende da energia de CADA fóton (E = hc/λ), não da quantidade de fótons. Um fóton de 600 nm tem metade da energia de um de 300 nm; mais intensidade só põe mais fótons iguais."
   },
   {
    "id": "c1-04",
    "bloco": 1,
    "tipo": "mc",
-   "enunciado": "Quais são as faixas do UV próximo e do visível?",
+   "raciocinio": "T2",
+   "enunciado": "O espectro de um composto mostra uma banda forte em 330 nm e A = 0 em toda a faixa de 400 a 800 nm. De que cor é a solução?",
    "alternativas": [
-    "UV: 200–400 nm; visível: 400–800 nm",
-    "UV: 400–800 nm; visível: 200–400 nm",
-    "UV: 10–100 nm; visível: 100–200 nm",
-    "UV: 800–2500 nm; visível: 400–800 nm"
+    "Incolor",
+    "Violeta",
+    "Amarela (complementar do violeta)",
+    "Preta"
    ],
    "correta": 0,
-   "explicacao": "UV próximo 200–400 nm, visível 400–800 nm.",
+   "explicacao": "Só vemos cor se a solução absorve no visível (400–800 nm). Absorver em 330 nm (UV próximo) não muda a cor: a solução é incolor.",
    "figura": "img/B_espectro_em.png"
   },
   {
    "id": "c1-05",
    "bloco": 1,
    "tipo": "mc",
-   "enunciado": "Por que não se mede abaixo de ~190 nm num espectrofotômetro comum?",
+   "raciocinio": "T4",
+   "enunciado": "Com a cubeta de quartzo VAZIA, a linha de base do aparelho dispara abaixo de ~190 nm. Qual a causa?",
    "alternativas": [
-    "O₂ do ar e o quartzo absorvem (UV de vácuo)",
-    "A lâmpada de W emite demais",
-    "O detector satura",
-    "A lei de Beer não vale"
+    "O O₂ do ar e o próprio quartzo absorvem: é o UV de vácuo",
+    "A cubeta está suja",
+    "A lâmpada de D₂ queimou",
+    "O detector saturou de luz"
    ],
    "correta": 0,
-   "explicacao": "Abaixo de 190 nm é o UV de vácuo: O₂ e quartzo absorvem."
+   "explicacao": "Abaixo de ~190 nm o O₂ do ar e o quartzo absorvem (UV de vácuo). Não é defeito: é o limite do espectrofotômetro comum. Uma cubeta suja ou lâmpada queimada afetaria todo o espectro."
   },
   {
    "id": "c1-06",
    "bloco": 1,
-   "tipo": "vf",
-   "enunciado": "Na região UV-vis, a absorção de luz corresponde a transições eletrônicas.",
-   "correta": true,
-   "explicacao": "Sim: o fóton promove um elétron para um orbital de maior energia."
+   "tipo": "mc",
+   "raciocinio": "T3",
+   "enunciado": "Uma C=C isolada absorve em ~175 nm (π→π*). Dá para ver essa banda num espectrofotômetro UV-vis comum?",
+   "alternativas": [
+    "Não: 175 nm está no UV de vácuo, abaixo do limite de ~190 nm",
+    "Sim, basta usar cubeta de quartzo",
+    "Sim, com a lâmpada de tungstênio",
+    "Sim, basta concentrar a amostra"
+   ],
+   "correta": 0,
+   "explicacao": "R₂C=CR₂ isolada: π→π* em ~175 nm (Pavia, Tab. 7.3). Abaixo de ~190 nm o ar e o quartzo absorvem; nem cubeta, nem lâmpada, nem concentração resolvem. Por isso dizemos que o UV-vis 'vê' conjugação, não C=C isolada."
   },
   {
    "id": "c1-07",
    "bloco": 1,
    "tipo": "mc",
-   "enunciado": "Se o comprimento de onda dobra, a frequência…",
+   "raciocinio": "T6",
+   "enunciado": "Se o comprimento de onda da luz dobra, o que acontece com a frequência e com a energia de cada fóton?",
    "alternativas": [
-    "cai pela metade",
-    "dobra",
-    "fica igual",
-    "quadruplica"
+    "As duas caem pela metade",
+    "A frequência cai à metade e a energia dobra",
+    "As duas dobram",
+    "A frequência cai e a energia não muda"
    ],
    "correta": 0,
-   "explicacao": "c = λν: com c constante, λ e ν são inversamente proporcionais."
+   "explicacao": "c = λν: com c constante, λ dobra → ν cai à metade. E = hν: a energia acompanha a frequência e também cai à metade."
   },
   {
    "id": "c1-08",
    "bloco": 1,
    "tipo": "mc",
-   "enunciado": "O que o detector do espectrofotômetro mede?",
+   "raciocinio": "T2",
+   "enunciado": "Com o branco, o detector lê I₀ = 1000. Com a amostra, no mesmo λ, lê I = 1000. O que se conclui?",
    "alternativas": [
-    "A luz transmitida",
-    "A luz absorvida diretamente",
-    "A luz refletida",
-    "O calor liberado"
+    "A amostra não absorve neste λ (A = 0); pode absorver em outro",
+    "A = 1000, pois o detector mede a luz absorvida",
+    "A = 1",
+    "Erro: I nunca pode ser igual a I₀"
    ],
    "correta": 0,
-   "explicacao": "Medimos a luz que atravessa a amostra; a absorção é calculada por I₀ e I.",
-   "figura": "img/B_interacoes.png"
+   "explicacao": "T = I/I₀ = 1 → A = −log 1 = 0. O detector mede a luz que ATRAVESSA. A = 0 só diz que não há absorção neste λ.",
+   "figura": "img/D_medida_I0_I.png"
   },
   {
    "id": "c1-09",
    "bloco": 1,
-   "tipo": "vf",
-   "enunciado": "Perdas por reflexão e espalhamento na cubeta são descontadas pelo branco.",
-   "correta": true,
-   "explicacao": "O branco (solvente + reagentes) define I₀ e desconta essas perdas."
+   "tipo": "mc",
+   "raciocinio": "T4",
+   "enunciado": "Na dosagem de Fe com fenantrolina, o analista zerou o aparelho com água em vez do branco de reagentes (que tem A = 0,030) e calculou c por A = εbc, com ε da literatura. Efeito no resultado?",
+   "alternativas": [
+    "As leituras ficam 0,030 maiores: c sai superestimada",
+    "Nenhum: água e branco dão no mesmo",
+    "As leituras ficam 0,030 menores: c subestimada",
+    "Só muda a inclinação da curva"
+   ],
+   "correta": 0,
+   "explicacao": "O branco desconta tudo o que não é o analito: reagentes, cubeta, reflexão. Zerando com água, a absorção dos reagentes (0,030) soma-se à da amostra e c sai maior que a real."
   },
   {
    "id": "c2-01",
    "bloco": 2,
    "tipo": "mc",
-   "enunciado": "Absorção no UV-vis promove um elétron de qual orbital para qual?",
+   "raciocinio": "T1",
+   "enunciado": "Qual destas moléculas tem o MENOR gap HOMO–LUMO?",
    "alternativas": [
-    "Do HOMO para o LUMO",
-    "Do LUMO para o HOMO",
-    "Do núcleo para a camada externa",
-    "De σ* para π"
+    "1,3,5-hexatrieno",
+    "1,3-butadieno",
+    "Eteno",
+    "Etano"
    ],
    "correta": 0,
-   "explicacao": "HOMO: ocupado de maior energia; LUMO: vazio de menor energia.",
-   "figura": "img/C_homo_lumo.png"
+   "explicacao": "Quanto mais C=C conjugadas, mais próximos ficam HOMO e LUMO: eteno ~171 nm, butadieno 217 nm, hexatrieno 258 nm (Pavia, Tab. 7.4). λ maior = gap menor. O etano só tem σ→σ* (< 150 nm).",
+   "figura": "img/I_conjugacao_MO.png"
   },
   {
    "id": "c2-02",
    "bloco": 2,
    "tipo": "mc",
-   "enunciado": "Quais transições aparecem no UV-vis comum (acima de 200 nm)?",
+   "raciocinio": "T1",
+   "enunciado": "Qual composto NÃO mostra banda acima de 200 nm num espectrofotômetro comum?",
    "alternativas": [
-    "π→π* e n→π*",
-    "σ→σ* e n→σ*",
-    "Só σ→σ*",
-    "Só transições vibracionais"
+    "Etanol",
+    "Acetona",
+    "Benzeno",
+    "1,3-butadieno"
    ],
    "correta": 0,
-   "explicacao": "σ→σ* cai abaixo de 150 nm; no UV-vis comum vemos π→π* e n→π*.",
-   "figura": "img/C_orbitais_transicoes.png"
+   "explicacao": "Etanol só tem σ e pares n: n→σ* em ~180 nm (Pavia, Tab. 7.3). Acetona tem n→π* em ~280 nm, benzeno banda em ~254 nm e butadieno π→π* em 217 nm."
   },
   {
    "id": "c2-03",
    "bloco": 2,
    "tipo": "mc",
-   "enunciado": "Qual transição exige MAIS energia?",
+   "raciocinio": "T1",
+   "enunciado": "Uma amina (R–NH₂) e um álcool (R–OH) só têm ligações σ e pares n. Qual absorve em λ MAIOR, e por quê?",
    "alternativas": [
-    "σ→σ*",
-    "π→π*",
-    "n→π*",
-    "n→σ*"
+    "A amina: o par n do N é menos preso (N é menos eletronegativo que O), então o gap n→σ* é menor",
+    "O álcool: o O tem mais pares n",
+    "São iguais: as duas são n→σ*",
+    "Nenhuma absorve: não há ligação π"
    ],
    "correta": 0,
-   "explicacao": "σ→σ*: < 150 nm (CH₄ em 125 nm). Seta maior = λ menor.",
-   "figura": "img/C_regua_transicoes.png"
+   "explicacao": "Pavia, Tab. 7.3: R–NH₂ n→σ* ~190 nm; R–OH ~180 nm. O O segura mais seus pares (mais eletronegativo): o orbital n fica mais baixo e o gap aumenta. Ter mais pares não muda a energia de cada um."
   },
   {
    "id": "c2-04",
    "bloco": 2,
    "tipo": "mc",
-   "enunciado": "Qual é o ε típico de uma transição n→π*?",
+   "raciocinio": "T2",
+   "enunciado": "Um composto C₄H₈O, sem C=C, mostra no UV comum uma única banda, fraca: λmáx 280 nm, ε = 15. Que grupo e que transição explicam?",
    "alternativas": [
-    "10–100 L mol⁻¹ cm⁻¹",
-    "10³–10⁵ L mol⁻¹ cm⁻¹",
-    "10⁶–10⁸ L mol⁻¹ cm⁻¹",
-    "Zero"
+    "C=O, n→π*",
+    "C=O, π→π*",
+    "C=C, π→π*",
+    "O–H, n→σ*"
    ],
    "correta": 0,
-   "explicacao": "n→π* é 'proibida': n e π* quase não se sobrepõem, então ε é baixo."
+   "explicacao": "ε < 100 indica transição 'proibida': n→π*. A π→π* da C=O isolada fica em ~180–190 nm, fora do alcance; C=C isolada absorve em ~175 nm; n→σ* do álcool em ~180 nm (Pavia, Tab. 7.3: R₂CO n→π* 280 nm, log ε 1,5)."
   },
   {
    "id": "c2-05",
    "bloco": 2,
    "tipo": "mc",
-   "enunciado": "A banda fraca da acetona em 279 nm é uma transição…",
+   "raciocinio": "T2",
+   "enunciado": "Um composto mostra duas bandas: 213 nm (ε = 7 100) e 320 nm (ε = 27). Como atribuí-las?",
    "alternativas": [
-    "n→π*",
-    "π→π*",
-    "σ→σ*",
-    "n→σ*"
+    "213 nm: π→π*; 320 nm: n→π*",
+    "213 nm: n→π*; 320 nm: π→π*",
+    "As duas são π→π*",
+    "213 nm: σ→σ*; 320 nm: n→σ*"
    ],
    "correta": 0,
-   "explicacao": "Acetona: n→π* em 279 nm, ε ≈ 15."
+   "explicacao": "Banda forte (ε ~10³–10⁴) = π→π* permitida; banda fraca (ε < 100) em λ maior = n→π*. São os dados da 3-buten-2-ona, uma enona (Pavia, Tab. 7.4). σ→σ* nunca aparece acima de 200 nm.",
+   "figura": "img/I_carbonila.png"
   },
   {
    "id": "c2-06",
    "bloco": 2,
    "tipo": "mc",
-   "enunciado": "O metanol absorve em 183 nm. Qual transição?",
+   "raciocinio": "T1",
+   "enunciado": "O metanol absorve em ~183 nm e não tem ligação π. Qual transição é essa?",
    "alternativas": [
     "n→σ*",
     "n→π*",
@@ -207,159 +231,197 @@
     "σ→σ*"
    ],
    "correta": 0,
-   "explicacao": "Sem ligação π; o par livre do O vai para σ*: n→σ* (150–250 nm)."
+   "explicacao": "Sem ligação π não há π*: sobram σ→σ* (< 150 nm, energia demais) e n→σ*, do par livre do O (Pavia, Tab. 7.3: R–OH ~180 nm)."
   },
   {
    "id": "c2-07",
    "bloco": 2,
    "tipo": "mc",
-   "enunciado": "Os orbitais n (não-ligantes) vêm de…",
+   "raciocinio": "T6",
+   "enunciado": "No mesmo grupo C=O, a banda n→π* tem ε ~15 e a π→π* tem ε ~10³–10⁴. Por que a n→π* é tão mais fraca?",
    "alternativas": [
-    "Pares livres de O, N, S e halogênios",
-    "Ligações C–H",
-    "Ligações duplas C=C",
-    "Elétrons do núcleo"
+    "Os orbitais n e π* quase não se sobrepõem: a transição é pouco provável",
+    "A n→π* exige mais energia",
+    "Há menos elétrons n do que elétrons π",
+    "O solvente absorve a banda n→π*"
    ],
    "correta": 0,
-   "explicacao": "n = pares de elétrons não compartilhados dos heteroátomos."
+   "explicacao": "ε mede a PROBABILIDADE da transição. O orbital n fica no plano da C=O e o π* é perpendicular a ele: pouca sobreposição, transição 'proibida'. A n→π* exige MENOS energia (λ maior). E o O tem 4 elétrons n contra 2 π."
   },
   {
    "id": "c2-08",
    "bloco": 2,
-   "tipo": "vf",
-   "enunciado": "Após absorver, a molécula em geral relaxa liberando calor, e a amostra não é consumida.",
-   "correta": true,
-   "explicacao": "Relaxação térmica: a medida não destrói a amostra."
+   "tipo": "mc",
+   "raciocinio": "T6",
+   "enunciado": "O espectro do fenol em isooctano mostra a banda com estrutura fina (vários picos); em etanol, a estrutura some e fica uma banda lisa. Por quê?",
+   "alternativas": [
+    "O etanol faz ligação de H com o fenol e alarga os subníveis vibracionais",
+    "O etanol absorve nessa região",
+    "A concentração em etanol é menor",
+    "O fenol reage com o etanol"
+   ],
+   "correta": 0,
+   "explicacao": "Cada nível eletrônico tem subníveis vibracionais. Em solvente apolar a molécula fica quase 'livre' e os picos aparecem; em solvente polar, a ligação de H forma complexos soluto–solvente e borra a estrutura fina (Pavia, Fig. 7.5).",
+   "figura": "img/C_niveis_vibracionais.png"
   },
   {
    "id": "c2-09",
    "bloco": 2,
-   "tipo": "vf",
-   "enunciado": "π→π* é uma transição 'permitida', com ε alto (10³–10⁵).",
-   "correta": true,
-   "explicacao": "Por isso as bandas π→π* são intensas."
+   "tipo": "mc",
+   "raciocinio": "T3",
+   "enunciado": "O benzeno tem duas bandas: 204 nm (ε = 7 400) e 254 nm (ε = 204). Medindo em água (corte 190 nm), qual dá MAIOR sensibilidade para traços de benzeno, e por quê?",
+   "alternativas": [
+    "A de 204 nm: ε cerca de 36 vezes maior dá A 36 vezes maior na mesma c",
+    "A de 254 nm: λ maior é sempre mais sensível",
+    "As duas iguais: é o mesmo composto",
+    "Nenhuma: o benzeno não absorve em água"
+   ],
+   "correta": 0,
+   "explicacao": "Sensibilidade = inclinação de A × c = εb. 7 400/204 ≈ 36. A água é transparente até 190 nm, então 204 nm é acessível (Pavia, Tab. 7.1 e 7.10).",
+   "figura": "img/J_benzeno_bandas.png"
   },
   {
    "id": "c3-01",
    "bloco": 3,
    "tipo": "num",
-   "enunciado": "I₀ = 100 e I = 25. Qual é a absorbância?",
+   "raciocinio": "T5",
+   "enunciado": "Com o branco, o detector lê I₀ = 100; com a amostra, I = 25. Qual é a absorbância?",
    "resposta": 0.602,
-   "tol": 0.02,
    "unidade": "",
+   "tol": 0.02,
    "calc": {
     "fn": "absDeT",
     "args": [
      0.25
     ]
    },
-   "explicacao": "T = 25/100 = 0,25; A = −log 0,25 = 0,602."
+   "explicacao": "T = I/I₀ = 0,25; A = −log 0,25 = 0,602. Cuidado: A não é 0,75 (fração absorvida) nem 4 (I₀/I)."
   },
   {
    "id": "c3-02",
    "bloco": 3,
    "tipo": "mc",
-   "enunciado": "Se A = 1,0, quanto da luz é transmitida?",
+   "raciocinio": "T6",
+   "enunciado": "Uma amostra tem A = 1,0. Se A subir para 2,0, quanto da luz passa?",
    "alternativas": [
-    "10 %",
-    "1 %",
-    "50 %",
-    "90 %"
+    "De 10 % para 1 %: cai 10 vezes",
+    "De 10 % para 5 %: cai à metade",
+    "De 10 % para 0 %",
+    "De 90 % para 80 %"
    ],
    "correta": 0,
-   "explicacao": "%T = 100·10⁻¹ = 10 %.",
+   "explicacao": "%T = 100·10⁻ᴬ. Cada unidade de A divide a luz transmitida por 10: A = 1 → 10 %; A = 2 → 1 %. A não é proporcional a T.",
    "figura": "img/D_T_vs_A.png"
   },
   {
    "id": "c3-03",
    "bloco": 3,
    "tipo": "mc",
-   "enunciado": "Uma amostra transmite 50 % da luz. Qual é A?",
+   "raciocinio": "T4",
+   "enunciado": "Um colega escreve: 'T = 0,50, logo A = 0,50, porque A = 1 − T'. Qual o erro?",
    "alternativas": [
-    "≈ 0,30",
-    "≈ 0,50",
-    "≈ 0,69",
-    "≈ 1,0"
+    "A = −log T: para T = 0,50, A = 0,30",
+    "Nenhum: A = 1 − T",
+    "A = 1/T = 2,0",
+    "A = log 0,50 = −0,30"
    ],
    "correta": 0,
-   "explicacao": "A = −log 0,50 = 0,30."
+   "explicacao": "1 − T é a FRAÇÃO de luz que não passou, não a absorbância. A definição é A = −log T = −log 0,50 = 0,30. O sinal de menos faz A ser positiva."
   },
   {
    "id": "c3-04",
    "bloco": 3,
-   "tipo": "num",
-   "enunciado": "Qual é a %T quando A = 2,0?",
-   "resposta": 1.0,
-   "tol": 0.02,
-   "unidade": "%",
-   "calc": {
-    "fn": "percentT",
-    "args": [
-     2.0
-    ]
-   },
-   "explicacao": "%T = 100 · 10⁻² = 1 %: só 1 % da luz passa."
+   "tipo": "mc",
+   "raciocinio": "T3",
+   "enunciado": "A amostra dá A = 2,3 no λmáx. Por que é ruim medir assim, e o que fazer?",
+   "alternativas": [
+    "Só ~0,5 % da luz chega ao detector: ruído e luz espúria pesam. Diluir até A ficar entre 0,1 e 1,0",
+    "A alta = mais sensível: é o ideal",
+    "Trocar por uma cubeta de 2 cm",
+    "Ler em %T resolve"
+   ],
+   "correta": 0,
+   "explicacao": "%T = 100·10⁻²·³ ≈ 0,5 %. Com tão pouca luz, qualquer ruído ou luz espúria vira um erro grande em A. Cubeta maior aumentaria ainda mais A; ler em %T não muda a luz que chega."
   },
   {
    "id": "c3-05",
    "bloco": 3,
-   "tipo": "vf",
-   "enunciado": "A transmitância varia linearmente com a concentração.",
-   "correta": false,
-   "explicacao": "T cai de forma exponencial com c; é A que é linear com c."
+   "tipo": "num",
+   "raciocinio": "T6",
+   "enunciado": "Uma amostra tem T = 40 % (0,40). Você a dilui 2 vezes e mede na mesma cubeta. Qual a nova %T?",
+   "resposta": 63.2,
+   "unidade": "%",
+   "tol": 0.02,
+   "calc": {
+    "fn": "percentTDiluida",
+    "args": [
+     0.4,
+     2
+    ]
+   },
+   "explicacao": "A = −log 0,40 = 0,40. Diluir 2 vezes divide A (não T) por 2: A = 0,20 → %T = 100·10⁻⁰·²⁰ = 63 %. Quem respondeu 20 % ou 80 % tratou T como se fosse linear com c.",
+   "figura": "img/D_T_vs_A.png"
   },
   {
    "id": "c3-06",
    "bloco": 3,
    "tipo": "mc",
-   "enunciado": "Com que solução se mede I₀?",
+   "raciocinio": "T4",
+   "enunciado": "O analista mediu I₀ com o feixe passando pelo ar (sem cubeta) e I com a amostra em água, na cubeta. A absorbância obtida fica…",
    "alternativas": [
-    "Com o branco (solvente + reagentes)",
-    "Com o padrão mais concentrado",
-    "Com a amostra",
-    "Com a cubeta vazia sempre"
+    "Maior que a real: as perdas da cubeta e do solvente entram como 'absorção'",
+    "Menor que a real",
+    "Igual à real",
+    "Negativa"
    ],
    "correta": 0,
-   "explicacao": "I₀ é a intensidade com o branco; I, com a amostra.",
-   "figura": "img/D_medida_I0_I.png"
+   "explicacao": "I₀ deve ser medido com o branco (mesma cubeta, mesmo solvente). Sem ele, a reflexão nas paredes e a absorção do solvente reduzem I e são contadas como se fossem do analito.",
+   "figura": "img/B_interacoes.png"
   },
   {
    "id": "c3-07",
    "bloco": 3,
-   "tipo": "mc",
-   "enunciado": "'λmáx 232 nm (log ε 4,1)' significa ε aproximadamente igual a…",
-   "alternativas": [
-    "1,3×10⁴ L mol⁻¹ cm⁻¹",
-    "4,1 L mol⁻¹ cm⁻¹",
-    "232 L mol⁻¹ cm⁻¹",
-    "41 L mol⁻¹ cm⁻¹"
-   ],
-   "correta": 0,
-   "explicacao": "ε = 10⁴·¹ ≈ 12 600 L mol⁻¹ cm⁻¹.",
+   "tipo": "num",
+   "raciocinio": "T5",
+   "enunciado": "Um composto tem 'λmáx 232 nm (log ε 4,1)'. Que concentração (mol L⁻¹) dá A = 0,50 em cubeta de 1,00 cm?",
+   "resposta": 3.97e-05,
+   "unidade": "mol L⁻¹",
+   "tol": 0.02,
+   "calc": {
+    "fn": "concentracao",
+    "args": [
+     0.5,
+     12589.254,
+     1.0
+    ]
+   },
+   "explicacao": "ε = 10⁴·¹ ≈ 1,26×10⁴ L mol⁻¹ cm⁻¹. c = A/(εb) = 0,50/12 600 ≈ 4,0×10⁻⁵ mol L⁻¹. Quem usou ε = 4,1 esqueceu que o dado é o log de ε.",
    "figura": "img/D_espectro_logeps.png"
   },
   {
    "id": "c3-08",
    "bloco": 3,
    "tipo": "mc",
-   "enunciado": "Por que quantificar com A e não com T?",
+   "raciocinio": "T5",
+   "enunciado": "Duas soluções do mesmo corante, na mesma cubeta: uma tem %T = 80 % e a outra %T = 40 %. A segunda é quantas vezes mais concentrada?",
    "alternativas": [
-    "A cresce linearmente com c",
-    "T é sempre maior que 1",
-    "A não depende do instrumento",
-    "T não pode ser medida"
+    "Cerca de 4 vezes",
+    "2 vezes",
+    "Metade",
+    "Igual"
    ],
    "correta": 0,
-   "explicacao": "A = εbc é uma reta em c: ideal para calibrar."
+   "explicacao": "Compare absorbâncias, não transmitâncias: A₁ = −log 0,80 = 0,097; A₂ = −log 0,40 = 0,398. A ∝ c → 0,398/0,097 ≈ 4,1. '2 vezes' é o erro de achar que T é linear com c."
   },
   {
    "id": "c4-01",
    "bloco": 4,
    "tipo": "num",
-   "enunciado": "Corante: ε = 15 000 L mol⁻¹ cm⁻¹ em 450 nm, b = 1,00 cm, A = 0,450. Qual é c (mol L⁻¹)?",
+   "raciocinio": "T5",
+   "enunciado": "Um corante tem ε = 15 000 L mol⁻¹ cm⁻¹ em 450 nm. Em cubeta de 1,00 cm, a amostra dá A = 0,450. Qual é c (mol L⁻¹)?",
    "resposta": 3e-05,
-   "tol": 0.02,
    "unidade": "mol L⁻¹",
+   "tol": 0.02,
    "calc": {
     "fn": "concentracao",
     "args": [
@@ -374,44 +436,46 @@
    "id": "c4-02",
    "bloco": 4,
    "tipo": "num",
-   "enunciado": "Para a mesma solução (A = 0,450), qual é a %T?",
-   "resposta": 35.5,
+   "raciocinio": "T5",
+   "enunciado": "O mesmo corante (ε₄₅₀ = 15 000 L mol⁻¹ cm⁻¹) dá A = 1,80 em 1,00 cm, fora da faixa útil. Você dilui 5,00 mL até 25,00 mL e lê A = 0,360. Qual a concentração na amostra ORIGINAL (mol L⁻¹)?",
+   "resposta": 0.00012,
+   "unidade": "mol L⁻¹",
    "tol": 0.02,
-   "unidade": "%",
    "calc": {
-    "fn": "percentT",
+    "fn": "concentracaoDiluida",
     "args": [
-     0.45
+     0.36,
+     15000,
+     1.0,
+     5
     ]
    },
-   "explicacao": "%T = 100·10⁻⁰·⁴⁵⁰ = 35,5 %: 64,5 % da luz foi absorvida."
+   "explicacao": "Na solução diluída: c = 0,360/15 000 = 2,40×10⁻⁵ mol L⁻¹. Fator de diluição = 25,00/5,00 = 5 → original = 1,20×10⁻⁴ mol L⁻¹. Confere: 1,80/5 = 0,360. Erro comum: esquecer de multiplicar pelo fator."
   },
   {
    "id": "c4-03",
    "bloco": 4,
-   "tipo": "num",
-   "enunciado": "ε = 5 000 L mol⁻¹ cm⁻¹, b = 2,00 cm, c = 4,0×10⁻⁵ mol L⁻¹. Qual é A?",
-   "resposta": 0.4,
-   "tol": 0.02,
-   "unidade": "",
-   "calc": {
-    "fn": "absorbancia",
-    "args": [
-     5000,
-     2.0,
-     4e-05
-    ]
-   },
-   "explicacao": "A = εbc = 5 000 × 2,00 × 4,0×10⁻⁵ = 0,400."
+   "tipo": "mc",
+   "raciocinio": "T6",
+   "enunciado": "Você troca a cubeta de 1 cm por uma de 0,5 cm e, ao mesmo tempo, dilui a amostra 2 vezes. A absorbância…",
+   "alternativas": [
+    "Cai para 1/4",
+    "Fica igual",
+    "Cai à metade",
+    "Dobra"
+   ],
+   "correta": 0,
+   "explicacao": "A = εbc: b cai à metade e c cai à metade → A cai a 1/2 × 1/2 = 1/4."
   },
   {
    "id": "c4-04",
    "bloco": 4,
    "tipo": "num",
-   "enunciado": "A = 0,62 em b = 1,00 cm e c = 5,0×10⁻⁵ mol L⁻¹. Qual é ε (L mol⁻¹ cm⁻¹)?",
+   "raciocinio": "T5",
+   "enunciado": "Uma solução de 5,0×10⁻⁵ mol L⁻¹ dá A = 0,62 em cubeta de 1,00 cm. Qual é ε (L mol⁻¹ cm⁻¹)?",
    "resposta": 12400,
-   "tol": 0.02,
    "unidade": "L mol⁻¹ cm⁻¹",
+   "tol": 0.02,
    "calc": {
     "fn": "absortividade",
     "args": [
@@ -420,198 +484,225 @@
      5e-05
     ]
    },
-   "explicacao": "ε = A/(bc) = 0,62/(1,00 × 5,0×10⁻⁵) = 12 400."
+   "explicacao": "ε = A/(bc) = 0,62/(1,00 × 5,0×10⁻⁵) = 12 400 L mol⁻¹ cm⁻¹: valor típico de π→π*."
   },
   {
    "id": "c4-05",
    "bloco": 4,
-   "tipo": "mc",
-   "enunciado": "Numa mistura de dois absorventes no mesmo λ, a absorbância total é…",
-   "alternativas": [
-    "A soma: ε₁bc₁ + ε₂bc₂",
-    "O produto das absorbâncias",
-    "A maior das duas",
-    "A média das duas"
-   ],
-   "correta": 0,
-   "explicacao": "Absorbâncias são aditivas."
+   "tipo": "num",
+   "raciocinio": "T5",
+   "enunciado": "Na amostra, um interferente absorve no mesmo λ do analito. Uma solução só do interferente, na mesma concentração em que ele está na amostra, dá A = 0,080. A amostra dá A = 0,530. Que absorbância é do analito?",
+   "resposta": 0.45,
+   "unidade": "",
+   "tol": 0.02,
+   "calc": {
+    "fn": "diferenca",
+    "args": [
+     0.53,
+     0.08
+    ]
+   },
+   "explicacao": "Absorbâncias são aditivas: A(total) = A(analito) + A(interferente) → A(analito) = 0,530 − 0,080 = 0,450."
   },
   {
    "id": "c4-06",
    "bloco": 4,
    "tipo": "mc",
-   "enunciado": "No gráfico A × c, a inclinação da reta é igual a…",
+   "raciocinio": "T2",
+   "enunciado": "Duas curvas A × c para o mesmo analito, mesma cubeta: o método X tem inclinação 0,15 L/mg e o método Y, 0,030 L/mg. O que se conclui?",
    "alternativas": [
-    "ε·b",
-    "1/ε",
-    "c/b",
-    "log ε"
+    "X é 5 vezes mais sensível: o ε da espécie medida em X é 5 vezes maior",
+    "Y é mais sensível: A varia menos",
+    "São iguais: as duas são retas",
+    "X tem 5 vezes mais erro"
    ],
    "correta": 0,
-   "explicacao": "A = (εb)·c: inclinação εb. ε alto = método mais sensível.",
+   "explicacao": "Inclinação = εb. Mesma cubeta → a razão das inclinações é a razão dos ε: 0,15/0,030 = 5. Sensibilidade é quanto A muda por unidade de c.",
    "figura": "img/E_beer_Ac_Ab.png"
   },
   {
    "id": "c4-07",
    "bloco": 4,
    "tipo": "mc",
-   "enunciado": "Um método com ε maior é…",
+   "raciocinio": "T3",
+   "enunciado": "Dois métodos para o mesmo analito (valores ilustrativos): X com ε = 1,1×10⁴ e Y com ε = 2,0×10³ L mol⁻¹ cm⁻¹. A amostra tem ~2×10⁻⁵ mol L⁻¹, em cubeta de 1 cm. Qual usar?",
    "alternativas": [
-    "Mais sensível",
-    "Menos sensível",
-    "Menos exato",
-    "Igual"
+    "X: dá A ≈ 0,22, dentro da faixa 0,1–1,0",
+    "Y: ε menor é mais exato",
+    "Tanto faz",
+    "Y: dá A ≈ 0,4"
    ],
    "correta": 0,
-   "explicacao": "Maior ε → maior inclinação → mais A por unidade de c."
+   "explicacao": "A = εbc: X → 1,1×10⁴ × 1 × 2×10⁻⁵ = 0,22; Y → 2,0×10³ × 1 × 2×10⁻⁵ = 0,04, abaixo da faixa útil, onde o ruído pesa."
   },
   {
    "id": "c4-08",
    "bloco": 4,
-   "tipo": "mc",
-   "enunciado": "Dois corantes em 1 cm: A₁ = 0,20 e A₂ = 0,20 no mesmo λ. A da mistura é…",
-   "alternativas": [
-    "0,40",
-    "0,20",
-    "0,04",
-    "0,10"
-   ],
-   "correta": 0,
-   "explicacao": "Aditividade: 0,20 + 0,20 = 0,40."
+   "tipo": "num",
+   "raciocinio": "T5",
+   "enunciado": "Um analito tem ε = 2 500 L mol⁻¹ cm⁻¹. Que caminho óptico b (cm) faz uma solução de 4,0×10⁻⁵ mol L⁻¹ dar A = 0,50?",
+   "resposta": 5.0,
+   "unidade": "cm",
+   "tol": 0.02,
+   "calc": {
+    "fn": "caminhoOptico",
+    "args": [
+     0.5,
+     2500,
+     4e-05
+    ]
+   },
+   "explicacao": "b = A/(εc) = 0,50/(2 500 × 4,0×10⁻⁵) = 5,0 cm. Com ε baixo, aumentar b é uma forma de ganhar sinal."
   },
   {
    "id": "c4-09",
    "bloco": 4,
    "tipo": "mc",
-   "enunciado": "De onde vem a lei de Beer?",
+   "raciocinio": "T6",
+   "enunciado": "Uma camada de 1 cm de solução deixa passar 50 % da luz. Quanto passa por 3 cm da mesma solução?",
    "alternativas": [
-    "Cada camada absorve a mesma FRAÇÃO da luz que chega",
-    "Cada camada absorve a mesma QUANTIDADE de luz",
-    "A luz é absorvida só na superfície",
-    "A absorção cresce com o quadrado de c"
+    "12,5 %",
+    "0 %: três camadas de 50 % somam 150 %",
+    "16,7 %",
+    "50 %"
    ],
    "correta": 0,
-   "explicacao": "Mesma fração por camada → queda exponencial de I → log linear.",
+   "explicacao": "Cada camada absorve a mesma FRAÇÃO da luz que chega: 50 % → 25 % → 12,5 %. É por isso que I cai de forma exponencial e A = −log T é que fica linear com b.",
    "figura": "img/E_beer_camadas.png"
   },
   {
    "id": "c5-01",
    "bloco": 5,
    "tipo": "mc",
-   "enunciado": "Quais são as três origens de desvio da lei de Beer?",
+   "raciocinio": "T2",
+   "enunciado": "Padrões de 2, 4, 6, 8 e 10 mg/L dão A = 0,40; 0,80; 1,20; 1,45; 1,60. O que está acontecendo e o que fazer?",
    "alternativas": [
-    "Reais, químicos e instrumentais",
-    "Aleatórios, sistemáticos e grosseiros",
-    "Ópticos, térmicos e elétricos",
-    "Do analista, da amostra e do frasco"
+    "Desvio negativo em A alta: trabalhar só até 6 mg/L ou diluir as amostras",
+    "Desvio positivo: abrir a fenda",
+    "Erro no branco: somar 0,2 a todas as leituras",
+    "Está linear: basta olhar o R²"
    ],
    "correta": 0,
-   "explicacao": "Reais (c alta), químicos (equilíbrio), instrumentais (policromática, luz espúria, cubetas)."
+   "explicacao": "Até 6 mg/L, A sobe 0,40 a cada 2 mg/L. Depois sobe só 0,25 e 0,15: os pontos ficam ABAIXO da reta (desvio negativo), típico de A alta (luz espúria) ou de c alta (desvio real). Use a faixa linear.",
+   "figura": "img/F_desvio_real.png"
   },
   {
    "id": "c5-02",
    "bloco": 5,
    "tipo": "mc",
-   "enunciado": "Acima de ~0,01 mol L⁻¹ a curva entorta. Que desvio é esse?",
+   "raciocinio": "T6",
+   "enunciado": "Um corante forma dímeros em concentração alta, e o dímero tem ε menor que o monômero. Na curva A × c, o que se espera acima de certa concentração?",
    "alternativas": [
-    "Real: moléculas próximas interagem e ε muda",
-    "Químico: mudança de pH",
-    "Instrumental: lâmpada fraca",
-    "Nenhum: a lei vale sempre"
+    "A cresce menos que o previsto: desvio negativo",
+    "A cresce mais que o previsto: desvio positivo",
+    "A reta continua perfeita",
+    "A cai a zero"
    ],
    "correta": 0,
-   "explicacao": "Desvio real: em c alta, ε deixa de ser constante. Solução: diluir.",
-   "figura": "img/F_desvio_real.png"
+   "explicacao": "Quanto maior c, maior a fração de dímero, que absorve menos. A espécie medida muda com c: é um desvio químico, e a curva entorta para baixo."
   },
   {
    "id": "c5-03",
    "bloco": 5,
    "tipo": "mc",
-   "enunciado": "O que é o ponto isosbéstico?",
+   "raciocinio": "T3",
+   "enunciado": "Os espectros de um indicador em pH 3, 5, 7 e 9 se cruzam todos em 490 nm. Você quer a concentração TOTAL do indicador sem controlar o pH. Onde medir?",
    "alternativas": [
-    "λ onde as duas formas (HIn e In⁻) têm o mesmo ε",
-    "λ onde a absorbância é zero",
-    "O λmáx da forma ácida",
-    "O ponto de corte do solvente"
+    "Em 490 nm: lá ε é igual para HIn e In⁻",
+    "No λmáx da forma ácida",
+    "No λmáx da forma básica",
+    "Onde A é zero"
    ],
    "correta": 0,
-   "explicacao": "No ponto isosbéstico, A não depende da proporção HIn/In⁻.",
+   "explicacao": "No ponto isosbéstico as duas formas têm o mesmo ε, então A depende só da concentração total, não da proporção HIn/In⁻. Nos λmáx, A muda com o pH.",
    "figura": "img/F_desvio_quimico.png"
   },
   {
    "id": "c5-04",
    "bloco": 5,
    "tipo": "mc",
-   "enunciado": "Como evitar desvios químicos de um indicador ácido-base?",
+   "raciocinio": "T6",
+   "enunciado": "Um indicador fraco HIn é medido em 430 nm, onde só HIn absorve, em água sem tampão. Ao diluir a solução 10 vezes, A cai MAIS que 10 vezes. Por quê?",
    "alternativas": [
-    "Tamponar o meio ou medir no ponto isosbéstico",
-    "Aumentar a concentração",
-    "Usar cubeta de vidro",
-    "Medir sem o branco"
+    "Diluir desloca o equilíbrio para In⁻ (o ácido fraco se dissocia mais): sobra menos HIn",
+    "Luz espúria",
+    "Erro de pipeta",
+    "A lei de Beer não vale para indicadores"
    ],
    "correta": 0,
-   "explicacao": "Tampão fixa a espécie; no isosbéstico, a proporção não importa."
+   "explicacao": "Ácido fraco diluído se dissocia mais (princípio de Le Chatelier). A fração de HIn cai, então A cai mais do que a diluição prevê. É um desvio químico; o remédio é tamponar."
   },
   {
    "id": "c5-05",
    "bloco": 5,
    "tipo": "mc",
-   "enunciado": "Para reduzir o desvio por radiação policromática, mede-se…",
+   "raciocinio": "T6",
+   "enunciado": "Você mede a mesma série de padrões no λmáx (topo plano da banda) e na encosta (onde ε muda rápido com λ), com fenda larga. Qual curva fica mais reta?",
    "alternativas": [
-    "No λmáx, com fenda estreita",
-    "Na encosta da banda",
-    "Com fenda larga",
-    "Fora da banda"
+    "A do λmáx: ε é quase constante dentro da faixa de λ que passa pela fenda",
+    "A da encosta: tem mais variação",
+    "As duas iguais",
+    "Nenhuma: a fenda larga impede medir"
    ],
    "correta": 0,
-   "explicacao": "No λmáx a banda é plana (ε quase constante) e a sensibilidade é maior.",
+   "explicacao": "A fenda deixa passar uma faixa de λ. No topo da banda todos esses λ têm quase o mesmo ε; na encosta, ε varia e a curva entorta (desvio por radiação policromática).",
    "figura": "img/F_desvio_policromatico.png"
   },
   {
    "id": "c5-06",
    "bloco": 5,
-   "tipo": "vf",
-   "enunciado": "A luz espúria pesa mais quando a absorbância é alta.",
-   "correta": true,
-   "explicacao": "Com I pequeno, a luz espúria é uma fração grande do que chega: A tende a um platô.",
+   "tipo": "mc",
+   "raciocinio": "T6",
+   "enunciado": "O aparelho tem 1 % de luz espúria (luz que chega ao detector sem passar pela banda da amostra). Qual é, aproximadamente, a MAIOR absorbância que ele consegue mostrar?",
+   "alternativas": [
+    "≈ 2",
+    "Infinita",
+    "≈ 1",
+    "≈ 0,01"
+   ],
+   "correta": 0,
+   "explicacao": "Mesmo que a amostra bloqueie toda a luz certa, 1 % ainda chega: T mínima ≈ 0,01 → A máxima ≈ −log 0,01 = 2. Por isso A medida faz um platô em A alta.",
    "figura": "img/F_luz_espuria.png"
   },
   {
    "id": "c5-07",
    "bloco": 5,
    "tipo": "mc",
-   "enunciado": "Beer é uma 'lei limite'. Ela vale para…",
+   "raciocinio": "T4",
+   "enunciado": "Ao medir um padrão, a absorbância oscila e fica maior que a esperada. Na cubeta há uma digital na face e uma bolha de ar no caminho da luz. Explicação?",
    "alternativas": [
-    "Soluções diluídas, luz monocromática e espécie estável",
-    "Qualquer concentração",
-    "Só para sólidos",
-    "Só no visível"
+    "A luz espalhada não chega ao detector e é contada como 'absorvida': A aumenta",
+    "A luz espalhada diminui A",
+    "Não afeta: só o analito absorve",
+    "Só afeta a largura da fenda"
    ],
    "correta": 0,
-   "explicacao": "Fora dessas condições aparecem desvios."
+   "explicacao": "O aparelho só vê I menor que I₀; não sabe se a luz foi absorvida ou desviada. Limpe a face e elimine a bolha antes de ler."
   },
   {
    "id": "c5-08",
    "bloco": 5,
    "tipo": "mc",
-   "enunciado": "Uma curva que se curva PARA BAIXO em c alta pode ser causada por…",
+   "raciocinio": "T2",
+   "enunciado": "Uma curva A × c se curva PARA BAIXO em concentração alta. Qual causa é compatível?",
    "alternativas": [
     "Luz espúria ou interação soluto–soluto",
     "Excesso de diluição",
     "Medir no λmáx",
-    "Usar branco correto"
+    "Usar o branco correto"
    ],
    "correta": 0,
-   "explicacao": "Ambos fazem A medida ficar menor que o previsto em c alta."
+   "explicacao": "Ambas fazem A medida ficar menor que a prevista em c alta. Diluir, medir no λmáx e usar o branco certo são justamente as boas práticas."
   },
   {
    "id": "c6-01",
    "bloco": 6,
    "tipo": "num",
-   "enunciado": "Curva: A = 0,0817·c − 0,0031 (c em mg/L). Amostra com A = 0,47. Qual é c (mg/L)?",
+   "raciocinio": "T5",
+   "enunciado": "Curva analítica: A = 0,0817·c − 0,0031 (c em mg/L). A amostra dá A = 0,47. Qual é c (mg/L)?",
    "resposta": 5.79,
-   "tol": 0.02,
    "unidade": "mg/L",
+   "tol": 0.02,
    "calc": {
     "fn": "concentracaoDaCurva",
     "args": [
@@ -620,67 +711,68 @@
      -0.0031
     ]
    },
-   "explicacao": "c = (A − b)/a = (0,47 + 0,0031)/0,0817 = 5,79 mg/L.",
+   "explicacao": "c = (A − b)/a = (0,47 + 0,0031)/0,0817 = 5,79 mg/L. Atenção ao sinal do intercepto.",
    "figura": "img/G_curva_analitica.png"
   },
   {
    "id": "c6-02",
    "bloco": 6,
-   "tipo": "num",
-   "enunciado": "Desvio padrão do branco s = 0,002 e inclinação a = 0,0817 L/mg. Qual é o LOD (mg/L)?",
-   "resposta": 0.0808,
-   "tol": 0.02,
-   "unidade": "mg/L",
-   "calc": {
-    "fn": "lod",
-    "args": [
-     0.002,
-     0.0817
-    ]
-   },
-   "explicacao": "LOD = 3,3·s/a = 0,081 mg/L.",
+   "tipo": "mc",
+   "raciocinio": "T3",
+   "enunciado": "Curva com inclinação a = 0,0817 L/mg e desvio padrão do branco s = 0,002. A amostra dá c = 0,15 mg/L. Como reportar?",
+   "alternativas": [
+    "Detectado, mas abaixo do LOQ: reportar '< 0,25 mg/L', sem valor exato",
+    "Reportar 0,15 mg/L",
+    "Não detectado",
+    "Extrapolar a curva até 0,15 mg/L"
+   ],
+   "correta": 0,
+   "explicacao": "LOD = 3,3·s/a = 0,081 mg/L; LOQ = 10·s/a = 0,245 mg/L. 0,15 está entre os dois: há sinal acima do ruído, mas a incerteza é grande demais para dar um número.",
    "figura": "img/G_lod_loq.png"
   },
   {
    "id": "c6-03",
    "bloco": 6,
    "tipo": "num",
-   "enunciado": "Com os mesmos dados (s = 0,002; a = 0,0817), qual é o LOQ (mg/L)?",
-   "resposta": 0.245,
+   "raciocinio": "T5",
+   "enunciado": "Com s(branco) = 0,002, qual inclinação a (L/mg) o método precisa ter para que o LOQ caia para 0,10 mg/L?",
+   "resposta": 0.2,
+   "unidade": "L/mg",
    "tol": 0.02,
-   "unidade": "mg/L",
    "calc": {
-    "fn": "loq",
+    "fn": "inclinacaoParaLoq",
     "args": [
      0.002,
-     0.0817
+     0.1
     ]
    },
-   "explicacao": "LOQ = 10·s/a = 0,245 mg/L."
+   "explicacao": "LOQ = 10·s/a → a = 10·s/LOQ = 10 × 0,002/0,10 = 0,20 L/mg: um método mais sensível (ε maior ou cubeta maior) baixa o LOQ."
   },
   {
    "id": "c6-04",
    "bloco": 6,
    "tipo": "mc",
-   "enunciado": "R² = 0,995, mas os resíduos formam um 'U'. O que concluir?",
+   "raciocinio": "T2",
+   "enunciado": "A curva tem R² = 0,995, mas os resíduos formam um 'U'. O que concluir?",
    "alternativas": [
     "Há curvatura: reduzir a faixa de trabalho",
-    "A curva está perfeita",
+    "A curva está perfeita: R² > 0,99",
     "Basta repetir o branco",
     "Usar mais casas decimais"
    ],
    "correta": 0,
-   "explicacao": "R² ≥ 0,99 é necessário, mas não suficiente: padrão sistemático nos resíduos indica curvatura.",
+   "explicacao": "R² alto é necessário, mas não suficiente. Resíduos com padrão (U ou ∩) mostram que a reta não descreve os dados; resíduos bons ficam espalhados ao acaso em torno de zero.",
    "figura": "img/G_residuos_ruins.png"
   },
   {
    "id": "c6-05",
    "bloco": 6,
    "tipo": "num",
-   "enunciado": "Estoque de 100 mg/L. Quantos mL para preparar 50,0 mL de padrão de 5,0 mg/L?",
+   "raciocinio": "T5",
+   "enunciado": "Estoque de 100 mg/L. Quantos mL dele você pipeta para preparar 50,0 mL de um padrão de 5,0 mg/L?",
    "resposta": 2.5,
-   "tol": 0.02,
    "unidade": "mL",
+   "tol": 0.02,
    "calc": {
     "fn": "diluicaoV1",
     "args": [
@@ -689,249 +781,281 @@
      50.0
     ]
    },
-   "explicacao": "C₁V₁ = C₂V₂ → V₁ = 5,0 × 50,0 / 100 = 2,5 mL.",
+   "explicacao": "C₁V₁ = C₂V₂ → V₁ = 5,0 × 50,0/100 = 2,5 mL, completando o balão de 50 mL.",
    "figura": "img/G_padroes.png"
   },
   {
    "id": "c6-06",
    "bloco": 6,
    "tipo": "mc",
-   "enunciado": "Por que calibrar se já temos A = εbc?",
+   "raciocinio": "T3",
+   "enunciado": "A literatura dá ε = 1,10×10⁴ L mol⁻¹ cm⁻¹. A sua curva, no seu aparelho e na matriz da amostra, dá ε = 0,95×10⁴. Qual usar para calcular a amostra, e por quê?",
    "alternativas": [
-    "ε depende do instrumento, solvente, pH e matriz",
-    "Porque Beer não vale",
-    "Para gastar menos reagente",
-    "Porque ε é sempre desconhecido"
+    "O da sua curva: mede a resposta real do seu sistema (instrumento, fenda, pH, matriz)",
+    "O da literatura: é mais confiável",
+    "A média dos dois",
+    "Tanto faz: a diferença é pequena"
    ],
    "correta": 0,
-   "explicacao": "A curva mede a resposta real do SEU sistema, verifica a faixa linear e dá LOD/LOQ."
+   "explicacao": "ε depende do instrumento, do solvente, do pH e da matriz. A curva própria incorpora tudo isso; usar 1,10×10⁴ daria um resultado ~14 % menor que o real."
   },
   {
    "id": "c6-07",
    "bloco": 6,
    "tipo": "mc",
-   "enunciado": "Como montar a curva?",
+   "raciocinio": "T4",
+   "enunciado": "Plano de curva de um colega: padrões em água, amostra em suco de laranja diluído, 3 níveis (1, 2 e 20 mg/L) e amostra esperada em ~15 mg/L. O que está errado?",
    "alternativas": [
-    "≥ 5 níveis + branco, amostra no meio da faixa, mesma matriz",
-    "2 níveis bastam",
-    "Só o branco e a amostra",
-    "Padrões em solvente diferente da amostra"
+    "Matriz diferente da amostra e poucos níveis mal distribuídos",
+    "Nada: está correto",
+    "Deveria usar só 2 níveis",
+    "Deveria zerar com o padrão mais alto"
    ],
    "correta": 0,
-   "explicacao": "Mesmo solvente/matriz/pH, medir no λmáx zerando com o branco."
+   "explicacao": "Os padrões devem ter a mesma matriz da amostra, ≥ 5 níveis + branco, bem distribuídos, com a amostra no meio da faixa. Entre 2 e 20 mg/L não há nenhum ponto: não dá para verificar a linearidade onde a amostra cai."
   },
   {
    "id": "c6-08",
    "bloco": 6,
-   "tipo": "vf",
-   "enunciado": "Se a amostra ficar acima do padrão mais alto, pode-se extrapolar a reta.",
-   "correta": false,
-   "explicacao": "Não extrapolar: diluir para cair dentro da faixa dos padrões."
+   "tipo": "mc",
+   "raciocinio": "T4",
+   "enunciado": "Curva de 1 a 10 mg/L: A = 0,0817·c − 0,0031. A amostra dá A = 1,05 e o colega reporta 12,9 mg/L. O que está errado?",
+   "alternativas": [
+    "Ele extrapolou: o padrão mais alto dá A ≈ 0,81. Diluir a amostra e medir de novo",
+    "Nada: a conta está certa",
+    "Faltou subtrair o branco",
+    "Deveria usar %T"
+   ],
+   "correta": 0,
+   "explicacao": "(1,05 + 0,0031)/0,0817 = 12,9, mas a curva só foi verificada até 10 mg/L (A ≈ 0,81). Acima disso pode haver desvio. Dilua para cair dentro da faixa.",
+   "figura": "img/G_curva_analitica.png"
   },
   {
    "id": "c6-09",
    "bloco": 6,
    "tipo": "mc",
-   "enunciado": "Resíduos espalhados ao acaso em torno de zero indicam…",
+   "raciocinio": "T2",
+   "enunciado": "Os resíduos de 5 padrões, do menos ao mais concentrado, são: +0,001; −0,002; +0,002; −0,001; +0,015. O que fazer?",
    "alternativas": [
-    "Modelo linear adequado",
-    "Curvatura",
-    "Contaminação do branco",
-    "Erro de pipetagem sistemático"
+    "Investigar o último padrão (erro de preparo ou início de desvio) antes de usá-lo",
+    "Nada: o modelo está perfeito",
+    "É curvatura em U: reduzir toda a faixa",
+    "Repetir o branco"
    ],
    "correta": 0,
-   "explicacao": "Resíduo = A medida − A prevista; aleatório → linear OK.",
+   "explicacao": "Os quatro primeiros resíduos são pequenos e aleatórios; o último é ~10 vezes maior. Um ponto isolado assim é suspeito: refaça o padrão antes de decidir excluir ou encurtar a faixa.",
    "figura": "img/G_residuos.png"
   },
   {
    "id": "c7-01",
    "bloco": 7,
    "tipo": "mc",
-   "enunciado": "Qual é a ordem dos componentes de um espectrofotômetro de feixe simples?",
+   "raciocinio": "T6",
+   "enunciado": "No feixe simples, a luz é dispersa ANTES da amostra; no arranjo de diodos (DAD), DEPOIS. Qual arranjo expõe mais a amostra à luz e pode degradar um composto fotossensível?",
    "alternativas": [
-    "Fonte → monocromador → cubeta → detector",
-    "Detector → cubeta → fonte → monocromador",
-    "Fonte → detector → cubeta → monocromador",
-    "Cubeta → fonte → detector → monocromador"
+    "O DAD: a amostra recebe toda a luz branca da lâmpada",
+    "O feixe simples: recebe só um λ, mais concentrado",
+    "Os dois expõem igual",
+    "Nenhum: a luz do UV-vis não degrada nada"
    ],
    "correta": 0,
-   "explicacao": "No feixe simples, a luz é selecionada antes da amostra (no DAD, a dispersão vem depois).",
-   "figura": "img/H_blocos.png"
+   "explicacao": "No DAD toda a luz atravessa a amostra e só depois a rede separa os λ. No feixe simples a amostra recebe apenas a faixa estreita que passou pela fenda.",
+   "figura": "img/H_dad.png"
   },
   {
    "id": "c7-02",
    "bloco": 7,
    "tipo": "mc",
-   "enunciado": "Faixa da lâmpada de deutério (D₂):",
+   "raciocinio": "T3",
+   "enunciado": "No mesmo aparelho você mede um fármaco em 254 nm e um corante em 520 nm. Que fonte e que cubeta para cada medida?",
    "alternativas": [
-    "190–350 nm",
-    "350–1100 nm",
-    "800–2500 nm",
-    "100–150 nm"
+    "254 nm: D₂ + quartzo; 520 nm: W-halogênio + vidro ou plástico",
+    "254 nm: W + plástico; 520 nm: D₂ + quartzo",
+    "D₂ e quartzo nos dois, sempre",
+    "254 nm: D₂ + plástico; 520 nm: W + quartzo"
    ],
    "correta": 0,
-   "explicacao": "D₂ = UV; W-halogênio = visível.",
+   "explicacao": "D₂ cobre o UV (~190–350 nm) e W-halogênio o visível (~350–1100 nm). Plástico e vidro cortam abaixo de ~380 nm e ~350 nm: em 254 nm só quartzo. Em 520 nm qualquer cubeta serve.",
    "figura": "img/H_fontes.png"
   },
   {
    "id": "c7-03",
    "bloco": 7,
    "tipo": "mc",
-   "enunciado": "O monocromador é formado por…",
+   "raciocinio": "T3",
+   "enunciado": "Num HPLC, um pico sai da coluna em ~3 s. Por que um detector de varredura (monocromador que gira) não serve para obter o espectro desse pico, e o DAD serve?",
    "alternativas": [
-    "Rede de difração + fendas",
-    "Lâmpada + detector",
-    "Cubeta + espelho",
-    "Fotomultiplicadora"
+    "A varredura leva bem mais que 3 s: o pico já passou. O DAD lê todos os λ ao mesmo tempo",
+    "A varredura não mede no UV",
+    "O DAD tem lâmpada mais forte",
+    "Os dois servem igual"
    ],
    "correta": 0,
-   "explicacao": "A rede dispersa a luz; girando-a, escolhe-se o λ que passa pela fenda."
+   "explicacao": "No DAD uma rede fixa espalha todos os λ sobre centenas de diodos lidos de uma vez (~1 s por espectro). A varredura mede um λ por vez."
   },
   {
    "id": "c7-04",
    "bloco": 7,
    "tipo": "mc",
-   "enunciado": "O feixe simples é sensível a…",
+   "raciocinio": "T4",
+   "enunciado": "Feixe simples: você zera com o branco, mede 20 amostras em 40 min e, no fim, relê o branco: A = 0,025. O que aconteceu e o que fazer?",
    "alternativas": [
-    "Deriva da lâmpada entre branco e amostra",
-    "Luz ambiente apenas",
-    "Tamanho da cubeta apenas",
-    "Nada"
+    "A lâmpada derivou: rezerar com o branco periodicamente (ou usar duplo feixe)",
+    "O branco se contaminou",
+    "É normal: ignorar",
+    "Trocar a cubeta por uma de plástico"
    ],
    "correta": 0,
-   "explicacao": "Branco e amostra são medidos em tempos diferentes.",
+   "explicacao": "No feixe simples branco e amostra são medidos em tempos diferentes; se a intensidade da lâmpada muda, I₀ deixa de valer. O duplo feixe compensa isso medindo os dois quase ao mesmo tempo.",
    "figura": "img/H_feixe_simples.png"
   },
   {
    "id": "c7-05",
    "bloco": 7,
    "tipo": "mc",
-   "enunciado": "No arranjo de diodos (DAD), a dispersão da luz ocorre…",
+   "raciocinio": "T6",
+   "enunciado": "O que acontece com a curva A × c se você abrir muito a fenda do monocromador ao medir uma banda estreita?",
    "alternativas": [
-    "Depois da amostra",
-    "Antes da amostra",
-    "Não há dispersão",
-    "Dentro da lâmpada"
+    "Passa uma faixa larga de λ com ε diferentes: a curva entorta para baixo",
+    "A curva fica mais reta",
+    "Nada muda",
+    "A sensibilidade aumenta sem nenhum custo"
    ],
    "correta": 0,
-   "explicacao": "Luz branca atravessa a amostra; depois a rede espalha sobre centenas de diodos.",
-   "figura": "img/H_dad.png"
+   "explicacao": "Fenda larga = luz menos monocromática. Se a banda é estreita, parte da luz passa por λ onde ε é menor: A medida fica abaixo da prevista, e mais ainda em c alta.",
+   "figura": "img/F_desvio_policromatico.png"
   },
   {
    "id": "c7-06",
    "bloco": 7,
    "tipo": "mc",
-   "enunciado": "Por que usar um detector DAD em HPLC?",
+   "raciocinio": "T2",
+   "enunciado": "Num HPLC-DAD, o espectro tirado no início, no meio e no fim de um mesmo pico é diferente. O que isso indica?",
    "alternativas": [
-    "Obtém o espectro de cada pico cromatográfico",
-    "Aumenta a resolução da coluna",
-    "Dispensa a fase móvel",
-    "Mede massa molar"
+    "Dois compostos saindo juntos (pico impuro)",
+    "O pico é puro",
+    "A lâmpada falhou",
+    "A concentração está alta demais"
    ],
    "correta": 0,
-   "explicacao": "HPLC-DAD: espectro completo em ~1 s para cada pico."
+   "explicacao": "Um composto puro dá o mesmo espectro (normalizado) em todo o pico. Se o espectro muda ao longo do pico, há co-eluição: o DAD revela isso sem precisar de outra técnica."
   },
   {
    "id": "c7-07",
    "bloco": 7,
    "tipo": "mc",
-   "enunciado": "Para medir em 280 nm, qual solvente NÃO serve?",
+   "raciocinio": "T3",
+   "enunciado": "Você quer o espectro do 1,3-butadieno (λmáx esperado 217 nm). Cortes dos solventes: clorofórmio 240, 1,4-dioxano 215, hexano 201, acetona ~330 nm. Qual usar?",
    "alternativas": [
-    "Acetona (corte ~330 nm)",
-    "Água (corte ~190 nm)",
-    "Acetonitrila (corte ~190 nm)",
-    "Hexano (corte ~195 nm)"
+    "Hexano",
+    "1,4-Dioxano",
+    "Clorofórmio",
+    "Acetona"
    ],
    "correta": 0,
-   "explicacao": "O solvente não pode absorver onde a amostra absorve.",
-   "figura": "img/H_solventes_cubetas.png"
+   "explicacao": "O corte é onde o próprio solvente já absorve muito; é preciso folga. Clorofórmio e acetona absorvem sobre a banda; o dioxano (215) fica colado nela. Hexano (201) deixa a região livre (Pavia, Tab. 7.1 e 7.4)."
   },
   {
    "id": "c7-08",
    "bloco": 7,
    "tipo": "mc",
-   "enunciado": "As linhas do D₂ em 486 e 656 nm servem para…",
+   "raciocinio": "T4",
+   "enunciado": "A linha de emissão do D₂ deveria aparecer em 656,1 nm, mas o seu aparelho a mostra em 658 nm. Consequência e conduta?",
    "alternativas": [
-    "Calibrar a escala de λ",
-    "Aquecer a amostra",
-    "Medir o branco",
-    "Nada, são ruído"
+    "A escala de λ está deslocada ~2 nm: recalibrar antes de comparar λmáx com a literatura",
+    "Nada: 2 nm não importa nunca",
+    "A lâmpada está queimando: trocar",
+    "O detector está saturado"
    ],
    "correta": 0,
-   "explicacao": "Linhas de emissão conhecidas → verificação da exatidão de λ."
+   "explicacao": "Linhas de emissão conhecidas (486,0 e 656,1 nm do D₂) servem para verificar a exatidão de λ. Um erro de 2 nm atrapalha identificar compostos pelo λmáx e medir na encosta de bandas estreitas."
   },
   {
    "id": "c7-09",
    "bloco": 7,
-   "tipo": "vf",
-   "enunciado": "Cubetas de plástico (PS) servem para medir DNA em 260 nm.",
-   "correta": false,
-   "explicacao": "Plástico corta em ~380 nm; em 260 nm use quartzo."
+   "tipo": "mc",
+   "raciocinio": "T4",
+   "enunciado": "Você mede DNA em 260 nm numa cubeta de poliestireno e o aparelho dá A > 3 até com água. Causa?",
+   "alternativas": [
+    "O plástico absorve abaixo de ~380 nm: usar cubeta de quartzo",
+    "O DNA está concentrado demais",
+    "Está usando a lâmpada de W",
+    "O detector queimou"
+   ],
+   "correta": 0,
+   "explicacao": "Se até a água dá A > 3, o problema não é a amostra: é a cubeta. Poliestireno corta em ~380 nm; no UV, só quartzo.",
+   "figura": "img/H_solventes_cubetas.png"
   },
   {
    "id": "c8-01",
    "bloco": 8,
    "tipo": "mc",
-   "enunciado": "O que é um cromóforo?",
+   "raciocinio": "T1",
+   "enunciado": "Ordene por λmáx crescente da banda em ~250–290 nm: benzeno, fenol e fenóxido (fenol em meio básico).",
    "alternativas": [
-    "Grupo que absorve (elétrons π e/ou n)",
-    "Grupo com par livre que só modifica a banda",
-    "Qualquer grupo alquila",
-    "O solvente da amostra"
+    "benzeno < fenol < fenóxido",
+    "fenóxido < fenol < benzeno",
+    "fenol < benzeno < fenóxido",
+    "Os três iguais: o anel é o mesmo"
    ],
    "correta": 0,
-   "explicacao": "C=C, C=O, N=N, NO₂ são cromóforos."
+   "explicacao": "–OH doa par livre ao anel (+M); –O⁻ doa ainda mais. Pavia, Tab. 7.10: benzeno 254, fenol 270, fenóxido 287 nm. Por isso o espectro do fenol muda com o pH.",
+   "figura": "img/I_auxocromos.png"
   },
   {
    "id": "c8-02",
    "bloco": 8,
    "tipo": "mc",
-   "enunciado": "Qual destes é um auxocromo?",
+   "raciocinio": "T1",
+   "enunciado": "Por que um –CH₃ no anel benzênico quase não desloca a banda, enquanto –NH₂ a desloca de 254 para 280 nm?",
    "alternativas": [
-    "–OH",
-    "C=C",
-    "C=O",
-    "N=N"
+    "–CH₃ só tem efeito indutivo fraco; –NH₂ doa seu par livre ao anel por ressonância (+M)",
+    "–CH₃ é um grupo maior",
+    "–NH₂ é um cromóforo que absorve sozinho em 280 nm",
+    "–CH₃ tem par livre"
    ],
    "correta": 0,
-   "explicacao": "Auxocromo: grupo com par livre (–OH, –NH₂, –OR, –Cl) que modifica λmáx e ε.",
-   "figura": "img/I_auxocromos.png"
+   "explicacao": "Alquilas doam pouco, por efeito indutivo (+I, poucos nm). O par livre do N entra no sistema π do anel e diminui o gap HOMO–LUMO (Pavia, Tab. 7.10: anilina 280 nm).",
+   "figura": "img/I_indutivo_ressonancia.png"
   },
   {
    "id": "c8-03",
    "bloco": 8,
    "tipo": "mc",
-   "enunciado": "Deslocamento batocrômico é…",
+   "raciocinio": "T1",
+   "enunciado": "Ordene por λmáx crescente: 1,4-pentadieno, 1,3-butadieno e 1,3,5-hexatrieno.",
    "alternativas": [
-    "Para λ maior (vermelho)",
-    "Para λ menor (azul)",
-    "Aumento de ε",
-    "Diminuição de ε"
+    "pentadieno < butadieno < hexatrieno",
+    "butadieno < pentadieno < hexatrieno",
+    "hexatrieno < butadieno < pentadieno",
+    "Iguais: todos têm C=C"
    ],
    "correta": 0,
-   "explicacao": "Bato = vermelho (λ ↑); hipso = azul (λ ↓). Horizontal = energia.",
-   "figura": "img/I_bato_hipso.png"
+   "explicacao": "No 1,4-pentadieno as duplas estão separadas por CH₂: não conjugam (~178 nm). Butadieno 217 e hexatrieno 258 nm (Pavia, Tab. 7.4): mais conjugação → gap menor → λ maior.",
+   "figura": "img/I_conjugacao_lambda.png"
   },
   {
    "id": "c8-04",
    "bloco": 8,
    "tipo": "mc",
-   "enunciado": "Efeito hipercrômico é…",
+   "raciocinio": "T2",
+   "enunciado": "Do 1,3-butadieno para o 1,3,5-hexatrieno, λmáx vai de 217 para 258 nm e ε de 21 000 para 35 000. Que efeitos são esses?",
    "alternativas": [
-    "Aumento de ε (banda mais alta)",
-    "Diminuição de ε",
-    "Deslocamento para o vermelho",
-    "Deslocamento para o azul"
+    "Batocrômico e hipercrômico",
+    "Batocrômico e hipocrômico",
+    "Hipsocrômico e hipercrômico",
+    "Só batocrômico"
    ],
    "correta": 0,
-   "explicacao": "Vertical (ε) = probabilidade da transição, não a energia.",
+   "explicacao": "λ maior = batocrômico (eixo horizontal, energia); ε maior = hipercrômico (eixo vertical, probabilidade). Dados do Pavia, Tab. 7.4.",
    "figura": "img/I_hiper_hipo.png"
   },
   {
    "id": "c8-05",
    "bloco": 8,
    "tipo": "mc",
-   "enunciado": "β-caroteno (11 C=C) absorve em ~452 nm. Que cor vemos?",
+   "raciocinio": "T1",
+   "enunciado": "O β-caroteno (11 C=C conjugadas) absorve em ~452 nm. Que cor vemos?",
    "alternativas": [
     "Laranja",
     "Azul",
@@ -939,14 +1063,15 @@
     "Incolor"
    ],
    "correta": 0,
-   "explicacao": "Absorve azul → vemos a complementar: laranja.",
+   "explicacao": "Ele absorve o azul (435–480 nm); o olho vê a cor complementar: laranja (Pavia: β-caroteno, 452 nm, laranja).",
    "figura": "img/K_corantes.png"
   },
   {
    "id": "c8-06",
    "bloco": 8,
    "tipo": "mc",
-   "enunciado": "Benzeno 255 → fenol 270 → anilina 280 nm, com ε crescendo. São efeitos…",
+   "raciocinio": "T2",
+   "enunciado": "Benzeno 255 nm → fenol 270 nm → anilina 280 nm, com ε crescendo. Que efeitos são esses?",
    "alternativas": [
     "Batocrômico e hipercrômico",
     "Hipsocrômico e hipocrômico",
@@ -954,174 +1079,177 @@
     "Nenhum"
    ],
    "correta": 0,
-   "explicacao": "–OH e –NH₂ doam par livre ao anel (+M)."
+   "explicacao": "λ aumenta (bato) e ε aumenta (hiper): –OH e –NH₂ doam par livre ao anel (+M) e estendem a conjugação.",
+   "figura": "img/I_auxocromos.png"
   },
   {
    "id": "c8-07",
    "bloco": 8,
    "tipo": "mc",
-   "enunciado": "Cetona n→π* 279 nm → éster ~205 nm. Por quê?",
+   "raciocinio": "T6",
+   "enunciado": "A n→π* da acetona aparece em 279 nm; a do acetato de etila, em ~204 nm. Por que o éster absorve em λ tão menor?",
    "alternativas": [
-    "–OR (−I) abaixa os pares n: hipsocrômico",
-    "+M estende a conjugação: batocrômico",
+    "O –OR retira elétrons por efeito indutivo e abaixa os pares n: o gap n→π* aumenta (hipsocrômico)",
+    "O –OR estende a conjugação: batocrômico",
     "O éster tem mais C=C",
     "Erro de medida"
    ],
    "correta": 0,
-   "explicacao": "Efeito indutivo estabiliza n e aumenta o gap n→π*.",
+   "explicacao": "Pavia, Tab. 7.6: grupos com par livre ligados à C=O (Cl, NH₂, OR, OH) deslocam a n→π* para o azul (acetona 279; éster 204 nm). O O mais eletronegativo estabiliza o orbital n.",
    "figura": "img/I_indutivo_ressonancia.png"
   },
   {
    "id": "c8-08",
    "bloco": 8,
    "tipo": "mc",
-   "enunciado": "Óxido de mesitila: n→π* em hexano 329 nm, em água 305 nm. Que efeito?",
+   "raciocinio": "T6",
+   "enunciado": "A banda fraca da acetona vai de 279 nm em hexano para 264,5 nm em água. O que esse deslocamento diz sobre a transição?",
    "alternativas": [
-    "Hipsocrômico: solvente polar estabiliza os pares n",
-    "Batocrômico: solvente polar",
-    "Hipercrômico",
-    "Nenhum efeito"
+    "É n→π*: a água estabiliza o par n por ligação de H e aumenta o gap",
+    "É π→π*: solvente polar desloca para o azul",
+    "É erro: λmáx não depende do solvente",
+    "É um efeito hipercrômico"
    ],
    "correta": 0,
-   "explicacao": "Já a π→π* vai de 230 para 243 nm (bato). O solvente ajuda a identificar a transição.",
+   "explicacao": "Pavia, Tab. 7.2 e §7.6: solvente polar desloca n→π* para λ menor e π→π* para λ maior. Observar o sentido do deslocamento ajuda a identificar a transição.",
    "figura": "img/I_solvente.png"
   },
   {
    "id": "c8-09",
    "bloco": 8,
    "tipo": "mc",
-   "enunciado": "1,4-pentadieno absorve em ~178 nm, quase como eteno (171). Por quê?",
+   "raciocinio": "T1",
+   "enunciado": "O 1,4-pentadieno absorve em ~178 nm, quase como o eteno (171 nm), apesar de ter duas C=C. Por quê?",
    "alternativas": [
-    "As duplas estão isoladas por CH₂: não há conjugação",
-    "Tem mais C=C conjugadas",
+    "As duplas estão separadas por um CH₂: não há conjugação",
+    "Ele tem mais C=C conjugadas",
     "O CH₂ é um auxocromo",
     "É um erro de tabela"
    ],
    "correta": 0,
-   "explicacao": "Conjugação exige duplas alternadas com simples.",
+   "explicacao": "Conjugação exige C=C alternadas com ligações simples (C=C–C=C). Com um CH₂ sp³ no meio, cada dupla se comporta como isolada.",
    "figura": "img/I_conjugacao_MO.png"
   },
   {
    "id": "c8-10",
    "bloco": 8,
    "tipo": "mc",
-   "enunciado": "Uma solução absorve em 530 nm (verde). Que cor vemos?",
+   "raciocinio": "T6",
+   "enunciado": "A anilina absorve em 280 nm (ε ≈ 1 430). Em HCl diluído, a banda volta para 254 nm (ε ≈ 170), como a do benzeno. Por quê?",
    "alternativas": [
-    "Púrpura",
-    "Verde",
-    "Amarelo",
-    "Azul"
+    "Forma-se –NH₃⁺, que não tem par livre para conjugar com o anel",
+    "O HCl absorve em 280 nm",
+    "O ácido destrói o anel",
+    "A concentração caiu"
    ],
    "correta": 0,
-   "explicacao": "Vemos a cor complementar à absorvida.",
-   "figura": "img/A_roda_cores.png"
+   "explicacao": "Pavia, Tab. 7.10: –NH₂ 280 nm/1 430; –NH₃⁺ 254 nm/169; benzeno 254 nm/204. Protonado, o N perde o par livre e o anel 'volta' a ser benzeno: efeitos hipsocrômico e hipocrômico."
   },
   {
    "id": "c9-01",
    "bloco": 9,
    "tipo": "num",
-   "enunciado": "Dieno acíclico com um –OR na cadeia e nenhum outro substituinte: λmáx calculado (nm)?",
-   "resposta": 220,
-   "tol": 0.005,
+   "raciocinio": "T5",
+   "enunciado": "Calcule o λmáx do 2,4-hexadieno, CH₃–CH=CH–CH=CH–CH₃ (base de dieno acíclico/heteroanular: 214 nm; alquila: +5).",
+   "resposta": 224,
    "unidade": "nm",
+   "tol": 0.005,
    "calc": {
     "fn": "woodwardFieser",
     "args": [
      "dieno-hetero",
      {
-      "OR": 1
+      "alquila": 2
      }
     ]
    },
-   "explicacao": "214 + 6 (–OR) = 220 nm."
+   "explicacao": "Dieno acíclico: base 214. Cada C da dupla ligado a um CH₃ (alquila) soma 5: há 2 → 214 + 2×5 = 224 nm. Os H não contam."
   },
   {
    "id": "c9-02",
    "bloco": 9,
-   "tipo": "num",
-   "enunciado": "Dieno homoanular com 4 substituintes (alquila ou resíduo de anel), sem dupla exocíclica: λmáx (nm)?",
-   "resposta": 273,
-   "tol": 0.005,
-   "unidade": "nm",
-   "calc": {
-    "fn": "woodwardFieser",
-    "args": [
-     "dieno-homo",
-     {
-      "alquila": 4
-     }
-    ]
-   },
-   "explicacao": "253 + 4 × 5 = 273 nm."
+   "tipo": "mc",
+   "raciocinio": "T4",
+   "enunciado": "Para o dieno da figura, um aluno calculou 263 nm: base homoanular 253 + 2 resíduos de anel. O que ele esqueceu?",
+   "alternativas": [
+    "Um terceiro resíduo de anel e a dupla exocíclica: 253 + 3×5 + 5 = 273 nm",
+    "Nada: 263 nm está certo",
+    "A base deveria ser 214",
+    "Somar 30 de uma C=C a mais"
+   ],
+   "correta": 0,
+   "explicacao": "Os C do dieno ligados a carbonos de anel: o C da junção tem 2 resíduos e a outra ponta tem 1 → 3 × 5. A C=C que sai da junção é exocíclica ao outro anel: +5. Total 273 nm.",
+   "figura": "img/wf_dieno_homo.png"
   },
   {
    "id": "c9-03",
    "bloco": 9,
    "tipo": "num",
-   "enunciado": "Heteroanular com 3 resíduos de anel, 1 dupla exocíclica e 1 C=C conjugada a mais: λmáx (nm)?",
-   "resposta": 264,
-   "tol": 0.005,
+   "raciocinio": "T5",
+   "enunciado": "Calcule o λmáx do 1,3-ciclo-hexadieno (as duas C=C no mesmo anel; base homoanular 253 nm; resíduo de anel +5).",
+   "resposta": 263,
    "unidade": "nm",
+   "tol": 0.005,
    "calc": {
     "fn": "woodwardFieser",
     "args": [
-     "dieno-hetero",
+     "dieno-homo",
      {
-      "alquila": 3,
-      "exociclica": 1,
-      "extensao": 1
+      "alquila": 2
      }
     ]
    },
-   "explicacao": "214 + 15 + 5 + 30 = 264 nm."
+   "explicacao": "Duas C=C no mesmo anel: homoanular, base 253. As duas pontas do dieno estão ligadas a CH₂ do anel: 2 resíduos de anel → 253 + 2×5 = 263 nm."
   },
   {
    "id": "c9-04",
    "bloco": 9,
    "tipo": "num",
-   "enunciado": "Enona acíclica com uma metila em α e uma em β: λmáx (nm)?",
-   "resposta": 237,
-   "tol": 0.005,
+   "raciocinio": "T5",
+   "enunciado": "Calcule o λmáx da π→π* do óxido de mesitila, (CH₃)₂C=CH–CO–CH₃ (enona acíclica: base 215; alquila em α +10, em β +12).",
+   "resposta": 239,
    "unidade": "nm",
+   "tol": 0.005,
    "calc": {
     "fn": "woodwardFieser",
     "args": [
      "enona",
      {
-      "alfa": 1,
-      "beta": 1
+      "beta": 2
      }
     ]
    },
-   "explicacao": "215 + 10 (α) + 12 (β) = 237 nm."
+   "explicacao": "O C=C–C=O: o carbono α (ao lado da C=O) tem só H; o β tem dois CH₃ → 215 + 2×12 = 239 nm. O CH₃ ligado à C=O faz parte da cetona e não conta."
   },
   {
    "id": "c9-05",
    "bloco": 9,
    "tipo": "num",
-   "enunciado": "Ciclopentenona com um resíduo de anel em β: λmáx (nm)?",
-   "resposta": 214,
-   "tol": 0.005,
+   "raciocinio": "T5",
+   "enunciado": "Calcule o λmáx da 3-metilciclopent-2-enona (enona em anel de 5: base 202; alquila ou resíduo de anel em β +12).",
+   "resposta": 226,
    "unidade": "nm",
+   "tol": 0.005,
    "calc": {
     "fn": "woodwardFieser",
     "args": [
      "enona-anel5",
      {
-      "beta": 1
+      "beta": 2
      }
     ]
    },
-   "explicacao": "Cetona em anel de 5: base 202 + 12 = 214 nm."
+   "explicacao": "Anel de 5: base 202. O C β (C3) tem o CH₃ e o CH₂ do anel (resíduo): 2 × 12 → 202 + 24 = 226 nm. O C α (C2) só tem H."
   },
   {
    "id": "c9-06",
    "bloco": 9,
    "tipo": "num",
-   "enunciado": "Aldeído α,β-insaturado com dois substituintes alquila em β: λmáx (nm)?",
-   "resposta": 234,
-   "tol": 0.005,
+   "raciocinio": "T1",
+   "enunciado": "Use a tabela de aldeídos α,β-insaturados do Pavia (base 208; com 1 alquila em α ou β: 220; com 2: 230; com 3: 242). Qual o λmáx do 3-metil-2-butenal, (CH₃)₂C=CH–CHO?",
+   "resposta": 230,
    "unidade": "nm",
+   "tol": 0.005,
    "calc": {
     "fn": "woodwardFieser",
     "args": [
@@ -1131,149 +1259,190 @@
      }
     ]
    },
-   "explicacao": "Base 210 + 2 × 12 = 234 nm."
+   "explicacao": "C=C–CHO: o C α tem H; o C β tem dois CH₃ → 2 alquilas → 230 nm (Pavia, Tab. 7.8)."
   },
   {
    "id": "c9-07",
    "bloco": 9,
    "tipo": "mc",
-   "enunciado": "Por que o dieno homoanular tem base 253 nm e o heteroanular 214 nm?",
+   "raciocinio": "T2",
+   "enunciado": "Dois dienos isômeros, com os mesmos substituintes: num, as duas C=C estão no mesmo anel; no outro, em anéis vizinhos. Um absorve em 273 nm (ε ≈ 10 000) e o outro em 234 nm (ε ≈ 20 000). Qual é qual?",
    "alternativas": [
-    "No homoanular as duas C=C estão no mesmo anel (cisoide)",
-    "O heteroanular tem mais C=C",
-    "O homoanular tem heteroátomo",
-    "São iguais"
+    "Mesmo anel (homoanular) = 273 nm, menos intenso",
+    "Mesmo anel = 234 nm, mais intenso",
+    "Não dá para saber sem RMN",
+    "Os dois absorvem igual"
    ],
    "correta": 0,
-   "explicacao": "Conformação cisoide fixa no anel → λ base muito maior."
+   "explicacao": "Pavia, p. 395: homoanular (cisoide) tem λ maior e ε menor (5 000–15 000); heteroanular (transoide), λ menor e ε maior (12 000–28 000)."
   },
   {
    "id": "c9-08",
    "bloco": 9,
    "tipo": "mc",
-   "enunciado": "Qual substituinte em β de uma enona dá o maior incremento?",
+   "raciocinio": "T6",
+   "enunciado": "Numa enona, –NR₂ no carbono β desloca a banda em +95 nm; um –CH₃ no mesmo lugar, só +12. Por que tanta diferença?",
    "alternativas": [
-    "–NR₂ (+95)",
-    "–Cl (+12)",
-    "alquila (+12)",
-    "–OH (+30)"
+    "O par livre do N entra em ressonância com C=C–C=O e estende a conjugação",
+    "O N é mais pesado",
+    "O –NR₂ é um cromóforo isolado que absorve sozinho",
+    "O efeito indutivo do N"
    ],
    "correta": 0,
-   "explicacao": "Doador forte por ressonância: +95 nm."
+   "explicacao": "Doador forte por ressonância (+M) estende o sistema π e diminui muito o gap (Pavia, Tab. 7.7: –NR₂ em β, +95). O CH₃ só doa por efeito indutivo (+12)."
   },
   {
    "id": "c9-09",
    "bloco": 9,
-   "tipo": "vf",
-   "enunciado": "As regras de Woodward-Fieser dão o λmáx exato.",
-   "correta": false,
-   "explicacao": "São empíricas: o calculado costuma ficar a poucos nm do observado (ex.: 234 × 241)."
+   "tipo": "mc",
+   "raciocinio": "T4",
+   "enunciado": "Para o 2,5-dimetil-2,4-hexadieno você calcula 234 nm e mede 241 nm. Um colega diz que a estrutura está errada. Você concorda?",
+   "alternativas": [
+    "Não: a regra é empírica e erra alguns nm",
+    "Sim: o cálculo tem de bater exatamente",
+    "Sim: 7 nm indicam uma C=C conjugada a mais",
+    "Não: o aparelho sempre erra 7 nm"
+   ],
+   "correta": 0,
+   "explicacao": "214 + 4×5 = 234; observado 241 nm (slide 75). Diferenças de poucos nm são normais. Uma C=C conjugada a mais somaria +30 nm: aí sim a estrutura estaria errada.",
+   "figura": "img/wf_dieno_ex1.png"
   },
   {
    "id": "c10-01",
    "bloco": 10,
    "tipo": "mc",
-   "enunciado": "A razão A₂₆₀/A₂₈₀ é usada para…",
+   "raciocinio": "T2",
+   "enunciado": "Uma amostra de DNA dá A₂₆₀ = 0,90 e A₂₈₀ = 0,64. O que se conclui?",
    "alternativas": [
-    "Avaliar a pureza de DNA em relação a proteínas",
-    "Medir pH",
-    "Determinar massa molar",
-    "Medir viscosidade"
+    "Razão ≈ 1,4: provável contaminação com proteína (DNA puro dá ~1,8)",
+    "Razão ≈ 1,4: DNA puro",
+    "Não é DNA",
+    "A concentração está baixa demais para medir"
    ],
    "correta": 0,
-   "explicacao": "DNA absorve em 260 nm; proteínas (aromáticos) em 280 nm."
+   "explicacao": "DNA absorve em 260 nm (bases); proteínas, em 280 nm (aromáticos). Proteína na amostra aumenta A₂₈₀ e baixa a razão A₂₆₀/A₂₈₀."
   },
   {
    "id": "c10-02",
    "bloco": 10,
    "tipo": "mc",
-   "enunciado": "O que o UV-vis NÃO diz sozinho?",
+   "raciocinio": "T3",
+   "enunciado": "Como distinguir ciclo-hexanona de 2-ciclo-hexenona só com o UV?",
    "alternativas": [
-    "A estrutura completa da molécula",
-    "Se há conjugação",
-    "A concentração",
-    "Se há aromático"
+    "A enona tem uma banda forte em ~225 nm; a cetona só a fraca em ~280 nm",
+    "Não é possível",
+    "A cetona é colorida",
+    "Só pela banda fraca em ~280 nm"
    ],
    "correta": 0,
-   "explicacao": "Combine com IV, RMN e EM."
+   "explicacao": "A C=C conjugada à C=O dá π→π* intensa (calc. 215 + 12 = 227; obs. 225 nm, slide 78). A ciclo-hexanona não tem conjugação: só a n→π* fraca (ε ~15) aparece acima de 200 nm.",
+   "figura": "img/wf_enona_ciclohexenona.png"
   },
   {
    "id": "c10-03",
    "bloco": 10,
    "tipo": "mc",
-   "enunciado": "Um alcano puro em hexano no UV-vis comum…",
+   "raciocinio": "T3",
+   "enunciado": "Você quer medir um contaminante aromático (banda em 254 nm) dissolvido em hexano. O hexano atrapalha?",
    "alternativas": [
-    "Não absorve: não tem cromóforo",
-    "Absorve forte em 280 nm",
-    "Absorve no visível",
-    "Fica colorido"
+    "Não: o hexano não tem cromóforo e só absorve abaixo de ~201 nm",
+    "Sim: alcanos absorvem forte em 254 nm",
+    "Sim: o hexano é colorido",
+    "Não dá para medir aromáticos no UV"
    ],
    "correta": 0,
-   "explicacao": "Grupos sem π só absorvem no UV de vácuo."
+   "explicacao": "Alcanos só têm σ→σ*, no UV de vácuo; o corte do hexano é 201 nm (Pavia, Tab. 7.1). Em 254 nm ele é transparente: é um bom solvente para essa medida."
   },
   {
    "id": "c10-04",
    "bloco": 10,
    "tipo": "mc",
-   "enunciado": "Métodos colorimétricos (ex.: Fe-fenantrolina) servem para…",
+   "raciocinio": "T3",
+   "enunciado": "Você precisa dosar Fe²⁺ em traços na água, mas ele quase não absorve no UV-vis. Qual estratégia?",
    "alternativas": [
-    "Gerar um cromóforo a partir de um analito que não absorve bem",
-    "Medir massa",
-    "Separar misturas",
-    "Eliminar o branco"
+    "Reagir com 1,10-fenantrolina para formar um complexo intensamente colorido e medir no λmáx dele",
+    "Concentrar até a solução ficar amarela",
+    "Medir em 190 nm",
+    "UV-vis não serve para íons"
    ],
    "correta": 0,
-   "explicacao": "Derivatização: reação que forma uma espécie colorida."
+   "explicacao": "Métodos colorimétricos (derivatização) transformam um analito que absorve pouco numa espécie com ε alto. A fenantrolina forma um complexo vermelho-alaranjado com Fe²⁺."
   },
   {
    "id": "c10-05",
    "bloco": 10,
-   "tipo": "mc",
-   "enunciado": "Como usar UV-vis em cinética?",
-   "alternativas": [
-    "Acompanhar A × tempo num λ fixo",
-    "Medir só no início",
-    "Medir só o branco",
-    "Usar IV junto"
-   ],
-   "correta": 0,
-   "explicacao": "A ∝ c: a variação de A no tempo dá a velocidade."
+   "tipo": "num",
+   "raciocinio": "T5",
+   "enunciado": "Um corante (ε = 20 000 L mol⁻¹ cm⁻¹, b = 1,00 cm) é descorado numa reação. A cai de 0,800 para 0,500 em 60 s. Qual a velocidade média de consumo do corante (mol L⁻¹ s⁻¹)?",
+   "resposta": 2.5e-07,
+   "unidade": "mol L⁻¹ s⁻¹",
+   "tol": 0.02,
+   "calc": {
+    "fn": "velocidadeMedia",
+    "args": [
+     0.8,
+     0.5,
+     20000,
+     1.0,
+     60
+    ]
+   },
+   "explicacao": "ΔA = 0,300 → Δc = ΔA/(εb) = 0,300/20 000 = 1,5×10⁻⁵ mol L⁻¹. Dividindo por 60 s: 2,5×10⁻⁷ mol L⁻¹ s⁻¹. Como A ∝ c, acompanhar A no tempo dá a cinética."
   },
   {
    "id": "c10-06",
    "bloco": 10,
-   "tipo": "mc",
-   "enunciado": "Duas moléculas com o mesmo cromóforo e espectros quase iguais. Como distinguir?",
-   "alternativas": [
-    "Combinar com IV, RMN ou EM",
-    "Medir em mais λ no UV",
-    "Aumentar a concentração",
-    "Não é possível com nenhuma técnica"
-   ],
-   "correta": 0,
-   "explicacao": "O UV-vis vê o cromóforo, não a molécula inteira."
+   "tipo": "num",
+   "raciocinio": "T5",
+   "enunciado": "Uma amostra tem dois corantes: X absorve só em 430 nm e Y só em 630 nm. Em 1,00 cm: A₄₃₀ = 0,30 e A₆₃₀ = 0,60; ε de Y em 630 nm = 30 000 L mol⁻¹ cm⁻¹. Qual a concentração de Y (mol L⁻¹)?",
+   "resposta": 2e-05,
+   "unidade": "mol L⁻¹",
+   "tol": 0.02,
+   "calc": {
+    "fn": "concentracao",
+    "args": [
+     0.6,
+     30000,
+     1.0
+    ]
+   },
+   "explicacao": "Em 630 nm só Y absorve, então A₆₃₀ é só dele: c = 0,60/(30 000 × 1,00) = 2,0×10⁻⁵ mol L⁻¹. A₄₃₀ não entra: é do X. Escolher o λ certo elimina o interferente."
   },
   {
    "id": "c10-07",
    "bloco": 10,
-   "tipo": "vf",
-   "enunciado": "Uma banda fraca em ~280 nm pode indicar a presença de carbonila.",
-   "correta": true,
-   "explicacao": "n→π* de C=O: fraca (ε ~15) em ~280 nm."
+   "tipo": "mc",
+   "raciocinio": "T2",
+   "enunciado": "Um produto natural mostra só uma banda fraca, em 285 nm (ε = 20), e nenhuma banda intensa (ε > 1 000) acima de 210 nm. O que se pode dizer?",
+   "alternativas": [
+    "Tem C=O não conjugada; não tem dieno, enona nem anel aromático",
+    "Tem uma enona",
+    "Tem anel aromático conjugado",
+    "Não tem nenhum cromóforo"
+   ],
+   "correta": 0,
+   "explicacao": "Banda fraca em ~280 nm = n→π* de C=O. Dienos (≥ 217 nm), enonas (~220–250 nm) e aromáticos (254 nm, mais a banda de ~204 nm) apareceriam. O UV não diz o resto da estrutura: combine com IV, RMN e EM."
   },
   {
    "id": "c10-08",
    "bloco": 10,
-   "tipo": "mc",
-   "enunciado": "No controle de qualidade de comprimidos, o UV-vis é usado para…",
-   "alternativas": [
-    "Teor e ensaio de dissolução",
-    "Medir dureza",
-    "Medir umidade por IV",
-    "Contar comprimidos"
-   ],
-   "correta": 0,
-   "explicacao": "Fármacos: teor e dissolução."
+   "tipo": "num",
+   "raciocinio": "T5",
+   "enunciado": "Ensaio de dissolução: comprimido de 50 mg em 900 mL de meio. Após 30 min, a alíquota dá A = 0,420; um padrão de 0,0500 mg/mL, nas mesmas condições, dá A = 0,700. Quanto % do fármaco dissolveu?",
+   "resposta": 54.0,
+   "unidade": "%",
+   "tol": 0.02,
+   "calc": {
+    "fn": "porcentagemDissolvida",
+    "args": [
+     0.42,
+     0.7,
+     0.05,
+     900,
+     50
+    ]
+   },
+   "explicacao": "c = (0,420/0,700) × 0,0500 = 0,0300 mg/mL. No meio: 0,0300 × 900 = 27 mg. 27/50 = 54 % dissolvido."
   }
  ]
 }
