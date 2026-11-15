@@ -2,6 +2,8 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
+**Status (2026-11-15):** executado. `IMIA/Aula_EM/EM_aula.pptx` com 125 slides e 5 das 10 animações (Tarefa 8 parcial, por prazo); revisão independente feita e corrigida. Registro em `IMIA/Aula_EM/LEDGER.md`.
+
 **Goal:** Gerar `IMIA/Aula_EM/EM_aula.pptx`, a aula de 3 h (2 h teoria + 1 h exercícios) de espectrometria de massas, com todo o conteúdo do `TOPICO III.pptx`, espectros redesenhados a partir de números reais, slide de íons diagnósticos, exercícios resolvidos passo a passo e animações por clique, pronta para 2026-11-16.
 
 **Architecture:** Cópia do pipeline da `IMIA/Aula_IV`: dados de picos em Python (`compostos_ms.py`) → figuras matplotlib (`figs/`) e estruturas RDKit (`estruturas/`) → `deck.js` (pptxgenjs) monta o pptx com slides reservados `ANIM:<nome>@x,y,w,h` → animações mpl (`animacoes/`) cortadas em clipes por `cut.py` e inseridas por `integrar.py`. Pasta sem git (como `Aula_IV`); o ponto de controle de cada tarefa é o build rodar limpo e o teste passar.
