@@ -102,7 +102,7 @@ export async function telaGrupoEstacao(el, aluno, id) {
 export async function telaPraticaLista(el, aluno) {
   if (!MODULOS[moduloAtual()].pratica) return (location.hash = "#quiz"); // o IV continua com o quiz ao vivo
   const [blocos, quiz] = await Promise.all([conteudo("blocos.json"), conteudo("quiz.json")]);
-  limpar(el, topo(aluno, "#menu"), h("h1", {}, "🏆 Quiz de prática"),
+  limpar(el, topo(aluno, "#menu"), h("h1", {}, moduloAtual() === "em" ? "🏆 Quiz de espectrometria de massas" : "🏆 Quiz de prática"),
     h("p", { class: "ajuda" }, "Rodadas curtas para treinar o raciocínio. Não vale nota: erre à vontade e leia a explicação."),
     h("a", { class: "btn largo", href: "#pratica/mista", style: { margin: "10px 0" } }, `Rodada mista (${blocos.length} questões, uma de cada tema)`),
     h("a", { class: "btn largo sec", href: "#pratica/todas", style: { margin: "0 0 10px" } }, `Todas as questões (${quiz.questoes.length})`),

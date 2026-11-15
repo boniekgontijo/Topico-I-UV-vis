@@ -4,8 +4,9 @@ import { moduloAtual, trocarModulo } from "./estado.js";
 
 export function topo(aluno, voltar) {
   const m = moduloAtual();
+  document.title = m === "em" ? "Espectrometria de massas em jogo" : m === "iv" ? "IV em jogo" : "UV-vis em jogo";
   const marca = m === "iv" ? h("div", { class: "marca" }, "I", h("b", {}, "V"))
-    : m === "em" ? h("div", { class: "marca" }, "E", h("b", {}, "M"))
+    : m === "em" ? h("div", { class: "marca" }, "Espectrometria de ", h("b", {}, "massas"))
       : h("div", { class: "marca" }, "UV-", h("b", {}, "vis"));
   return h("header", { class: "topo" },
     h("div", {}, marca, h("div", { class: "quem" }, `${aluno.avatar ?? ""} ${aluno.nome} · ${aluno.turma}`.trim())),

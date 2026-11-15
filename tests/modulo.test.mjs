@@ -25,6 +25,7 @@ test("EM: aba própria pelo ?m=em, com quiz de prática (como o UV-vis); IV segu
   assert.equal(moduloDaURL("?m=em", null), "em");
   assert.equal(moduloDaURL("?t=2026-2&m=em", "iv"), "em");
   assert.equal(MODULOS.em.pratica, true);
+  assert.equal(MODULOS.em.titulo, "Espectrometria de massas");
   assert.equal(MODULOS.uvvis.pratica, true);
   assert.ok(!MODULOS.iv.pratica);
 });
