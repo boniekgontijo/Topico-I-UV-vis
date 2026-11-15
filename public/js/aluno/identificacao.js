@@ -1,6 +1,8 @@
 import { h, limpar, ls } from "../ui/dom.js";
 import { TURMA_PADRAO } from "../config.js";
 import { AVATARES } from "../core/competicao.js";
+import { capa } from "../core/modulo.js";
+import { moduloAtual } from "./estado.js";
 import { conectar, online, api } from "./dados.js";
 
 export function turmaAtual() {
@@ -73,10 +75,11 @@ export function telaIdentificacao(el, onOk) {
     onOk(obterAluno());
   };
 
+  document.title = capa(moduloAtual()).titulo;
   limpar(el,
     h("div", { class: "centro" },
-      h("div", { class: "grande", "aria-hidden": "true" }, "🌈🔬"),
-      h("h1", {}, "UV-vis em jogo"),
+      h("div", { class: "grande", "aria-hidden": "true" }, capa(moduloAtual()).icone),
+      h("h1", {}, capa(moduloAtual()).titulo),
       h("p", { class: "ajuda" }, "Introdução aos Métodos Instrumentais de Análise")),
     h("form", { class: "cartao", onsubmit: enviar },
       h("label", { for: "nome" }, "Nome"), nome,

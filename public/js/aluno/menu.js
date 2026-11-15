@@ -1,10 +1,10 @@
 import { h, limpar } from "../ui/dom.js";
-import { MODULOS } from "../core/modulo.js";
+import { MODULOS, capa } from "../core/modulo.js";
 import { moduloAtual, trocarModulo } from "./estado.js";
 
 export function topo(aluno, voltar) {
   const m = moduloAtual();
-  document.title = m === "em" ? "Espectrometria de massas em jogo" : m === "iv" ? "IV em jogo" : "UV-vis em jogo";
+  document.title = capa(m).titulo;
   const marca = m === "iv" ? h("div", { class: "marca" }, "I", h("b", {}, "V"))
     : m === "em" ? h("div", { class: "marca" }, "Espectrometria de ", h("b", {}, "massas"))
       : h("div", { class: "marca" }, "UV-", h("b", {}, "vis"));

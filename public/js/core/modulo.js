@@ -6,6 +6,14 @@ export const MODULOS = {
   em: { titulo: "Espectrometria de massas", base: "conteudo/em/", simuladores: false, pratica: true },
 };
 
+// Capa (tela de entrada e título da página) de cada módulo.
+const CAPAS = {
+  uvvis: { icone: "🌈🔬", titulo: "UV-vis em jogo" },
+  iv: { icone: "🌡️🔬", titulo: "IV em jogo" },
+  em: { icone: "⚖️🔬", titulo: "Espectrometria de massas em jogo" },
+};
+export const capa = (m) => CAPAS[m] ?? CAPAS.uvvis;
+
 // O módulo vem só do ?m= da URL; sem ele é UV-vis (os QR codes antigos do UV-vis nunca caem no IV).
 // "salvo" é ignorado de propósito: a navegação interna preserva o ?m=.
 export function moduloDaURL(search, _salvo) {
