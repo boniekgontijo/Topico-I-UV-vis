@@ -22,3 +22,10 @@ test("rodadas variam (sorteio usa rnd)", () => {
   const b = sortearRodada(banco, { rnd: () => 0.99 }).map((q) => q.id).join();
   assert.notEqual(a, b);
 });
+
+test("rodada com todas as questões: todas, sem repetir, embaralhadas", () => {
+  const r = sortearRodada(banco, { todas: true, rnd: () => 0 });
+  assert.equal(r.length, banco.length);
+  assert.equal(new Set(r.map((q) => q.id)).size, banco.length);
+  assert.notDeepEqual(r.map((q) => q.id), banco.map((q) => q.id));
+});

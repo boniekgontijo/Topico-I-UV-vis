@@ -4,7 +4,9 @@ import { moduloAtual, trocarModulo } from "./estado.js";
 
 export function topo(aluno, voltar) {
   const m = moduloAtual();
-  const marca = m === "iv" ? h("div", { class: "marca" }, "I", h("b", {}, "V")) : h("div", { class: "marca" }, "UV-", h("b", {}, "vis"));
+  const marca = m === "iv" ? h("div", { class: "marca" }, "I", h("b", {}, "V"))
+    : m === "em" ? h("div", { class: "marca" }, "E", h("b", {}, "M"))
+      : h("div", { class: "marca" }, "UV-", h("b", {}, "vis"));
   return h("header", { class: "topo" },
     h("div", {}, marca, h("div", { class: "quem" }, `${aluno.avatar ?? ""} ${aluno.nome} · ${aluno.turma}`.trim())),
     voltar ? h("a", { class: "btn sec voltar", href: voltar }, "← Voltar") : null);
@@ -20,11 +22,12 @@ export function telaMenu(el, aluno, aoSair) {
       h("button", { class: k === m ? "ativo" : "", role: "tab", "aria-selected": k === m ? "true" : "false",
         onclick: () => { trocarModulo(k); telaMenu(el, aluno, aoSair); } }, v.titulo))),
     h("div", { class: "grade" },
-      m === "iv" ? tile("#quiz", "t-comp", "🏆", "Quiz", "Ao vivo, em sala")
-        : tile("#pratica", "t-comp", "🏆", "Quiz", "Pratique quando quiser"),
-      m === "iv" ? tile("#grupo-iv", "t-grupo", "👥", "Em grupo", "Composto desconhecido")
+      MODULOS[m].pratica ? tile("#pratica", "t-comp", "🏆", "Quiz", "Pratique quando quiser")
+        : tile("#quiz", "t-comp", "🏆", "Quiz", "Ao vivo, em sala"),
+      // EM (por enquanto): só o quiz de prática
+      m === "em" ? null : m === "iv" ? tile("#grupo-iv", "t-grupo", "👥", "Em grupo", "Composto desconhecido")
         : tile("#grupo", "t-grupo", "👥", "Em grupo", "Estações do Workshop"),
-      tile("#casa", "t-casa", "🏠", "Para casa", m === "iv" ? "Qual molécula é?" : "Exercícios por tema"),
+      m === "em" ? null : tile("#casa", "t-casa", "🏠", "Para casa", m === "iv" ? "Qual molécula é?" : "Exercícios por tema"),
       MODULOS[m].simuladores ? tile("#sim", "t-sim", "📈", "Simuladores", "Mexa no espectro") : null),
     h("p", { class: "ajuda centro" }, "Não é você? ",
       h("a", { href: "#", onclick: (e) => { e.preventDefault(); aoSair(); } }, "Trocar de aluno / personagem")));

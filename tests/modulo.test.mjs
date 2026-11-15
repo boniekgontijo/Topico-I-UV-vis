@@ -13,10 +13,20 @@ test("módulo vem só do ?m=; sem ele é sempre UV-vis (QR antigos do UV-vis nun
 });
 
 test("módulos conhecidos e caminhos do conteúdo", () => {
-  assert.deepEqual(Object.keys(MODULOS), ["uvvis", "iv"]);
+  assert.deepEqual(Object.keys(MODULOS), ["uvvis", "iv", "em"]);
+  assert.equal(MODULOS.em.base, "conteudo/em/");
+  assert.equal(MODULOS.em.simuladores, false);
   assert.equal(MODULOS.iv.base, "conteudo/iv/");
   assert.equal(MODULOS.uvvis.simuladores, true);
   assert.equal(MODULOS.iv.simuladores, false);
+});
+
+test("EM: aba própria pelo ?m=em, com quiz de prática (como o UV-vis); IV segue com o quiz ao vivo", () => {
+  assert.equal(moduloDaURL("?m=em", null), "em");
+  assert.equal(moduloDaURL("?t=2026-2&m=em", "iv"), "em");
+  assert.equal(MODULOS.em.pratica, true);
+  assert.equal(MODULOS.uvvis.pratica, true);
+  assert.ok(!MODULOS.iv.pratica);
 });
 
 test("alternativa de estrutura (@est:id)", () => {

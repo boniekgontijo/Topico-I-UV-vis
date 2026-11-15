@@ -7,6 +7,7 @@ import { salvarResposta } from "./dados.js";
 import { matriculaValida } from "./identificacao.js";
 import { incentivo } from "../core/mensagens.js";
 import { moduloAtual, baseAtual } from "./estado.js";
+import { MODULOS } from "../core/modulo.js";
 import { alternativa } from "../ui/alternativa.js";
 import { desenharEspectroIV } from "../ui/espectro-iv.js";
 import { sortearRodada } from "../core/pratica.js";
@@ -97,13 +98,14 @@ export async function telaGrupoEstacao(el, aluno, id) {
       erro, h("button", { class: "btn largo", type: "submit" }, "Começar")));
 }
 
-// ---------- quiz de prática (UV-vis): não conta na nota, nada vai para o servidor ----------
+// ---------- quiz de prática (UV-vis e EM): não conta na nota, nada vai para o servidor ----------
 export async function telaPraticaLista(el, aluno) {
-  if (moduloAtual() !== "uvvis") return (location.hash = "#quiz"); // o IV continua com o quiz ao vivo
+  if (!MODULOS[moduloAtual()].pratica) return (location.hash = "#quiz"); // o IV continua com o quiz ao vivo
   const [blocos, quiz] = await Promise.all([conteudo("blocos.json"), conteudo("quiz.json")]);
   limpar(el, topo(aluno, "#menu"), h("h1", {}, "🏆 Quiz de prática"),
     h("p", { class: "ajuda" }, "Rodadas curtas para treinar o raciocínio. Não vale nota: erre à vontade e leia a explicação."),
     h("a", { class: "btn largo", href: "#pratica/mista", style: { margin: "10px 0" } }, `Rodada mista (${blocos.length} questões, uma de cada tema)`),
+    h("a", { class: "btn largo sec", href: "#pratica/todas", style: { margin: "0 0 10px" } }, `Todas as questões (${quiz.questoes.length})`),
     h("h3", {}, "Ou treine um tema"),
     h("ul", { class: "lista" }, blocos.map((b) => h("li", {}, h("a", { href: `#pratica/${b.n}` },
       h("span", {}, h("b", {}, `${b.n}. `), b.titulo),
@@ -111,13 +113,15 @@ export async function telaPraticaLista(el, aluno) {
 }
 
 export async function telaPraticaRodada(el, aluno, qual) {
-  if (moduloAtual() !== "uvvis") return (location.hash = "#quiz"); // o IV continua com o quiz ao vivo
+  if (!MODULOS[moduloAtual()].pratica) return (location.hash = "#quiz"); // o IV continua com o quiz ao vivo
   const [blocos, quiz] = await Promise.all([conteudo("blocos.json"), conteudo("quiz.json")]);
-  const bloco = qual === "mista" ? null : blocos.find((b) => b.n === Number(qual));
-  if (qual !== "mista" && !bloco) return (location.hash = "#pratica");
+  const todas = qual === "todas";
+  const bloco = qual === "mista" || todas ? null : blocos.find((b) => b.n === Number(qual));
+  if (qual !== "mista" && !todas && !bloco) return (location.hash = "#pratica");
   const rodada = () => executar(el, aluno, {
-    titulo: bloco ? `Quiz · ${bloco.n}. ${bloco.titulo}` : "Quiz · rodada mista", voltar: "#pratica", pratica: true,
-    questoes: sortearRodada(quiz.questoes, { bloco: bloco?.n }), novaRodada: () => rodada(),
+    titulo: bloco ? `Quiz · ${bloco.n}. ${bloco.titulo}` : todas ? "Quiz · todas as questões" : "Quiz · rodada mista",
+    voltar: "#pratica", pratica: true,
+    questoes: sortearRodada(quiz.questoes, { bloco: bloco?.n, todas }), novaRodada: () => rodada(),
   });
   rodada();
 }

@@ -1,7 +1,9 @@
-// Módulos da plataforma (UV-vis e IV): caminhos do conteúdo e escolha pela URL.
+// Módulos da plataforma (UV-vis, IV e EM): caminhos do conteúdo e escolha pela URL.
+// pratica: o Quiz do menu é o de prática (sem nota, nada vai ao servidor); sem ela, é o quiz ao vivo (IV).
 export const MODULOS = {
-  uvvis: { titulo: "UV-vis", base: "conteudo/uvvis/", simuladores: true },
+  uvvis: { titulo: "UV-vis", base: "conteudo/uvvis/", simuladores: true, pratica: true },
   iv: { titulo: "IV", base: "conteudo/iv/", simuladores: false },
+  em: { titulo: "EM", base: "conteudo/em/", simuladores: false, pratica: true },
 };
 
 // O módulo vem só do ?m= da URL; sem ele é UV-vis (os QR codes antigos do UV-vis nunca caem no IV).
