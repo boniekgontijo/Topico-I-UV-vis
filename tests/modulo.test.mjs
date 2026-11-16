@@ -43,3 +43,21 @@ test("alternativa de estrutura (@est:id)", () => {
   assert.equal(ehEstrutura("A = εbc"), null);
   assert.equal(ehEstrutura("@est:"), null);
 });
+
+test("rota do painel: #comp/<módulo> e #comp/slides/<módulo>; sem módulo é UV-vis", async () => {
+  const { moduloDaRota } = await import("../public/js/core/modulo.js");
+  assert.equal(moduloDaRota([]), "uvvis");
+  assert.equal(moduloDaRota(["iv"]), "iv");
+  assert.equal(moduloDaRota(["em"]), "em");
+  assert.equal(moduloDaRota(["slides", "em"]), "em");
+  assert.equal(moduloDaRota(["slides"]), "uvvis");
+  assert.equal(moduloDaRota(["xx"]), "uvvis");
+});
+
+test("link fixo do aluno para o quiz ao vivo leva o ?m= do módulo (exceto UV-vis)", async () => {
+  const { linkQuizAoVivo } = await import("../public/js/core/modulo.js");
+  const b = "https://x.github.io/Topico-I-UV-vis/";
+  assert.equal(linkQuizAoVivo(b, "2026-2", "uvvis"), b + "?t=2026-2#quiz");
+  assert.equal(linkQuizAoVivo(b, "2026-2", "iv"), b + "?t=2026-2&m=iv#quiz");
+  assert.equal(linkQuizAoVivo(b, "2026-2", "em"), b + "?t=2026-2&m=em#quiz");
+});

@@ -2,6 +2,8 @@
 
     python3 tools/em_quiz.py
 
+Também grava privado/em-competicao.json (fora do git) para o quiz ao vivo do painel do professor.
+
 As 16 questões foram revisadas pelo professor em 2026-11-15 (rascunho em IMIA/Aula_EM/2026-11-15-quiz-em-rascunho.md).
 Nível fácil, uma ideia por questão. A alternativa correta vem sempre primeiro (índice 0); o site embaralha.
 Dados de espectro: NIST WebBook (EI, 70 eV) — 3-pentanona 96-22-0, clorobenzeno 108-90-7, propilamina 107-10-8.
@@ -9,7 +11,9 @@ Dados de espectro: NIST WebBook (EI, 70 eV) — 3-pentanona 96-22-0, clorobenzen
 import json
 from pathlib import Path
 
-DEST = Path(__file__).resolve().parent.parent / "public/conteudo/em"
+RAIZ = Path(__file__).resolve().parent.parent
+DEST = RAIZ / "public/conteudo/em"
+PRIVADO = RAIZ / "privado"   # quiz ao vivo: o professor carrega em Perguntas → Espectrometria de massas
 MZ = "<i>m/z</i>"
 
 BLOCOS = [
@@ -111,6 +115,9 @@ def main():
     (DEST / "blocos.json").write_text(json.dumps(blocos, ensure_ascii=False, indent=2) + "\n")
     (DEST / "quiz.json").write_text(json.dumps({"modulo": "em", "questoes": questoes}, ensure_ascii=False, indent=1)
                                     + "\n")
+    PRIVADO.mkdir(exist_ok=True)
+    (PRIVADO / "em-competicao.json").write_text(json.dumps({"modulo": "em", "questoes": questoes}, ensure_ascii=False,
+                                                           indent=1) + "\n")
     print(f"{len(questoes)} questões, {len(blocos)} blocos →", DEST)
 
 

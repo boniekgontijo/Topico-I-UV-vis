@@ -1,6 +1,7 @@
 // Área do professor: login Google restrito + abas.
 import { h, limpar, rotas, toast } from "../ui/dom.js";
 import * as fb from "../fb.js";
+import { moduloDaRota } from "../core/modulo.js";
 
 const el = document.getElementById("app");
 let email = null;
@@ -38,8 +39,8 @@ function iniciarRotas() {
   iniciado = true;
   rotas({
     "": aba("#comp", async (a) => (await import("./telao.js")).telaNova(a)),
-    // #comp, #comp/iv, #comp/slides, #comp/slides/iv
-    comp: aba("#comp", async (a, ps) => (await import("./telao.js")).telaNova(a, { slides: ps.includes("slides"), modulo: ps.includes("iv") ? "iv" : "uvvis" })),
+    // #comp, #comp/<módulo>, #comp/slides, #comp/slides/<módulo>
+    comp: aba("#comp", async (a, ps) => (await import("./telao.js")).telaNova(a, { slides: ps.includes("slides"), modulo: moduloDaRota(ps) })),
     sala: aba("#comp", async (a, [c]) => (await import("./telao.js")).telaSala(a, c)),
     "grupos-iv": aba("#grupos-iv", async (a, [c]) => (await import("./grupos-iv.js")).telaGruposIV(a, c)),
     painel: aba("#painel", async (a) => (await import("./painel.js")).telaPainel(a)),

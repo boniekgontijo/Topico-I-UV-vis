@@ -23,9 +23,10 @@ export function telaMenu(el, aluno, aoSair) {
       h("button", { class: k === m ? "ativo" : "", role: "tab", "aria-selected": k === m ? "true" : "false",
         onclick: () => { trocarModulo(k); telaMenu(el, aluno, aoSair); } }, v.titulo))),
     h("div", { class: "grade" },
-      MODULOS[m].pratica ? tile("#pratica", "t-comp", "🏆", "Quiz", "Pratique quando quiser")
+      MODULOS[m].pratica && m !== "em" ? tile("#pratica", "t-comp", "🏆", "Quiz", "Pratique quando quiser")
         : tile("#quiz", "t-comp", "🏆", "Quiz", "Ao vivo, em sala"),
-      // EM (por enquanto): só o quiz de prática
+      // EM: quiz ao vivo (painel do professor) e o mesmo quiz para praticar sozinho
+      m === "em" ? tile("#pratica", "t-casa", "📝", "Praticar", "Quando quiser, sem nota") : null,
       m === "em" ? null : m === "iv" ? tile("#grupo-iv", "t-grupo", "👥", "Em grupo", "Composto desconhecido")
         : tile("#grupo", "t-grupo", "👥", "Em grupo", "Estações do Workshop"),
       m === "em" ? null : tile("#casa", "t-casa", "🏠", "Para casa", m === "iv" ? "Qual molécula é?" : "Exercícios por tema"),

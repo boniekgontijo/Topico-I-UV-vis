@@ -7,7 +7,7 @@ import { TURMA_PADRAO } from "../config.js";
 import { plural } from "../core/mensagens.js";
 
 import { FORMAS_QUIZ as FORMAS } from "../core/competicao.js";
-import { MODULOS } from "../core/modulo.js";
+import { MODULOS, linkQuizAoVivo } from "../core/modulo.js";
 import { alternativa } from "../ui/alternativa.js";
 import { desenharEspectroIV } from "../ui/espectro-iv.js";
 let desligar = [];
@@ -111,7 +111,7 @@ export async function telaSala(el, codigo) {
   const urlAluno = () => {
     // o MESMO link fixo dos slides (QR igual): o aluno entra sozinho na sala atual da turma (turmas/{t}.salaAtual)
     const base = location.href.split("#")[0].replace(/professor\.html.*$/, "");
-    return `${base}?t=${encodeURIComponent(sala.turma)}${sala.modulo === "iv" ? "&m=iv" : ""}#quiz`;
+    return linkQuizAoVivo(base, sala.turma, sala.modulo);
   };
   const qrSvg = (txt) => { const q = window.qrcode(0, "M"); q.addData(txt); q.make(); return q.createSvgTag({ cellSize: 8, margin: 2, scalable: true }); };
   const rotulo = (j) => `${j.avatar ? j.avatar + " " : ""}${String(j.nome ?? "?")}`;

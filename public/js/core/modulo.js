@@ -21,5 +21,12 @@ export function moduloDaURL(search, _salvo) {
   return m in MODULOS ? m : "uvvis";
 }
 
+// Painel do professor: #comp/<m> e #comp/slides/<m>; sem módulo (ou desconhecido) é UV-vis.
+export const moduloDaRota = (ps) => ps.find((x) => x in MODULOS) ?? "uvvis";
+
+// Link fixo do aluno (QR dos slides e do telão): entra sozinho na sala atual da turma, no módulo certo.
+export const linkQuizAoVivo = (base, turma, m) =>
+  `${base}?t=${encodeURIComponent(turma)}${m && m !== "uvvis" ? `&m=${m}` : ""}#quiz`;
+
 // alternativa "@est:<id>" = estrutura química (imagem); senão é texto
 export const ehEstrutura = (a) => (typeof a === "string" && /^@est:[a-z0-9_-]+$/.test(a) ? a.slice(5) : null);
